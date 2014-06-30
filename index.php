@@ -5,6 +5,7 @@
 	<title>music player</title>
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; mininum-scale=0.5; maximum-scale=1.0; user-scalable=no;" />
 
+
 <style>
 
 div 
@@ -32,7 +33,7 @@ width:100%;
 }
 #prev_btn
 {
-background-image:url('content/buttons.png');
+background-image:url('SoundOwl_files/buttons.png');
 background-size:116px;
 background-position:0px, 0;
 width:28px;
@@ -41,7 +42,7 @@ margin:10 0;
 }
 #play_btn
 {
-background-image:url('content/buttons.png');
+background-image:url('SoundOwl_files/buttons.png');
 background-size:175px;
 background-position:87px, 0;
 width:42px;
@@ -50,7 +51,7 @@ margin: 3;
 }
 #pause_btn
 {
-background-image:url('content/buttons.png');
+background-image:url('SoundOwl_files/buttons.png');
 background-size:175px;
 background-position:43.5px, 0;
 width:42px;
@@ -59,7 +60,7 @@ margin: 3;
 }
 #next_btn
 {
-background-image:url('content/buttons.png');
+background-image:url('SoundOwl_files/buttons.png');
 background-size:116px;
 background-position:-29px, 0;
 width:28px;
@@ -90,33 +91,33 @@ bottom:0px;
 left:0px;
 float:left;
 width:100%;
-height:65px;
-z-index:98;
+height:50px;/*65*/
+z-index:99;
 }
 #footer_player
 {
-	margin:10 auto 5  120;
+	margin:5 auto 5  120; /*10 auto 5 120*/
 }
 
 .footer_control_btn
 {
-background-size:100px;
+background-size:75px;/*100*/
 position:fixed;
 bottom:0px;
 left:0px;
-width:100px;
-height:100px;
+width:75px;/*100*/
+height:75px;/*100*/
 z-index:99;
 }
 
 #footer_play_btn
 {
-background-image:url('content/BPlaybtn.png');
+background-image:url('SoundOwl_files/BPlaybtn.png');
 
 }
 #footer_pause_btn
 {
-background-image:url('content/BPausebtn.png');
+background-image:url('SoundOwl_files/BPausebtn.png');
 
 }
 .footer_control_btn:hover{
@@ -127,7 +128,7 @@ color:#ff00ff
 width:90%; 
 height:10px; 
 background-color:#222222;
-margin:10 0;
+margin:5 0; /*10 0*/
 overflow:hidden;
 border-radius:5;
 }
@@ -153,7 +154,9 @@ border-radius:5 5 0 0;
 white-space:nowrap;
 }
 
+
 </style>
+
 
 </head>
 
