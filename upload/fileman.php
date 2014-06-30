@@ -1,3 +1,32 @@
+<style>
+
+
+html{
+width:80%;
+margin:auto;
+}
+table
+{
+border:2px solid black;
+border-collapse:collapse;
+width:100%;
+}
+.dbutton
+{
+background-color:#555555; 
+color:#eeeeee; 
+font-size:20px; 
+font-family:Arial;
+cursor:pointer;
+padding:5 20 5 20;
+}
+.dbutton:hover
+{
+background-color:#aaaaaa; 
+}
+</style>
+
+
 <?php
 include('../pass.php');
 $con=mysqli_connect("127.0.0.1","bcophm_music",$pass,"bcophm_music");
@@ -37,4 +66,9 @@ echo "</table>";
 mysqli_close($con);
 }
 ?>
-<a href='adder.html'>új szám felvitele</a>
+
+
+
+<div align="center" style="width:150px" class="dbutton" onclick="location.href='adder.html'">
+ + Ãšj szÃ¡m
+</div>
