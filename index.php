@@ -33,7 +33,7 @@ width:100%;
 }
 #prev_btn
 {
-background-image:url('SoundOwl_files/buttons.png');
+background-image:url('content/buttons.png');
 background-size:116px;
 background-position:0px, 0;
 width:28px;
@@ -42,7 +42,7 @@ margin:10 0;
 }
 #play_btn
 {
-background-image:url('SoundOwl_files/buttons.png');
+background-image:url('content/buttons.png');
 background-size:175px;
 background-position:87px, 0;
 width:42px;
@@ -51,7 +51,7 @@ margin: 3;
 }
 #pause_btn
 {
-background-image:url('SoundOwl_files/buttons.png');
+background-image:url('content/buttons.png');
 background-size:175px;
 background-position:43.5px, 0;
 width:42px;
@@ -60,7 +60,7 @@ margin: 3;
 }
 #next_btn
 {
-background-image:url('SoundOwl_files/buttons.png');
+background-image:url('content/buttons.png');
 background-size:116px;
 background-position:-29px, 0;
 width:28px;
@@ -111,12 +111,12 @@ height:100px;
 
 #footer_play_btn
 {
-background-image:url('SoundOwl_files/BPlaybtn.png');
+background-image:url('content/BPlaybtn.png');
 
 }
 #footer_pause_btn
 {
-background-image:url('SoundOwl_files/BPausebtn.png');
+background-image:url('content/BPausebtn.png');
 
 }
 .footer_control_btn:hover{
