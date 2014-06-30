@@ -218,7 +218,7 @@ $count = 0;
 	
 <audio id="player_element" src="" onended="Next_Item()" ontimeupdate="Progressbar()" onprogress="Buffer_Progressbar()"  preload="auto" ></audio>
 	
-<div id="footer_player_container" onclick="">
+<div id="footer_player_container" onclick="Nothing()">
 	<div id="footer_player">
 		<div id="now_playing_container" style="width:100%; overflow-x:hidden; ">
 			<div id="now_playing" style="color:#ffffff; font-family:Arial; line-height:20px; ">
@@ -269,6 +269,12 @@ Play_Pause();
 
 
 //act_item.src=document.getElementById("0").getAttribute("sid");  ///getAttribute <<--
+
+function Nothing()
+{
+
+
+}
 
 function Play_This(t_id)
 {	
