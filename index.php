@@ -95,7 +95,7 @@ z-index:99;
 }
 #footer_player
 {
-	margin:5 auto 5  120; /*10 auto 5 120*/
+	margin:5 auto 5  90; /*10 auto 5 120*/
 }
 
 .footer_control_btn
