@@ -91,7 +91,11 @@ left:0px;
 float:left;
 width:100%;
 height:65px;
+<<<<<<< HEAD
 z-index:98;
+=======
+z-index:99;
+>>>>>>> bc8ae488cf46d1e7dfd6f021e816821e4e8b0f12
 }
 #footer_player
 {
