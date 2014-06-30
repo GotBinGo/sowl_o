@@ -38,5 +38,5 @@ mysqli_close($con);
 }
 ?>
 <div style="width:200px; height:30px; background-color:#555555 color:#550066" onclick="location.href='adder.html'">
-รj szรกm
+ฺj szแm
 </div>
