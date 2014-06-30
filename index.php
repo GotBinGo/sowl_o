@@ -148,9 +148,6 @@ z-index:10;
 border-radius:5 5 0 0;
 }
 
-#now_playing_container::-webkit-scrollbar { 
-    display: none; 
-}
 
 </style>
 
@@ -219,8 +216,8 @@ $count = 0;
 	
 <div id="footer_player_container">
 	<div id="footer_player">
-		<div id="now_playing_container" style="width:100%; overflow-x:scroll;">
-			<div id="now_playing" style="color:#ffffff; font-family:Arial; height:19px;  ">
+		<div id="now_playing_container" style="width:100%; overflow-x:hidden; ">
+			<div id="now_playing" style="color:#ffffff; font-family:Arial; line-height:20px; ">
 				 - 
 			</div>
 		</div>
@@ -233,6 +230,23 @@ $count = 0;
 <span id="footer_play_btn" class="footer_control_btn" onclick="Play_Pause()">
 	
 </span>	
+
+<script>
+//mobil ellenorzés
+if (navigator.userAgent.match(/Android/i) ||
+	 navigator.userAgent.match(/webOS/i) ||
+	 navigator.userAgent.match(/iPhone/i) ||
+	 navigator.userAgent.match(/iPad/i) ||
+	 navigator.userAgent.match(/iPod/i) ||
+	 navigator.userAgent.match(/BlackBerry/) || 
+	 navigator.userAgent.match(/Windows Phone/i) || 
+	 navigator.userAgent.match(/IEMobile/i) || 
+	 navigator.userAgent.match(/Opera Mini/i)
+	)
+{
+	document.getElementById("now_playing_container").style["overflow-x"]="scroll";
+}
+</script>
 
 
 <script>
