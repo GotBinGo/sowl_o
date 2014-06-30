@@ -26,7 +26,6 @@ background-color:#aaaaaa;
 cursor:pointer;
 }
 #header{
-position: fixed;
 top:0px;
 left:0px;
 width:100%;
@@ -92,7 +91,7 @@ left:0px;
 float:left;
 width:100%;
 height:65px;
-
+z-index:99;
 }
 #footer_player
 {
@@ -107,6 +106,7 @@ bottom:0px;
 left:0px;
 width:100px;
 height:100px;
+z-index:99;
 }
 
 #footer_play_btn
@@ -175,7 +175,7 @@ border-radius:5 5 0 0;
 </table>
 </div>
 
-<div style="height:80px;"></div>
+<div style="height:15px;"></div>
 
 <div style="width:80%; margin:auto; margin-bottom:100px;">
 	<div style="font-family:Arial; font-size:22px; margin:0 0 10 0">
