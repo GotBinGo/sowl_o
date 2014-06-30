@@ -26,7 +26,6 @@ background-color:#aaaaaa;
 cursor:pointer;
 }
 #header{
-position: fixed;
 top:0px;
 left:0px;
 width:100%;
@@ -180,7 +179,6 @@ white-space:nowrap;
 </table>
 </div>
 
-<div style="height:80px;"></div>
 
 <div style="width:80%; margin:auto; margin-bottom:100px;">
 	<div style="font-family:Arial; font-size:22px; margin:0 0 10 0">
