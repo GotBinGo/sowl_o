@@ -37,4 +37,6 @@ echo "</table>";
 mysqli_close($con);
 }
 ?>
-<a href='adder.html'>új szám felvitele</a>
+<div style="width:200px; height:30px; background-color:#555555 color:#550066" onclick="location.href='adder.html'">
+Ãšj szÃ¡m
+</div>
