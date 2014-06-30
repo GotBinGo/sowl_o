@@ -191,7 +191,6 @@ if (mysqli_connect_errno())
 }
 else
 {
-
 $result = mysqli_query($con,"SELECT * FROM tracks WHERE adder_id=0 AND (file_type='audio/mpeg' OR file_type='audio/mp3')");
 mysqli_close($con);
 $count = 0;
@@ -203,8 +202,6 @@ $count = 0;
 }
 }
 ?>	
-
-
 </div>	
 
 
