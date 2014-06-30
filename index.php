@@ -26,14 +26,13 @@ background-color:#aaaaaa;
 cursor:pointer;
 }
 #header{
-position: fixed;
 top:0px;
 left:0px;
 width:100%;
 }
 #prev_btn
 {
-background-image:url('SoundOwl_files/buttons.png');
+background-image:url('content/buttons.png');
 background-size:116px;
 background-position:0px, 0;
 width:28px;
@@ -42,7 +41,7 @@ margin:10 0;
 }
 #play_btn
 {
-background-image:url('SoundOwl_files/buttons.png');
+background-image:url('content/buttons.png');
 background-size:175px;
 background-position:87px, 0;
 width:42px;
@@ -51,7 +50,7 @@ margin: 3;
 }
 #pause_btn
 {
-background-image:url('SoundOwl_files/buttons.png');
+background-image:url('content/buttons.png');
 background-size:175px;
 background-position:43.5px, 0;
 width:42px;
@@ -60,7 +59,7 @@ margin: 3;
 }
 #next_btn
 {
-background-image:url('SoundOwl_files/buttons.png');
+background-image:url('content/buttons.png');
 background-size:116px;
 background-position:-29px, 0;
 width:28px;
@@ -92,7 +91,7 @@ left:0px;
 float:left;
 width:100%;
 height:65px;
-
+z-index:98;
 }
 #footer_player
 {
@@ -107,16 +106,17 @@ bottom:0px;
 left:0px;
 width:100px;
 height:100px;
+z-index:99;
 }
 
 #footer_play_btn
 {
-background-image:url('SoundOwl_files/BPlaybtn.png');
+background-image:url('content/BPlaybtn.png');
 
 }
 #footer_pause_btn
 {
-background-image:url('SoundOwl_files/BPausebtn.png');
+background-image:url('content/BPausebtn.png');
 
 }
 .footer_control_btn:hover{
@@ -148,6 +148,11 @@ z-index:10;
 border-radius:5 5 0 0;
 }
 
+#now_playing
+{
+white-space:nowrap;
+}
+
 </style>
 
 </head>
@@ -175,7 +180,7 @@ border-radius:5 5 0 0;
 </table>
 </div>
 
-<div style="height:80px;"></div>
+<div style="height:15px;"></div>
 
 <div style="width:80%; margin:auto; margin-bottom:100px;">
 	<div style="font-family:Arial; font-size:22px; margin:0 0 10 0">
@@ -215,8 +220,10 @@ $count = 0;
 	
 <div id="footer_player_container">
 	<div id="footer_player">
-		<div id="now_playing" style="color:#ffffff; font-family:Arial; ">
-			 - 
+		<div id="now_playing_container" style="width:100%; overflow-x:hidden; ">
+			<div id="now_playing" style="color:#ffffff; font-family:Arial; line-height:20px; ">
+				 - 
+			</div>
 		</div>
 		<div id="progress" onclick="progress_Click(event)">
 			<div id="progress_position"></div>
@@ -228,6 +235,23 @@ $count = 0;
 	
 </span>	
 
+
+<script>
+//mobil ellenorzés
+if (navigator.userAgent.match(/Android/i) ||
+	 navigator.userAgent.match(/webOS/i) ||
+	 navigator.userAgent.match(/iPhone/i) ||
+	 navigator.userAgent.match(/iPad/i) ||
+	 navigator.userAgent.match(/iPod/i) ||
+	 navigator.userAgent.match(/BlackBerry/) || 
+	 navigator.userAgent.match(/Windows Phone/i) || 
+	 navigator.userAgent.match(/IEMobile/i) || 
+	 navigator.userAgent.match(/Opera Mini/i)
+	)
+{
+	document.getElementById("now_playing_container").style["overflow-x"]="scroll";
+}
+</script>
 
 <script>
 
@@ -271,14 +295,14 @@ function Play_Pause()
 function Prev_Item()
 {
 if(act_i>0){
-	next_i=act_i-1;
+	next_i=Number(act_i)-1;
 	Play_Item();
 }
 	
 }
 function Next_Item()
 {
-	next_i=act_i+1;
+	next_i=Number(act_i)+1;
 	if(document.getElementById(next_i)== null)
 	{
 		next_i=0; //KOVETKEZORE -- 0-elsore ugrik
@@ -323,7 +347,7 @@ function Play_Item()
 	player.play();
 	document.getElementById("now_playing").innerHTML=document.getElementById(next_i).innerHTML;
 	
-	act_i=next_i;  //Eddigi kovetkezo lesz az aktualis
+	act_i=Number(next_i);  //Eddigi kovetkezo lesz az aktualis
 	
 	//document.getElementById("play_btn").id="pause_btn";
 	document.getElementsByClassName("footer_control_btn")[0].id="footer_pause_btn";
