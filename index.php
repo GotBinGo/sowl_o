@@ -148,6 +148,10 @@ z-index:10;
 border-radius:5 5 0 0;
 }
 
+#now_playing_container::-webkit-scrollbar { 
+    display: none; 
+}
+
 </style>
 
 </head>
@@ -215,8 +219,10 @@ $count = 0;
 	
 <div id="footer_player_container">
 	<div id="footer_player">
-		<div id="now_playing" style="color:#ffffff; font-family:Arial; ">
-			 - 
+		<div id="now_playing_container" style="width:100%; overflow-x:scroll;">
+			<div id="now_playing" style="color:#ffffff; font-family:Arial; height:19px;  ">
+				 - 
+			</div>
 		</div>
 		<div id="progress" onclick="progress_Click(event)">
 			<div id="progress_position"></div>
