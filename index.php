@@ -90,22 +90,22 @@ bottom:0px;
 left:0px;
 float:left;
 width:100%;
-height:65px;
-z-index:98;
+height:50px;/*65*/
+z-index:99;
 }
 #footer_player
 {
-	margin:10 auto 5  120;
+	margin:5 auto 5  120; /*10 auto 5 120*/
 }
 
 .footer_control_btn
 {
-background-size:100px;
+background-size:75px;/*100*/
 position:fixed;
 bottom:0px;
 left:0px;
-width:100px;
-height:100px;
+width:75px;/*100*/
+height:75px;/*100*/
 z-index:99;
 }
 
@@ -127,7 +127,7 @@ color:#ff00ff
 width:90%; 
 height:10px; 
 background-color:#222222;
-margin:10 0;
+margin:5 0; /*10 0*/
 overflow:hidden;
 border-radius:5;
 }
@@ -218,7 +218,7 @@ $count = 0;
 	
 <audio id="player_element" src="" onended="Next_Item()" ontimeupdate="Progressbar()" onprogress="Buffer_Progressbar()"  preload="auto" ></audio>
 	
-<div id="footer_player_container">
+<div id="footer_player_container" onclick="">
 	<div id="footer_player">
 		<div id="now_playing_container" style="width:100%; overflow-x:hidden; ">
 			<div id="now_playing" style="color:#ffffff; font-family:Arial; line-height:20px; ">
