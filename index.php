@@ -205,15 +205,16 @@ $count = 0;
 ?>	
 
 
-	</div>	
-</div>
+</div>	
+
 
 <!--<button onclick="Prev_Item()"><<|</button>
 <button onclick="Play_Pause()">Play/Pause</button>
 <button onclick="Next_Item()">|>></button>-->
 
 
-	<audio id="player_element" src="" onended="Next_Item()" ontimeupdate="Progressbar()" onprogress="Buffer_Progressbar()"  preload="auto" ></audio>
+	
+<audio id="player_element" src="" onended="Next_Item()" ontimeupdate="Progressbar()" onprogress="Buffer_Progressbar()"  preload="auto" ></audio>
 	
 <div id="footer_player_container">
 	<div id="footer_player">
@@ -229,8 +230,6 @@ $count = 0;
 <span id="footer_play_btn" class="footer_control_btn" onclick="Play_Pause()">
 	
 </span>	
-
-
 
 
 <script>
@@ -332,8 +331,6 @@ function Play_Item()
 	//document.getElementById("play_btn").id="pause_btn";
 	document.getElementsByClassName("footer_control_btn")[0].id="footer_pause_btn";
 }
-
-
 
 //KEYDOWN
 document.onkeydown = function(e)
