@@ -26,7 +26,6 @@ background-color:#aaaaaa;
 cursor:pointer;
 }
 #header{
-position: fixed;
 top:0px;
 left:0px;
 width:100%;
@@ -92,7 +91,7 @@ left:0px;
 float:left;
 width:100%;
 height:65px;
-
+z-index:98;
 }
 #footer_player
 {
@@ -107,6 +106,7 @@ bottom:0px;
 left:0px;
 width:100px;
 height:100px;
+z-index:99;
 }
 
 #footer_play_btn
@@ -180,7 +180,7 @@ white-space:nowrap;
 </table>
 </div>
 
-<div style="height:80px;"></div>
+<div style="height:15px;"></div>
 
 <div style="width:80%; margin:auto; margin-bottom:100px;">
 	<div style="font-family:Arial; font-size:22px; margin:0 0 10 0">
@@ -295,14 +295,14 @@ function Play_Pause()
 function Prev_Item()
 {
 if(act_i>0){
-	next_i=act_i-1;
+	next_i=Number(act_i)-1;
 	Play_Item();
 }
 	
 }
 function Next_Item()
 {
-	next_i=act_i+1;
+	next_i=Number(act_i)+1;
 	if(document.getElementById(next_i)== null)
 	{
 		next_i=0; //KOVETKEZORE -- 0-elsore ugrik
@@ -347,7 +347,7 @@ function Play_Item()
 	player.play();
 	document.getElementById("now_playing").innerHTML=document.getElementById(next_i).innerHTML;
 	
-	act_i=next_i;  //Eddigi kovetkezo lesz az aktualis
+	act_i=Number(next_i);  //Eddigi kovetkezo lesz az aktualis
 	
 	//document.getElementById("play_btn").id="pause_btn";
 	document.getElementsByClassName("footer_control_btn")[0].id="footer_pause_btn";
