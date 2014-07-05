@@ -129,7 +129,7 @@ height:10px;
 background-color:#222222;
 margin:5 0; /*10 0*/
 overflow:hidden;
-border-radius:5;
+border-radius:5px;
 }
 
 #progress_loaded{
@@ -137,7 +137,7 @@ background-color:#555555;
 width:0%;
 height:5px;
 z-index:5;
-border-radius:0 0 5 5
+border-radius:0px 0px 5px 5px;
 }
 
 #progress_position{
@@ -145,7 +145,7 @@ background-color:#cccccc;
 width:0%;
 height:5px;
 z-index:10;
-border-radius:5 5 0 0;
+border-radius:5px 5px 0px 0px;
 }
 
 #now_playing
@@ -218,7 +218,7 @@ $count = 0;
 	
 <audio id="player_element" src="" onended="Next_Item()" ontimeupdate="Progressbar()" onprogress="Buffer_Progressbar()"  preload="auto" ></audio>
 	
-<div id="footer_player_container" onclick="">
+<div id="footer_player_container" onclick="Nothing()">
 	<div id="footer_player">
 		<div id="now_playing_container" style="width:100%; overflow-x:hidden; ">
 			<div id="now_playing" style="color:#ffffff; font-family:Arial; line-height:20px; ">
@@ -269,6 +269,13 @@ Play_Pause();
 
 
 //act_item.src=document.getElementById("0").getAttribute("sid");  ///getAttribute <<--
+
+function Nothing()
+{
+
+
+}
+
 
 function Play_This(t_id)
 {	
