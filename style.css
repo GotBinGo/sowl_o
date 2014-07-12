@@ -9,14 +9,15 @@ color:#111111;
 margin:5 0;
 padding:15 50; 
 font-family:Helvetica Neue, Arial; 
-display:block  
+display:block;
 }
 .List_Item:hover
 {
 background-color:#aaaaaa;
 cursor:pointer;
 }
-#header{
+#header
+{
 top:0px;
 left:0px;
 width:100%;
@@ -57,7 +58,6 @@ width:28px;
 height:27px;
 margin:10 0;
 }
-
 .player_btns
 {
 opacity:.8;
@@ -70,9 +70,6 @@ float:left;
 {
 opacity:.6;
 }
-
-
-
 #footer_player_container
 {
 background-color:#000000;
@@ -88,7 +85,6 @@ z-index:99;
 {
 	margin:5 auto 5  90; /*10 auto 5 120*/
 }
-
 .footer_control_btn
 {
 background-size:75px;/*100*/
@@ -99,22 +95,20 @@ width:75px;/*100*/
 height:75px;/*100*/
 z-index:99;
 }
-
 #footer_play_btn
 {
 background-image:url('content/BPlaybtn.png');
-
 }
 #footer_pause_btn
 {
 background-image:url('content/BPausebtn.png');
-
 }
-.footer_control_btn:hover{
-color:#ff00ff
+.footer_control_btn:hover
+{
+color:#ff00ff;
 }
-
-#progress{
+#progress
+{
 width:90%; 
 height:10px; 
 background-color:#222222;
@@ -122,23 +116,22 @@ margin:5 0; /*10 0*/
 overflow:hidden;
 border-radius:5px;
 }
-
-#progress_loaded{
+#progress_loaded
+{
 background-color:#555555;
 width:0%;
 height:5px;
 z-index:5;
 border-radius:0px 0px 5px 5px;
 }
-
-#progress_position{
+#progress_position
+{
 background-color:#cccccc;
 width:0%;
 height:5px;
 z-index:10;
 border-radius:5px 5px 0px 0px;
 }
-
 #now_playing
 {
 white-space:nowrap;

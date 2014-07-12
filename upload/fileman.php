@@ -1,6 +1,6 @@
-﻿
-<style>
-html{
+﻿<style>
+html
+{
 width:80%; 
 margin:auto;
 }
@@ -21,7 +21,7 @@ padding:5 20 5 20;
 }
 .dbutton:hover
 {
-background-color:#aaaaaa; 
+	background-color:#aaaaaa; 
 }
 </style>
 
@@ -31,13 +31,13 @@ include('../pass.php');
 $con=mysqli_connect("127.0.0.1","bcophm_music",$pass,"bcophm_music");
 if (mysqli_connect_errno()) 
 {
-  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+	echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
 else
 {
 
-$result = mysqli_query($con,"SELECT * FROM tracks");
-echo "<table border='1'>
+	$result = mysqli_query($con,"SELECT * FROM tracks");
+	echo "<table border='1'>
 <tr>
 <th>track_id</th>
 <th>file_name</th>
@@ -47,32 +47,24 @@ echo "<table border='1'>
 <th>owner</th>
 <th>type</th>
 </tr>";
-  while($row = mysqli_fetch_array($result)) {
-  echo "<tr>";
-  echo "<td>" . $row['track_id'] . "</td>";
-      if (file_exists("uploads/" .$row['file_name']))
-        echo "<td><a href='uploads/" . $row['file_name'] . "'>".$row['file_name']."</a></td>";
-	  else  
-  echo "<td>" . $row['file_name'] . "</td>";
-  echo "<td>" . $row['author_name'] . "</td>";
-  echo "<td>" . $row['track_name'] . "</td>";
-  echo "<td><a href='upper.php?track_id=" . $row['track_id'] ."'>Link text</a></td>";
-  echo "<td>" . $row['adder_id'] . "</td>";
-  echo "<td>" . $row['file_type'] . "</td>";
-  echo "</tr>";
-}
-echo "</table>";
-mysqli_close($con);
+	while($row = mysqli_fetch_array($result)) {
+		echo "<tr>";
+		echo "<td>" . $row['track_id'] . "</td>";
+		if (file_exists("uploads/" .$row['file_name']))
+		echo "<td><a href='uploads/" . $row['file_name'] . "'>".$row['file_name']."</a></td>";
+		else  
+		echo "<td>" . $row['file_name'] . "</td>";
+		echo "<td>" . $row['author_name'] . "</td>";
+		echo "<td>" . $row['track_name'] . "</td>";
+		echo "<td><a href='upper.php?track_id=" . $row['track_id'] ."'>Link text</a></td>";
+		echo "<td>" . $row['adder_id'] . "</td>";
+		echo "<td>" . $row['file_type'] . "</td>";
+		echo "</tr>";
+	}
+	echo "</table>";
+	mysqli_close($con);
 }
 ?>
-<<<<<<< HEAD
-<div style="width:200px; height:30px; background-color:#555555 color:#550066" onclick="location.href='adder.html'">
-�j sz�m
-=======
-
-
-
 <div align="center" style="width:150px" class="dbutton" onclick="location.href='adder.html'">
- + Új szám
->>>>>>> origin/Henczi
++ Új szám
 </div>
