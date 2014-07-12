@@ -2,10 +2,22 @@
 
 <head>
 
+
 	<title>music player</title>
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; mininum-scale=0.5; maximum-scale=1.0; user-scalable=no;" />
-
-
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	
+<script>
+function loadXMLDoc()
+{
+    $.ajax({url:"search.php",
+	data: {term: document.getElementById('term').value},
+	async:false,	
+	success:function(result){
+      document.getElementById("Track_List").innerHTML = result;
+    }});
+}
+</script>
 <style>
 
 div 
@@ -33,7 +45,7 @@ width:100%;
 }
 #prev_btn
 {
-background-image:url('SoundOwl_files/buttons.png');
+background-image:url('content/buttons.png');
 background-size:116px;
 background-position:0px, 0;
 width:28px;
@@ -42,7 +54,7 @@ margin:10 0;
 }
 #play_btn
 {
-background-image:url('SoundOwl_files/buttons.png');
+background-image:url('content/buttons.png');
 background-size:175px;
 background-position:87px, 0;
 width:42px;
@@ -51,7 +63,7 @@ margin: 3;
 }
 #pause_btn
 {
-background-image:url('SoundOwl_files/buttons.png');
+background-image:url('content/buttons.png');
 background-size:175px;
 background-position:43.5px, 0;
 width:42px;
@@ -60,7 +72,7 @@ margin: 3;
 }
 #next_btn
 {
-background-image:url('SoundOwl_files/buttons.png');
+background-image:url('content/buttons.png');
 background-size:116px;
 background-position:-29px, 0;
 width:28px;
@@ -91,18 +103,12 @@ bottom:0px;
 left:0px;
 float:left;
 width:100%;
-<<<<<<< HEAD
-height:65px;
-z-index:99;
-
-=======
 height:50px;/*65*/
 z-index:99;
->>>>>>> origin/patch-8
 }
 #footer_player
 {
-	margin:5 auto 5  120; /*10 auto 5 120*/
+	margin:5 auto 5  90; /*10 auto 5 120*/
 }
 
 .footer_control_btn
@@ -118,12 +124,12 @@ z-index:99;
 
 #footer_play_btn
 {
-background-image:url('SoundOwl_files/BPlaybtn.png');
+background-image:url('content/BPlaybtn.png');
 
 }
 #footer_pause_btn
 {
-background-image:url('SoundOwl_files/BPausebtn.png');
+background-image:url('content/BPausebtn.png');
 
 }
 .footer_control_btn:hover{
@@ -136,7 +142,7 @@ height:10px;
 background-color:#222222;
 margin:5 0; /*10 0*/
 overflow:hidden;
-border-radius:5;
+border-radius:5px;
 }
 
 #progress_loaded{
@@ -144,7 +150,7 @@ background-color:#555555;
 width:0%;
 height:5px;
 z-index:5;
-border-radius:0 0 5 5
+border-radius:0px 0px 5px 5px;
 }
 
 #progress_position{
@@ -152,7 +158,7 @@ background-color:#cccccc;
 width:0%;
 height:5px;
 z-index:10;
-border-radius:5 5 0 0;
+border-radius:5px 5px 0px 0px;
 }
 
 #now_playing
@@ -160,9 +166,7 @@ border-radius:5 5 0 0;
 white-space:nowrap;
 }
 
-
 </style>
-
 
 </head>
 
@@ -174,6 +178,8 @@ white-space:nowrap;
 		<td width="150">
 			<div style="  color:#f0f0f0;  padding:10px 0px; font-size:24px; font-family:Helvetica Neue, Arial;  ">
 				music player
+				<input type="text" id="term" name="term" value="">
+				<button type="button" id="upbut" onclick="loadXMLDoc()"> Change Content</button>
 			</div>
 		</td>				
 		<td>		
@@ -227,7 +233,7 @@ $count = 0;
 	
 <audio id="player_element" src="" onended="Next_Item()" ontimeupdate="Progressbar()" onprogress="Buffer_Progressbar()"  preload="auto" ></audio>
 	
-<div id="footer_player_container">
+<div id="footer_player_container" onclick="Nothing()">
 	<div id="footer_player">
 		<div id="now_playing_container" style="width:100%; overflow-x:hidden; ">
 			<div id="now_playing" style="color:#ffffff; font-family:Arial; line-height:20px; ">
@@ -278,6 +284,13 @@ Play_Pause();
 
 
 //act_item.src=document.getElementById("0").getAttribute("sid");  ///getAttribute <<--
+
+function Nothing()
+{
+
+
+}
+
 
 function Play_This(t_id)
 {	
@@ -373,6 +386,7 @@ document.onkeydown = function(e)
 	{
 		bill = e.which;
 	}
+	
 	if(bill==32)
 	{
 		Play_Pause();
