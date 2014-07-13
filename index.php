@@ -16,4 +16,4 @@ $result = ob_get_clean();
 $smarty->assign('tracks', $result);
 
 // display it
-$smarty->display('tpl/index.tpl');
+$smarty->display('tpl/index.html');
