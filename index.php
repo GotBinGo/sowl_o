@@ -1,19 +1,10 @@
 <?php
-include('libs/Smarty.class.php');
-
-// create object
+require_once('libs/Smarty.class.php');
 $smarty = new Smarty;
 
-// assign some content. This would typically come from
-// a database or other source, but we'll use static
-// values for the purpose of this example.
-
-ob_start(); // begin collecting output
-
+ob_start();
 include 'search.php';
-
 $result = ob_get_clean();
-$smarty->assign('tracks', $result);
 
-// display it
+$smarty->assign('tracks', $result);
 $smarty->display('tpl/index.html');
