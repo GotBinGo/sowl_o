@@ -63,7 +63,7 @@
             }
             else
             {
-            	$result = mysqli_query($con,"SELECT * FROM tracks WHERE adder_id=0 AND (file_type='audio/mpeg' OR file_type='audio/mp3')");
+            	$result = mysqli_query($con,"SELECT * FROM tracks WHERE user_id=0 AND (file_type='audio/mpeg' OR file_type='audio/mp3')");
             	mysqli_close($con);
             	$count = 0;
             	while($row = mysqli_fetch_array($result)) {
@@ -109,6 +109,10 @@
          {
          	document.getElementById("now_playing_container").style["overflow-x"]="scroll";
          }
+		 else
+		 {
+			document.write('<link rel="stylesheet" type="text/css" href="pc_style.css">');		 
+		 }
       </script>
       <script>
          var Dir="./upload/uploads/"

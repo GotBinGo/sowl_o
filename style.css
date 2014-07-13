@@ -2,6 +2,7 @@ div
 {
 display:block;
 }
+
 .List_Item
 {
 background-color:#eeeeee;
@@ -11,11 +12,12 @@ padding:15 50;
 font-family:Helvetica Neue, Arial; 
 display:block;
 }
+/*
 .List_Item:hover
 {
 background-color:#aaaaaa;
 cursor:pointer;
-}
+}*/
 #header
 {
 top:0px;
