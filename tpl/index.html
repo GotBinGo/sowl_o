@@ -26,6 +26,53 @@
          xmlhttp.open("GET",geturl,true);
          xmlhttp.send();
          }
+		 		
+		function login(term)
+         {
+         var geturl="login.php";
+         var xmlhttp;
+         if (window.XMLHttpRequest)
+           {// code for IE7+, Firefox, Chrome, Opera, Safari
+           xmlhttp=new XMLHttpRequest();
+           }
+         else
+           {// code for IE6, IE5
+           xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+           }
+         xmlhttp.onreadystatechange=function()
+           {
+           if (xmlhttp.readyState==4 && xmlhttp.status==200)
+             {
+             document.getElementById("Track_List").innerHTML=xmlhttp.responseText;
+             }
+           }
+         xmlhttp.open("GET",geturl,true);
+         xmlhttp.send();
+         }
+		 
+		 function logout(term)
+         {
+         var geturl="logout.php";
+         var xmlhttp;
+         if (window.XMLHttpRequest)
+           {// code for IE7+, Firefox, Chrome, Opera, Safari
+           xmlhttp=new XMLHttpRequest();
+           }
+         else
+           {// code for IE6, IE5
+           xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+           }
+         xmlhttp.onreadystatechange=function()
+           {
+           if (xmlhttp.readyState==4 && xmlhttp.status==200)
+             {
+            // document.getElementById("Track_List").innerHTML=xmlhttp.responseText;
+			history.go(0);
+             }
+           }
+         xmlhttp.open("GET",geturl,true);
+         xmlhttp.send();
+         }
 		 {/literal}	  
       </script>
       <link rel="stylesheet" type="text/css" href="style.css">
@@ -36,12 +83,22 @@
             <tr style="width:100%">
                <td width="150">
                   <div style="  color:#f0f0f0;  padding:10px 0px; font-size:24px; font-family:Helvetica Neue, Arial;  ">
-                     music player
+					{if $username eq ''}
+						
+					{else}
+						{$username}
+					{/if}
+
 					</div>
                </td>
                <td width="70" height="45" style="padding:0px; margin:0px; ">
                   <div style="  color:#f0f0f0;  width:100%; height:100%; margin:0px; padding:10px 0px; float:left; display:block; position:relative; vertical-align:middle; ">
                     <input type="text" id="term" name="term" value="" style="border-radius:5px; height:25px; background-color:#bbbbbb; border:none;">
+					{if $username eq ''}
+					<button type="button" id="login" onclick="login()"> login</button>
+					{else}
+					<button type="button" id="logout" onclick="logout()"> logout</button>
+					{/if}
 					<script>
 					{literal}	  
 					document.getElementById("term").addEventListener('keydown',function(e)
