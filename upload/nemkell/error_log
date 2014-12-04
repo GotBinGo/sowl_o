@@ -1,0 +1,6 @@
+[06-Oct-2014 17:47:01 Europe/Budapest] PHP Warning:  include(../conn.php): failed to open stream: No such file or directory in /home/bcophm/public_html/sowl/upload/nemkell/upload_file.php on line 2
+[06-Oct-2014 17:47:01 Europe/Budapest] PHP Warning:  include(): Failed opening '../conn.php' for inclusion (include_path='.:/usr/lib/php:/usr/local/lib/php') in /home/bcophm/public_html/sowl/upload/nemkell/upload_file.php on line 2
+[06-Oct-2014 17:47:01 Europe/Budapest] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/bcophm/public_html/sowl/upload/nemkell/upload_file.php on line 3
+[06-Oct-2014 17:47:01 Europe/Budapest] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, null given in /home/bcophm/public_html/sowl/upload/nemkell/upload_file.php on line 4
+[06-Oct-2014 17:47:01 Europe/Budapest] PHP Warning:  mysqli_query() expects parameter 1 to be mysqli, null given in /home/bcophm/public_html/sowl/upload/nemkell/upload_file.php on line 7
+[06-Oct-2014 17:47:01 Europe/Budapest] PHP Warning:  mysqli_error() expects parameter 1 to be mysqli, null given in /home/bcophm/public_html/sowl/upload/nemkell/upload_file.php on line 8

@@ -1,0 +1,11 @@
+<div type='{$type}' count="{$count}"class='List_Item' id="{$track_id}" sid="{$file_name}" onclick='Item_Click(this)'>{$author_name} - {$track_name}
+{if $playlists != ''}
+<select onchange="playlist_add(this)">
+  <option value="nono">Add</option>  
+  {foreach $playlists as $name}
+	<option value="{$name[0]}">{$name[1]}</option>
+  {/foreach}  
+</select> 
+{/if}
+<a href="upload/down.php?fn={$file_name}&n={$author_name} - {$track_name}" download>download</a>
+</div>

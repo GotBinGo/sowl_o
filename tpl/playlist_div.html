@@ -1,2 +1,16 @@
-<div class='List_Item' id="{$count}" sid="{$file_name}" onclick='Play_This(id)'>
-{$author_name} - {$track_name}</div>
+<div type='{$type}' count="{$count}" class='List_Item' id="{$track_id}" sid="{$file_name}" title="{$author_name} - {$track_name}"  onclick='Item_Click(this)'>
+	<div class="title">
+		{$author_name} - {$track_name}
+	</div>
+	<div class="list-item-contols">
+		<a class="download_btn" onclick="event.stopPropagation()" href="upload/down.php?fn={$file_name}&n={$author_name} - {$track_name}" download></a>
+		{if $playlists != ''}
+		<select onchange="playlistAdd(this)" onclick="event.stopPropagation()" >
+		  <option value="nono">+</option>  
+		  {foreach $playlists as $name}
+			<option value="{$name[0]}">{$name[1]}</option>
+		  {/foreach}  
+		</select> 
+		{/if}
+	</div>
+</div>

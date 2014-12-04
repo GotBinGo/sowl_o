@@ -1,0 +1,16 @@
+<div type='{$type}' id='{$id}' name="{$name}" class='List_Item' onclick='Item_Click(this)'>
+	<div class="title">
+		<img src='{$avatar}' height='42' width='42'> 
+		{$name2} 
+	</div>	
+	<label style="float:right; padding:15px;" >  
+		{if $pub == '0'}
+			private
+			<a href="http://bordak.eu/sowl/public_playlist.php?id={$id}&public=1">public</a>
+		{/if}
+		{if $pub == '1'}
+			<a href="http://bordak.eu/sowl/public_playlist.php?id={$id}&public=0">private</a>
+			public
+		{/if}
+	</label> 
+</div>

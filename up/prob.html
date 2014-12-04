@@ -1,0 +1,71 @@
+<div id="drop" style="width:200px;height:200px;background-color:#ff0000;"></div>
+<script>
+var holder= document.querySelector("#drop");
+
+holder.ondragover = function () { return false; };
+holder.ondragend = function () {  return false; };
+holder.ondrop = function (e) {
+	e.preventDefault();
+	
+	var name= e.dataTransfer.files[0].name;
+	var reader = new FileReader();
+		reader.onload = function (event) {
+			//var xaxy = b64toBlob(btoa(event.target.result));
+			/*var breader = new FileReader();
+			breader.onload = function (event) {
+				console.log("data:text/html;base64,"+btoa(event.target.result));
+				
+			};
+			breader.readAsBinaryString(xaxy);*/
+			 var formData =  new FormData() ;
+					formData.append("name",name);
+					formData.append("file",b64toBlob(btoa(event.target.result)));
+				//previewfile(files[0]);    
+
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState == 4) {
+						console.log(xhr.responseText);
+						
+					}
+				}
+				
+				xhr.open('POST', 'http://bordak.eu/sowl/up/upload00.php');
+				xhr.onload = function() {
+				}
+				xhr.upload.onprogress = function (event) {
+					
+				}
+				xhr.send(formData);
+			
+			
+			
+		};
+		reader.readAsBinaryString(e.dataTransfer.files[0]);
+		
+			
+}
+function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
+</script>

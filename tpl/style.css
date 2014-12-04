@@ -1,0 +1,352 @@
+﻿body{
+overflow-y:scroll;
+}
+div {
+display:block;
+}
+#search_box.inactive{
+	width:0px;
+	padding:0px;
+}
+#search_box.active{	
+	padding:0px 10px;
+}
+.List_Item{
+margin:5px 0px ;
+font-family:Helvetica Neue, Arial; 
+display:block;
+position:relative;/**/
+}
+.List_Item .title{
+padding:15px 5px 15px 25px ; 
+display:inline-block;
+}
+.List_Item[type=track] .list-item-contols{
+z-index:5;/**/
+position:absolute;
+top:10px;
+right:5px;
+float:right;
+height:inherit;
+}
+.List_Item[type=track] .download_btn{
+float:right;
+}
+.download_btn{
+width:30px;
+height:30px;
+background-image:url("content/download_icon.svg");
+background-repeat:no-repeat;
+background-size:30px;
+display:inline-block;
+}
+.List_Item[type=track] select{
+background-color:#ffffff;
+float:right;
+width:40px;
+height:30px;
+margin-right:5px;
+}
+
+
+#header{
+top:0px;
+left:0px;
+width:100%;
+}
+#fejlec{
+margin:auto;
+height:40px;
+border:none;
+}
+#fejlec_cim{ 
+margin-top:8px; 
+font-size:24px; 
+font-family:"Helvetica Neue", Arial;   
+}
+#search_box{
+border-radius:0px; 
+border:none;
+box-sizing:border-box;
+}
+#playlist_container{
+}
+#now_playing{
+font-family:Arial;
+white-space:nowrap;
+}
+#song_duration, #song_current_time{
+width:40px;
+vertical-align:bottom;
+padding-bottom:8px;
+text-align:center;
+font-family:"Helvetica Neue", Arial; 
+font-size:12px; 
+}
+#footer_player_container{
+position:fixed;
+bottom:0px;
+left:0px;
+float:left;
+width:100%;
+height:50px;/*65*/
+z-index:99;
+}
+
+/*Toltocsik*/
+#progress{
+width:100%; 
+height:10px; 
+margin:5px 0px; /*10 0*/
+overflow:hidden;
+border-radius:5px;
+}
+#progress_loaded{
+width:0%;
+height:10px;
+z-index:5;
+/*border-radius:5px;*/
+}
+#progress_position{
+width:0%;
+height:10px;
+z-index:10;
+/*border-radius:5px ;*/
+}
+
+/*Gombok*/
+#footer_pause_btn, #footer_play_btn{
+height:100%;
+background-size:50px;
+border-radius:25px;
+background-repeat:none;
+}
+#footer_play_btn{
+background-image:url('content/playbtn_icon.svg');
+}
+#footer_pause_btn{
+background-image:url('content/pausebtn_icon.svg');
+}
+#search_button{
+background-image:url('content/search_icon.svg');
+background-repeat:no-repeat;
+background-size:40px;
+}
+#login_button, #logout_button{
+background-image:url('content/key_icon.svg');
+background-repeat:no-repeat;
+background-size:40px;
+}
+#profil_button{
+background-image:url('content/profil_icon.svg');
+background-repeat:no-repeat;
+background-size:40px;
+}
+#upload_button{
+background-image:url('content/upload_icon.svg');
+background-repeat:no-repeat;
+background-size:40px;
+}
+#playlist_button{
+background-image:url('content/playlist_icon.svg');
+background-repeat:no-repeat;
+background-size:50px;
+}
+
+/*Login*/
+#login_box{
+background-color:#006680;
+padding:10px;	
+}
+#login_box form{
+width:100%;
+margin:0;
+}
+#login_box input{
+width:inherit;
+height:35px;
+margin:5px 0px;
+padding:10px;
+border:0px;
+box-sizing:border-box;
+}
+#login_box input[type=submit]{
+width:100%; 
+border-radius:0px; 
+border:0;
+font-weight:bold;
+color:#ffffff;
+background-color:#0088aa;
+}
+
+/*Login end*/
+
+/*Loading*/
+#loading_bar{
+position:fixed; 
+top:0px;
+left:0px;
+display:none; 
+width:100%; 
+height:5px; 
+padding:0px; 
+overflow:hidden;
+}
+#loading_bar div {
+  width:5px;
+  height: 5px;
+  position: absolute;
+  background-color: #00b5e3;
+  top: 0;
+}
+
+#loading_bar div:nth-child(1) {
+  -webkit-animation: loading_animation 2.5s infinite cubic-bezier(0.2, 0.64, 0.81, 0.23);
+          animation: loading_animation 2.5s infinite cubic-bezier(0.2, 0.64, 0.81, 0.23);
+}
+
+#loading_bar div:nth-child(2) {
+  -webkit-animation: loading_animation 2.5s 100ms infinite cubic-bezier(0.2, 0.64, 0.81, 0.23);
+          animation: loading_animation 2.5s 100ms infinite cubic-bezier(0.2, 0.64, 0.81, 0.23);
+}
+
+#loading_bar div:nth-child(3) {
+  -webkit-animation: loading_animation 2.5s 200ms infinite cubic-bezier(0.2, 0.64, 0.81, 0.23);
+          animation: loading_animation 2.5s 200ms infinite cubic-bezier(0.2, 0.64, 0.81, 0.23);
+}
+
+#loading_bar div:nth-child(4) {
+  -webkit-animation: loading_animation 2.5s 300ms infinite cubic-bezier(0.2, 0.64, 0.81, 0.23);
+          animation: loading_animation 2.5s 300ms infinite cubic-bezier(0.2, 0.64, 0.81, 0.23);
+}
+
+@-webkit-keyframes loading_animation {
+  0% {
+    left: 0%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes loading_animation {
+  0% {
+    left: 0%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+/*Loading - End*/
+
+
+/*SZINEK*/
+.List_Item{
+background-color:#afdde9;
+}
+#playlist_button,#footer_play_btn,#footer_pause_btn,#search_box,#progress_position{
+background-color:#00b5e3;
+}
+#progress_loaded{
+background-color:#0088aa;
+}
+#progress{
+background-color:#004455
+}
+#footer_player_container, #header{
+background-color:#006680;
+}
+#playlist_container{
+background-color:#37abc8;
+}
+.List_Item{
+color:#004455;
+}
+#fejlec_cim{
+color:#00b5e3;
+}
+#now_playing, #search_box, #song_duration, #song_current_time{
+color:#ffffff;
+}
+#playlist_container{
+color:#ffffff;
+}
+
+
+
+@media all and (max-width: 400px)
+{
+	#song_duration, #song_current_time{
+	display:none !important;
+	}
+}
+
+@media all and (max-width: 700px)
+{
+	#search_box.active{	
+		width:100%;			
+	}
+	#fejlec_cim{
+	 padding-left:10px;
+	}
+	/*Login*/
+	#login_box{	
+	width:inherit;
+	}
+	/*Login end*/
+}
+@media all and (min-width: 701px)
+{
+	#search_box.active{	
+		width:300px;
+	}
+	.List_Item:hover{
+	background-color:#87cdde;
+	cursor:pointer;
+	}
+	#fejlec{
+	width:90%; 
+	}
+	#fejlec_cim{
+	 font-size:34px;
+	}
+	#search_box	{
+	transition:width .2s;
+	}
+	
+	/*Gombok*/
+	#search_button:hover ,#search_button:focus{
+	background-color:#0088aa;
+	}
+	#login_button:hover ,#login_button:focus{
+	background-color:rgba(0,255,0,.3);
+	}
+	#logout_button:hover ,#logout_button:focus{
+	background-color:rgba(255,0,0,.3);
+	}
+	#profil_button:hover ,#profil_button:focus{
+	background-color:rgba(0,0,255,.3);
+	}
+	#upload_button:hover ,#upload_button:focus{
+	background-color:rgba(0,0,255,.3);
+	}
+	#playlist_button:hover ,#playlist_button:focus,
+	#footer_pause_btn:hover,#footer_pause_btn:focus,
+	#footer_play_btn:hover,#footer_play_btn:focus{
+	background-color:#0088aa;
+	}
+	/*Login*/
+	#login_box{
+	z-index:9;
+	position:absolute;
+	top:45px;
+	right:5%;
+	width:300px;	
+	box-shadow: 5px 5px 10px -5px rgba(0,0,0,0.5),-5px 5px 10px -5px rgba(0,0,0,0.5);
+	}
+	#login_box input[type=submit]:hover{
+	background-color:#006680;
+	}
+	/*Login end*/
+		
+}

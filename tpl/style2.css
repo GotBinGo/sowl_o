@@ -1,0 +1,215 @@
+﻿body{
+overflow-y:scroll;
+}
+div 
+{
+display:block;
+}
+.inactive input
+{
+	width:0px;
+	padding:0px;
+}
+.active input 
+{	
+	padding:0px 10px;
+}
+
+.List_Item
+{
+margin:5px 0px;
+padding:15px 50px; 
+font-family:Helvetica Neue, Arial; 
+display:block;
+}
+
+
+#header
+{
+top:0px;
+left:0px;
+width:100%;
+}
+#fejlec{
+margin:auto;
+height:40px;
+border:none;
+}
+#fejlec_cim{ 
+margin-top:8px; 
+font-size:24px; 
+font-family:"Helvetica Neue", Arial;   
+}
+#search_box
+{
+border-radius:0px; 
+border:none;
+box-sizing:border-box;
+}
+#playlist_container{
+}
+#now_playing{
+font-family:Arial;
+white-space:nowrap;
+}
+#footer_player_container
+{
+position:fixed;
+bottom:0px;
+left:0px;
+float:left;
+width:100%;
+height:50px;/*65*/
+z-index:99;
+}
+
+/*Toltocsik*/
+#progress
+{
+width:100%; 
+height:10px; 
+margin:5px 0px; /*10 0*/
+overflow:hidden;
+border-radius:5px;
+}
+#progress_loaded
+{
+width:0%;
+height:10px;
+z-index:5;
+/*border-radius:5px;*/
+}
+#progress_position
+{
+width:0%;
+height:10px;
+z-index:10;
+/*border-radius:5px ;*/
+}
+
+/*Gombok*/
+#footer_pause_btn, #footer_play_btn
+{
+height:100%;
+background-size:50px;
+border-radius:25px;
+background-repeat:none;
+}
+#footer_play_btn
+{
+background-image:url('content/playbtn_icon.svg');
+}
+#footer_pause_btn
+{
+background-image:url('content/pausebtn_icon.svg');
+}
+#search_button{
+background-image:url('content/search_icon.svg');
+background-repeat:no-repeat;
+background-size:40px;
+}
+#login_button, #logout_button{
+background-image:url('content/key_icon.svg');
+background-repeat:no-repeat;
+background-size:40px;
+}
+#profil_button{
+background-image:url('content/profil_icon.svg');
+background-repeat:no-repeat;
+background-size:40px;
+}
+#playlist_button{
+background-image:url('content/playlist_icon.svg');
+background-repeat:no-repeat;
+background-size:50px;
+}
+
+
+/*SZINEK*/
+.List_Item{
+background-color:#eeeeee;
+}
+#playlist_button,#footer_play_btn,#footer_pause_btn,#progress_position{
+background-color:#ff0000;
+}
+#progress_loaded{
+background-color:#ff8080;
+}
+#progress,#search_box{
+background-color:#222222;
+}
+#footer_player_container{
+background-color:#000000;
+}
+#playlist_container{
+background-color:#000000;
+}
+.List_Item{
+color:#111111;
+}
+#fejlec_cim{
+color:#ff0000;
+}
+#now_playing, #search_box{
+color:#ffffff;
+}
+#playlist_container{
+color:#ffffff;
+}
+
+
+
+
+
+@media all and (max-width: 700px)
+{
+
+	.active input 
+	{	
+		width:100%;			
+	}
+	#fejlec_cim{
+	 padding-left:10px;
+	}
+}
+@media all and (min-width: 701px)
+{
+	.active input 
+	{	
+		width:300px;
+	}
+	.List_Item:hover
+	{
+	background-color:#ff0000;
+	cursor:pointer;
+	}
+	#fejlec{
+	width:90%; 
+	}
+	#fejlec_cim{
+	 font-size:34px;
+	}
+	#search_box	{
+	transition:width .2s;
+	}
+	
+	/*Gombok*/
+	#search_button:hover ,:focus{
+	background-color:#222222;
+	}
+	#login_button:hover ,:focus{
+	background-color:rgba(0,255,0,.3);
+	}
+	#logout_button:hover ,:focus{
+	background-color:rgba(255,0,0,.3);
+	}
+	#profil_button:hover ,:focus{
+	background-color:rgba(0,0,255,.3);
+	}
+	#playlist_button:hover ,:focus,
+	#footer_pause_btn:hover,:focus,
+	#footer_play_btn:hover,:focus{
+	background-color:#222222;
+	}
+		
+}
