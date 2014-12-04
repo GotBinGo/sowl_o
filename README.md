@@ -1,3 +1,3 @@
-requires
-facebook php - api ./Facebook/
+requires  
+facebook php - api ./Facebook/  
 smarty - ./libs/
