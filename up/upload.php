@@ -34,7 +34,7 @@ if(count($_FILES > 0))
 				 */
 				$ti = rawurlencode($ti);
 				$au = rawurlencode($au);
-				$url = "http://bordak.eu/sowl/upload/insert.php?author=" . $au ."&title=" . $ti;
+				$url = "../upload/insert.php?author=" . $au ."&title=" . $ti;
 				//    $url = rawurlencode(utf8_encode($url));
 				/*$parts = parse_url($url);
 				$path_parts = array_map('rawurldecode', explode('/', $parts['path']));

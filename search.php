@@ -1,5 +1,6 @@
 <?php	
 require_once('libs/Smarty.class.php');
+require_once('conn.php');
 $smarty = new Smarty;
 
 $term = mysql_escape_string($_GET['term']);
@@ -8,7 +9,6 @@ $num = mysql_escape_string($_GET['num']);
 $limit = "";
 if($num > 0)
 	$limit = "LIMIT ".$num;
-include("conn.php");
 
 
 

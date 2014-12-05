@@ -30,23 +30,6 @@ if(isset($_SESSION['views']))
 	{
 		echo "playlist not yours";
 	}
-	//echo $row['id'];
-
-	//echo $track_id . " " . $list_id;
-
-	/*
-	if(strlen($author) > 1 && strlen($title) > 1 )
-	{
-		$n =  $session[0];
-		$sql="INSERT INTO tracks (file_name, author_name, track_name, user_id) VALUES ('$filename', '$author', '$title', '$n')";
-		if (!mysqli_query($conn,$sql)) {
-			die('Error: ' . mysqli_error($conn));
-		}
-		echo "1 record added";
-	}
-	else
-		echo "too short";
-	mysqli_close($conn);*/
 }
 else
 {

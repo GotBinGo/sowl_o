@@ -20,11 +20,6 @@ if(isset($_SESSION['views']))
 		$result = mysqli_query($conn,$sql);
 		$row = mysqli_fetch_array($result);
 
-		/*
-		echo "1 record added";		*/
-		//echo "<meta http-equiv='refresh' content='0; url=http://bordak.eu/sowl/upload/upper.php?track_id=".$row['id']."'/>";
-		/*echo "<a href='http://bordak.eu/sowl/upload/upper.php?track_id=".$row['id']."'>ide</a>";
-		echo "ment";*/
 		echo $filename;
 	}
 	else

@@ -26,6 +26,28 @@ window.onpopstate = function(event) {
 		hidePlaylist();
 }
 
+window.onload = function(){
+	var newHash=window.location.hash.substring(1);
+	if(newHash){
+		loadXMLDoc(newHash,
+				document.getElementById("content_main"),
+				function(){}, //eval(nextF),
+				false);
+		hidePlaylist();
+	}
+	else gohome();
+}
+window.onhashchange = function(){
+	var newHash=window.location.hash.substring(1);
+	if(newHash){
+		loadXMLDoc(newHash,
+				document.getElementById("content_main"),
+				function(){}, //eval(nextF),
+				false);
+		hidePlaylist();
+	}
+}
+
 function loadXMLDoc(location,to_container,next_function,logHistory){ //to_container -> hova(TAG) tölti be  next_function - a kovetkezo fuggveny	
 
 	logHistory = typeof logHistory !== 'undefined' ? logHistory : false;		
@@ -37,7 +59,7 @@ function loadXMLDoc(location,to_container,next_function,logHistory){ //to_contai
 
 	if(logHistory){
 		var stateObj = { getU: geturl, toC: to_container.id };	//, nextF: next_function.toString()
-		history.pushState(stateObj, "page 2", "?" +geturl); //A # utani reszt a php nem kapja meg
+		history.pushState(stateObj, "page 2", "#" +geturl); //A # utani reszt a php nem kapja meg
 	}
 
 	var xmlhttp;
@@ -148,8 +170,7 @@ if (navigator.userAgent.match(/Android/i) ||
 				<input id="login_username" type='text' name='username' placeholder="Username" maxlength='20' tabindex="1" autofocus />		
 				<input id="login_password" type='password' name='password' placeholder="Password" tabindex="1" />			
 				<input id="login_submit" type='submit' value='Login' style="" />
-			</form>		
-			<iframe src="test.php" width="200" height="50"></iframe>
+			</form>
 		</div>	
 		<!--Login box end-->
 		{/if}
@@ -173,7 +194,7 @@ if (navigator.userAgent.match(/Android/i) ||
 			</div>
 		</div>
 		<!--lejatszo  audio tag-->
-		<audio id="player_element" src="x.mp3" onended="nextItem()" ontimeupdate="playerTimeupdate()" onprogress="bufferProgressbar()"  preload="auto" ></audio>
+		<audio id="player_element" src onended="nextItem()" ontimeupdate="playerTimeupdate()" onprogress="bufferProgressbar()"  preload="auto" ></audio>
 		<!--lejatszo vezerlok-->
 		<div id="footer_player_container" onclick="Nothing()" style="display:none;" >
 			<div id="footer_player" style="display:table; table-layout:fixed; width:100%;">
@@ -220,14 +241,14 @@ document.getElementById("search_box").addEventListener('keyup',function(e){
 	{
 		bill = e.which;
 	}
-	if(bill==13){
-		//Kereses - Enter
-		loadXMLDoc("search.php?type=all&term="+document.getElementById("search_box").value,
-				document.getElementById("content_main"),
-				function(){},
-				true);
-		hidePlaylist();
-	}
+	//if(bill==13){
+	//Kereses - Enter
+	loadXMLDoc("search.php?type=all&term="+document.getElementById("search_box").value,
+			document.getElementById("content_main"),
+			function(){},
+			true);
+	hidePlaylist();
+	//}
 });
 {/literal}	  
 		</script>
@@ -295,25 +316,15 @@ function getUrlVariable(variableName){
 }
 {/literal}	  
 		</script>	
-	<script>
-{literal}
-//site-url betoltese
-var toload = '{/literal}{$toload}{literal}';
-loadXMLDoc(toload+"",
-		document.getElementById("content_main"),
-		function(){},
-		true);
-{/literal}
-	</script>
 
-					<script>
+	<script>
 {literal}	  
 //mobil ellenorzés
 if (mobile_device==1){	/*Ha mobil, mozgathato a lejatszo kiirasa*/
 	document.getElementById("now_playing_container").style["overflow-x"] = "scroll";
 }
 {/literal}	  
-					</script>
+	</script>
 					<script>
 {literal}	  
 var Dir = "./upload/uploads/";

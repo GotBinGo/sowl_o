@@ -13,12 +13,12 @@ div {
 }
 .List_Item{
 	margin:5px 0px ;
-	font-family:Helvetica Neue, Arial; 
+	font-family:Helvetica, Arial, sans-serif;
 	display:block;
 	position:relative;/**/
 }
 .List_Item .title{
-	padding:15px 5px 15px 25px ; 
+	padding:15px 5px 15px 25px ;
 	display:inline-block;
 }
 .List_Item[type=track] .list-item-contols{
@@ -59,13 +59,13 @@ div {
 	height:40px;
 	border:none;
 }
-#fejlec_cim{ 
-	margin-top:8px; 
-	font-size:24px; 
-	font-family:"Helvetica Neue", Arial;   
+#fejlec_cim{
+	margin-top:8px;
+	font-size:24px;
+	font-family:Helvetica, Arial, sans-serif;
 }
 #search_box{
-	border-radius:0px; 
+	border-radius:0px;
 	border:none;
 	box-sizing:border-box;
 }
@@ -80,8 +80,8 @@ div {
 	vertical-align:bottom;
 	padding-bottom:8px;
 	text-align:center;
-	font-family:"Helvetica Neue", Arial; 
-	font-size:12px; 
+	font-family:"Helvetica Neue", Arial;
+	font-size:12px;
 }
 #footer_player_container{
 	position:fixed;
@@ -95,8 +95,8 @@ div {
 
 /*Toltocsik*/
 #progress{
-	width:100%; 
-	height:10px; 
+	width:100%;
+	height:10px;
 	margin:5px 0px; /*10 0*/
 	overflow:hidden;
 	border-radius:5px;
@@ -171,8 +171,8 @@ div {
 	box-sizing:border-box;
 }
 #login_box input[type=submit]{
-	width:100%; 
-	border-radius:0px; 
+	width:100%;
+	border-radius:0px;
 	border:0;
 	font-weight:bold;
 	color:#ffffff;
@@ -183,13 +183,13 @@ div {
 
 /*Loading*/
 #loading_bar{
-	position:fixed; 
+	position:fixed;
 	top:0px;
 	left:0px;
-	display:none; 
-	width:100%; 
-	height:5px; 
-	padding:0px; 
+	display:none;
+	width:100%;
+	height:5px;
+	padding:0px;
 	overflow:hidden;
 }
 #loading_bar div {
@@ -305,7 +305,7 @@ div {
 		cursor:pointer;
 	}
 	#fejlec{
-		width:90%; 
+		width:90%;
 	}
 	#fejlec_cim{
 		font-size:34px;
