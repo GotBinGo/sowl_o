@@ -25,22 +25,22 @@ if(mysqli_num_rows($result) == 1)
 	$ki = $row['display_name'];
 	echo "$ki</br>";
 	$id = $row['id'];
-	
+
 	if(isset($_SESSION['views']) && $_SESSION['views'][0] == $user_id )
 	{
-			
+
 		echo "<input type='text' placeholder='Create new playlist' name='cPlaylist' onkeydown='event.stopPropagation(); if(event.keyCode==13){createPlaylist(this.value);}'>";
-		$result2 = mysqli_query($conn,"SELECT * FROM playlists WHERE user_id='$id'"); //belÈpve
+		$result2 = mysqli_query($conn,"SELECT * FROM playlists WHERE user_id='$id'"); //bel√©pve
 	}
 	else
 	{
-		$result2 = mysqli_query($conn,"SELECT * FROM playlists WHERE user_id='$id' AND public"); //csak a publikus list·k
+		$result2 = mysqli_query($conn,"SELECT * FROM playlists WHERE user_id='$id' AND public"); //csak a publikus list√°k
 	}
 	while($row = mysqli_fetch_array($result2))	
 	{
 		//$ki = $row['id'] ." ".$row['name'];
 		//echo "$ki</br>";	
-		
+
 		$smarty->assign('type', "list");
 		$smarty->assign('id', $row['id']);
 		$smarty->assign('name2', $row['name']);							
@@ -49,7 +49,7 @@ if(mysqli_num_rows($result) == 1)
 			$avatar = "upload/img/default_list.png";
 		else
 			$avatar = "upload/img/list/" . $avatar;			
-		
+
 		$smarty->assign('avatar', $avatar);
 		if($name == $_SESSION['views'][1])
 			$smarty->assign('pub',$row['public'] );
@@ -74,7 +74,7 @@ if(mysqli_num_rows($result) == 1)
 			$avatar = "upload/img/default_list.png";
 		else
 			$avatar = "upload/img/list/" . $avatar;			
-		
+
 		$smarty->assign('avatar', $avatar);
 		$smarty->display('tpl/list.html');
 	}

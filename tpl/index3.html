@@ -1,104 +1,104 @@
-<div id="cont" >{$tracks}
-</div>
-<audio id="player_element" src="" preload="auto" onended="play_ended()" ></audio>
-<button onclick="toggle(this)">play</button>
-<!--
-<button onclick="play()">play</button>
-<button onclick="pause()">pause</button>
--->
-<button onclick="next()">next</button>
-<button onclick="rep_togg(this)">0</button>
-
-<script> 
-function Item_Click(e) //tracks must be in a div
-{	
-	var sid_list = [];
-	for(var i = 0; i < e.parentNode.children.length; i++)
-	{
-		sid_list.push(e.parentNode.children[i].attributes.sid.value);
-	}
-	tracks = sid_list;
-	index = e.attributes.count.value;
-	next();
-}
-</script> 
-<script> //player
-var path = "http://bordak.eu/sowl/upload/uploads/"
-var player = document.getElementById("player_element");
-var tracks = [];
-var index = 0;
-var replay = 0;
-load_next()
-function toggle(e)
-{
-	if (player.paused)
-	{
-		play();		
-	}
-	else
-	{
-		pause();	
-	}
-}
-function play() 
-{
-	player.playbackRate=1;
-	player.play();
-	e.innerHTML = "pause";
-}
-function pause() 
-{
-	player.pause();
-	e.innerHTML = "play";
-}
-function load_next() 
-{
-	player.src = path + tracks[index] ;
-	if(tracks.length > index+1)
-	{
-		index++;
-	}
-	else
-	{
-		index = 0;		
-	}
-	player.load();
-}
-function next()
-{
-	load_next();
-	play();
-}
-function play_ended()
-{
-	if(replay == 2)
-	{
-		play();
-	}
-	else
-	{
-		if(replay == 0 && index == 0)
-		{
-			
-		}
-		else
-		{	
-			next();
-		}
-	}
-}
-function rep_togg(e)
-{	
-	if(replay < 2)
-	{
-		replay++;
-	}
-	else
-	{
-		replay = 0;
-	}
-	e.innerHTML = replay;
-	
-}
-
-</script>
+<div id="cont" >{$tracks}
+</div>
+	<audio id="player_element" src="" preload="auto" onended="play_ended()" ></audio>
+	<button onclick="toggle(this)">play</button>
+	<!--
+	 <button onclick="play()">play</button>
+	 <button onclick="pause()">pause</button>
+	-->
+	<button onclick="next()">next</button>
+	<button onclick="rep_togg(this)">0</button>
+
+	<script> 
+function Item_Click(e) //tracks must be in a div
+{	
+	var sid_list = [];
+	for(var i = 0; i < e.parentNode.children.length; i++)
+	{
+		sid_list.push(e.parentNode.children[i].attributes.sid.value);
+	}
+	tracks = sid_list;
+	index = e.attributes.count.value;
+	next();
+}
+	</script> 
+	<script> //player
+var path = "http://bordak.eu/sowl/upload/uploads/"
+var player = document.getElementById("player_element");
+var tracks = [];
+var index = 0;
+var replay = 0;
+	load_next()
+function toggle(e)
+{
+	if (player.paused)
+	{
+		play();		
+	}
+	else
+	{
+		pause();	
+	}
+}
+function play() 
+{
+	player.playbackRate=1;
+	player.play();
+	e.innerHTML = "pause";
+}
+function pause() 
+{
+	player.pause();
+	e.innerHTML = "play";
+}
+function load_next() 
+{
+	player.src = path + tracks[index] ;
+	if(tracks.length > index+1)
+	{
+		index++;
+	}
+	else
+	{
+		index = 0;		
+	}
+	player.load();
+}
+function next()
+{
+	load_next();
+	play();
+}
+function play_ended()
+{
+	if(replay == 2)
+	{
+		play();
+	}
+	else
+	{
+		if(replay == 0 && index == 0)
+		{
+
+		}
+		else
+		{	
+			next();
+		}
+	}
+}
+function rep_togg(e)
+{	
+	if(replay < 2)
+	{
+		replay++;
+	}
+	else
+	{
+		replay = 0;
+	}
+	e.innerHTML = replay;
+
+}
+
+	</script>

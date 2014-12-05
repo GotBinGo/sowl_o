@@ -15,7 +15,7 @@ if(mysqli_num_rows($result) == 1)
 		$_SESSION['views']=array($row[0],$row[1]);
 		echo "logged in";
 		echo "<meta http-equiv='refresh' content='0; url=http://bordak.eu/sowl'/>";
-		
+
 	}
 	else
 	{

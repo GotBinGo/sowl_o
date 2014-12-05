@@ -5,10 +5,10 @@ $smarty = new Smarty;
 session_start();
 if(isset($_SESSION['views']))
 {
-echo "already logged in";
+	echo "already logged in";
 }
 else
 {
-$smarty->display('tpl/login.html');
+	$smarty->display('tpl/login.html');
 }
 ?>

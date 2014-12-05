@@ -1,4 +1,4 @@
-	<?php	
+<?php	
 $id = mysql_escape_string($_GET['id']);
 include("conn.php");
 require_once('libs/Smarty.class.php');
@@ -70,7 +70,7 @@ if(mysqli_num_rows($result) == 1 || ($id == 0 && isset($_SESSION['views'])))
 			$smarty->assign('author_name', $row['author_name']);
 			$smarty->assign('track_name', $row['track_name']);
 			$smarty->assign('playlists', $playlists);			
-			
+
 			$smarty->display('tpl/playlist_div.html');
 			$count++;	
 		}

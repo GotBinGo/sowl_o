@@ -17,14 +17,16 @@ $result = ob_get_clean();
 session_start();
 if(isset($_SESSION['views']))
 {
-$session = $_SESSION['views'];
-$smarty->assign('username', $session[1]);
+	$session = $_SESSION['views'];
+	$smarty->assign('username', $session[1]);
 }
 else
 {
-$smarty->assign('username', "");
+	$smarty->assign('username', "");
 }
 
 $smarty->assign('tracks', $result);
 $smarty->assign('toload',$site);
 $smarty->display('tpl/indexx.html');
+
+?>

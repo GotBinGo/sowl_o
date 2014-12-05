@@ -19,7 +19,7 @@ if(isset($_SESSION['views']))
 		$sql="SELECT id FROM tracks WHERE file_name = '$filename'";
 		$result = mysqli_query($conn,$sql);
 		$row = mysqli_fetch_array($result);
-		
+
 		/*
 		echo "1 record added";		*/
 		//echo "<meta http-equiv='refresh' content='0; url=http://bordak.eu/sowl/upload/upper.php?track_id=".$row['id']."'/>";
@@ -33,7 +33,7 @@ if(isset($_SESSION['views']))
 }
 else
 {
-echo "not logged in";
+	echo "not logged in";
 }
 
 

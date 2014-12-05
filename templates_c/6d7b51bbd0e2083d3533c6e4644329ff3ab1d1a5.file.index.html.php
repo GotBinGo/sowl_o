@@ -1,23 +1,57 @@
-<!DOCTYPE html>
+<?php /* Smarty version Smarty-3.1.21-dev, created on 2014-12-04 17:15:46
+         compiled from "tpl/index.html" */ ?>
+<?php /*%%SmartyHeaderCode:45741780754808d4b076e86-90700669%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_valid = $_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    '6d7b51bbd0e2083d3533c6e4644329ff3ab1d1a5' => 
+    array (
+      0 => 'tpl/index.html',
+      1 => 1417712333,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '45741780754808d4b076e86-90700669',
+  'function' => 
+  array (
+  ),
+  'version' => 'Smarty-3.1.21-dev',
+  'unifunc' => 'content_54808d4b1f4a02_12623249',
+  'variables' => 
+  array (
+    'username' => 0,
+    'tracks' => 0,
+    'toload' => 0,
+  ),
+  'has_nocache_code' => false,
+),false); /*/%%SmartyHeaderCode%%*/?>
+<?php if ($_valid && !is_callable('content_54808d4b1f4a02_12623249')) {function content_54808d4b1f4a02_12623249($_smarty_tpl) {?><!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8">
 		<title>music player</title>
 		<meta name="viewport" content="width=device-width; initial-scale=1.0; mininum-scale=0.5; maximum-scale=1.0; user-scalable=no;" />
-		<script>
-{literal}	
+		<?php echo '<script'; ?>
+>
+	
 
 function gohome() {	
 	loadXMLDoc("search.php?type=track&term=",
 			document.getElementById("content_main"),
-			function(){},
+			function(){hidePlaylist();},
 			true);
 }
 window.onpopstate = function(event) {
-	loadXMLDoc(event.state.getU,
-			document.getElementById(event.state.toC),
-			function(){}, //eval(nextF),
-			false);
-	hidePlaylist();
+
+	if(!ishidden())
+	{
+		loadXMLDoc(event.state.getU,
+				document.getElementById(event.state.toC),
+				function(){}, //eval(nextF),
+				false);
+	}
+	else
+		hidePlaylist();
 }
 
 function loadXMLDoc(location,to_container,next_function,logHistory){ //to_container -> hova(TAG) tölti be  next_function - a kovetkezo fuggveny	
@@ -55,13 +89,42 @@ function loadXMLDoc(location,to_container,next_function,logHistory){ //to_contai
 	xmlhttp.send();	
 }
 
-{/literal}	  
-		</script>
+function createPlaylist(plName) {
+	var geturl="create_playlist.php?name="+plName; 
+	bgXHReq(geturl);	
+}
+function playlistAdd(list_id) {
+	var geturl="add_to_playlist.php?track_id=" + list_id.parentNode.parentNode.id + "&list_id=" + list_id.value; 
+	bgXHReq(geturl);	
+}
+function bgXHReq(geturl){	
+	document.getElementById("loading_bar").style["display"]="block"; //Loading bar megjeleintese
+	var xmlhttp;
+	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){		
+			document.getElementById("loading_bar").style["display"]="none";//Loading bar megjeleintese
+		}
+	}
+	xmlhttp.open("GET",geturl,true);
+	xmlhttp.send();
+}
+
+
+	  
+		<?php echo '</script'; ?>
+>
 		<link rel="stylesheet" type="text/css" href="tpl/style.css">
 	</head>
 	<body style="margin:0px; padding:0px; background-color:#d4eeee;">
-		<script>
-{literal}
+		<?php echo '<script'; ?>
+>
+
 var mobile_device=0;///0- nem mobil   1- mobil
 //mobil ellenorzés
 if (navigator.userAgent.match(/Android/i) ||
@@ -76,23 +139,31 @@ if (navigator.userAgent.match(/Android/i) ||
    ){
 	mobile_device=1;
 }		
-{/literal}	  
-		</script>
+	  
+		<?php echo '</script'; ?>
+>
 		<div id="header" style=" "  >
 			<div id="fejlec" style="">            
 				<div id="fejlec_cim"  style=" float:left;">
 					<label onclick="gohome()">music player</label>
 				</div>
 				<!--gombok-->
-				{if $username eq ''}
-				<div id="login_button" onclick="location.href='login.php'" style="float:right; width:40px; height:100%;">
-				</div>	
-				{else}
+				<?php if ($_smarty_tpl->tpl_vars['username']->value=='') {?>
+				<div id="login_button" onclick="loginClick()" style="float:right; width:40px; height:100%;">
+				</div>					
+				<?php } else { ?>
+				
 				<div id="logout_button" onclick="location.href='logout.php'" style="float:right;  width:40px; height:100%;">
+				</div>					
+				<div id="profil_button" onclick="loadXMLDoc('user.php',
+			    document.getElementById('content_main'),
+			    function(){hidePlaylist();},
+			    true);" style="float:right;  width:40px; height:100%;">
+				</div> 	
+				<div id="upload_button" onclick="uploadClick()" style="float:right;  width:40px; height:100%;">
 				</div>
-				<div id="profil_button" onclick="location.href='#'" style="float:right;  width:40px; height:100%;">
-				</div> 										
-				{/if}
+													
+				<?php }?>
 				<!--kereso-->
 
 				<div id="search_button" onclick="keresesClick()" style="float:right; width:40px; height:100%;">
@@ -101,6 +172,18 @@ if (navigator.userAgent.match(/Android/i) ||
 
 			</div>			 
 		</div>
+		<?php if ($_smarty_tpl->tpl_vars['username']->value=='') {?>
+		<!--Login box-->
+		<div id="login_box" style="display:none;">
+			<form name='login' action='login_process.php' method='post'>
+				<input id="login_username" type='text' name='username' placeholder="Username" maxlength='20' tabindex="1" autofocus />		
+				<input id="login_password" type='password' name='password' placeholder="Password" tabindex="1" />			
+				<input id="login_submit" type='submit' value='Login' style="" />
+			</form>		
+			<iframe src="test.php" width="200" height="50"></iframe>
+		</div>	
+		<!--Login box end-->
+		<?php }?>
 		<div style="width:90%; margin:auto; margin-bottom:80px; margin-top:20px;">
 			<!--lejatszo kontener-->
 			<div id="playlist_container" style="display:none; padding:10px;">
@@ -111,7 +194,8 @@ if (navigator.userAgent.match(/Android/i) ||
 					</div>
 				</div>
 				<div id="Track_List" >	  
-					<!--{$tracks}-->
+					<!--<?php echo $_smarty_tpl->tpl_vars['tracks']->value;?>
+-->
 				</div>
 			</div>
 			<!--tartalom kontener-->
@@ -121,7 +205,7 @@ if (navigator.userAgent.match(/Android/i) ||
 			</div>
 		</div>
 		<!--lejatszo  audio tag-->
-		<audio id="player_element" src="" onended="nextItem()" ontimeupdate="playerTimeupdate()" onprogress="bufferProgressbar()"  preload="auto" ></audio>
+		<audio id="player_element" src="x.mp3" onended="nextItem()" ontimeupdate="playerTimeupdate()" onprogress="bufferProgressbar()"  preload="auto" ></audio>
 		<!--lejatszo vezerlok-->
 		<div id="footer_player_container" onclick="Nothing()" style="display:none;" >
 			<div id="footer_player" style="display:table; table-layout:fixed; width:100%;">
@@ -150,13 +234,16 @@ if (navigator.userAgent.match(/Android/i) ||
 			</div>
 			</div>
 		</div>
-		<div id="loading_bar" style="display:none; position:fixed; top:0px; left:0px; width:100%; height:100%; padding:0px; background-color:rgba(0,0,0,.6);">
-			<div id="loading_content">
-			</div>
+		<div id="loading_bar" >
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
 		</div>
-		<script>
-{literal}	  
-document.getElementById("search_box").addEventListener('keydown',function(e){
+		<?php echo '<script'; ?>
+>
+	  
+document.getElementById("search_box").addEventListener('keyup',function(e){
 	e.stopPropagation();//nem kuldi tovabb az esemenytaz alattalevoknek
 	if(window.event) // IE
 	{
@@ -175,10 +262,19 @@ document.getElementById("search_box").addEventListener('keydown',function(e){
 		hidePlaylist();
 	}
 });
-{/literal}	  
-		</script>
-		<script>
-{literal}	  
+	  
+		<?php echo '</script'; ?>
+>
+		<?php echo '<script'; ?>
+>
+	
+function loginClick(){
+	document.querySelector('#login_box').style['display'] =	(document.querySelector('#login_box').style['display']=='block') ? 'none' : 'block';
+	document.querySelector('#login_box #login_username').focus();
+}
+function uploadClick(){
+	document.getElementById('content_main').innerHTML="<iframe src='./up' style='width:100%; height:600px; border:0px;'></iframe>";
+}  
 function keresesClick(){
 	//Kereso gomb - gombnyomás
 	var kereso_doboz=document.getElementById("search_box");
@@ -195,18 +291,23 @@ function Item_Click(e){
 		switch(e.getAttribute("type"))
 		{
 			case "track":
-				loadXMLDoc("search.php?type=track&term=" + getUrlVariable("term"),
-						document.getElementById("Track_List"),
-						function(){playAtThis(e.id);},
-						false);
+				/*loadXMLDoc("search.php?type=track&term=" + getUrlVariable("term"),
+				  document.getElementById("Track_List"),
+				  function(){playAtThis(e.id);},
+				  false);*/
 				//togglePlayPause();
+				document.getElementById("Track_List").innerHTML="";
+				var tracks = document.querySelectorAll("#content_main div[type=track]")
+					for(var i=0;i<tracks.length;i++){	
+						document.getElementById("Track_List").appendChild(tracks[i].cloneNode(true));
+					}
+				playAtThis2(e.getAttribute("count"));
 				break;
 			case "list":
 				loadXMLDoc("playlist.php?id=" + e.getAttribute("id"),
-						document.getElementById("Track_List"),
+						document.getElementById("content_main"),
 						function(){/*startPlaylist();*/},
-						false);
-				showPlaylist();
+						true);
 				break;
 			case "user":
 				loadXMLDoc("user.php?name=" + e.getAttribute("name"),
@@ -227,50 +328,36 @@ function getUrlVariable(variableName){
 		if(urlVariable[0]==variableName){return urlVariable[1];}	
 	}
 }
-{/literal}	  
-		</script>	
-	<script>
-{literal}
+	  
+		<?php echo '</script'; ?>
+>	
+	<?php echo '<script'; ?>
+>
+
 //site-url betoltese
-var toload = '{/literal}{$toload}{literal}';
+var toload = '<?php echo $_smarty_tpl->tpl_vars['toload']->value;?>
+';
 loadXMLDoc(toload+"",
 		document.getElementById("content_main"),
 		function(){},
-		true);	
-{/literal}
-	</script>
-	<script>
-{literal}
-function playlist_add(list_id) {
-	document.getElementById("loading_bar").style["display"]="block"; //Loading bar megjeleintese
-	var geturl="http://bordak.eu/sowl/add_to_playlist.php?track_id=" + list_id.parentNode.id + "&list_id=" + list_id.value;  
-	var xmlhttp;
-	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp=new XMLHttpRequest();
-	}
-	else{// code for IE6, IE5
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function(){
-		if (xmlhttp.readyState==4 && xmlhttp.status==200){		
-			document.getElementById("loading_bar").style["display"]="none";//Loading bar megjeleintese
-		}
-	}
-	xmlhttp.open("GET",geturl,true);
-	xmlhttp.send();
-}
-{/literal}	  
-	</script>	
-	<script>
-{literal}	  
+		true);
+
+	<?php echo '</script'; ?>
+>
+
+					<?php echo '<script'; ?>
+>
+	  
 //mobil ellenorzés
 if (mobile_device==1){	/*Ha mobil, mozgathato a lejatszo kiirasa*/
 	document.getElementById("now_playing_container").style["overflow-x"] = "scroll";
 }
-{/literal}	  
-	</script>
-	<script>
-{literal}	  
+	  
+					<?php echo '</script'; ?>
+>
+					<?php echo '<script'; ?>
+>
+	  
 var Dir = "./upload/uploads/";
 var player = document.getElementById("player_element");
 
@@ -286,6 +373,10 @@ function playThis(t){
 }
 function playAtThis(t_id){
 	next_i = document.getElementById("Track_List").querySelector("[id='"+t_id+"']");
+	playItem();
+}
+function playAtThis2(count){
+	next_i = document.getElementById("Track_List").querySelector("[count='"+count+"']");
 	playItem();
 }
 function startPlaylist(){
@@ -335,7 +426,8 @@ function playItem(){
 	player.src=Dir+""+next_i.getAttribute("sid");
 	player.load();
 	player.play();
-	document.getElementById("now_playing").innerHTML = next_i.innerHTML;
+	//document.getElementById("now_playing").innerHTML = next_i.innerHTML;
+	document.getElementById("now_playing").innerHTML = next_i.getAttribute('title');
 
 	act_i=next_i;  //Eddigi kovetkezo lesz az aktualis
 
@@ -396,7 +488,14 @@ function Progressbar(){
 	p = (player.currentTime/player.duration)*100+"%";	
 	document.getElementById("progress_position").style["width"] = p;
 }
-
+function ishidden()
+{
+	var playl_c=document.getElementById("playlist_container");
+	if(playl_c.style["display"]=="block")
+		return true;
+	else
+		return false;
+}
 function showhidePlaylist(){
 	var playl_c=document.getElementById("playlist_container");
 	var cont_c=document.getElementById("content_container");
@@ -423,12 +522,14 @@ function hidePlaylist(){
 }
 
 
-{/literal}	  		 
-	</script>
-	<script>
-{literal}
+	  		 
+					<?php echo '</script'; ?>
+>
+					<?php echo '<script'; ?>
+>
+
 //KEYDOWN
-document.onkeydown = function(e){
+document.onkeyup = function(e){
 	if(window.event) // IE
 	{
 		bill = e.keyCode;
@@ -460,7 +561,9 @@ document.onkeydown = function(e){
 	}	
 
 }
-{/literal}	  		 
-	</script>
+	  		 
+					<?php echo '</script'; ?>
+>
 	</body>
 </html>
+<?php }} ?>

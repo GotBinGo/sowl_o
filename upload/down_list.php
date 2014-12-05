@@ -9,14 +9,14 @@ if(mysqli_num_rows($result) > 0)
 	{
 		//var_dump($row);
 		array_push($files,array("path" => $row['file_name'], "name"=>$row['author_name']." - ".$row['track_name'].".mp3"));
-		
+
 	}
 	//var_dump($files);
 	$zipname = "down/".$id.".zip";
 	$zip = new ZipArchive;
 	$zip->open($zipname, ZipArchive::CREATE);
 	foreach ($files as $file) {
-  		$zip->addFile('uploads/'.$file['path'],$file['name'] );
+		$zip->addFile('uploads/'.$file['path'],$file['name'] );
 	}
 	$zip->close();
 	$result = mysqli_query($conn,"SELECT * FROM playlists WHERE id = '$id'");

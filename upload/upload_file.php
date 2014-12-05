@@ -27,7 +27,7 @@ else
 		echo "Temp file: " . $_FILES["file"]["tmp_name"] . "<br>";
 
 		move_uploaded_file($_FILES["file"]["tmp_name"],
-		"uploads/" . $name);
+			"uploads/" . $name);
 		echo "Stored in: " . "uploads/";
 		echo $name;		
 	}

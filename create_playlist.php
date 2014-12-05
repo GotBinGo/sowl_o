@@ -15,7 +15,7 @@ if(isset($_SESSION['views']))
 		}
 		else
 		{
-		echo "added";
+			echo "added";
 		}		
 	}
 	else
@@ -23,7 +23,7 @@ if(isset($_SESSION['views']))
 }
 else
 {
-	
+
 
 	echo "not logged in";
 }

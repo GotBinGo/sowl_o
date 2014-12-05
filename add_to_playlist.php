@@ -13,13 +13,13 @@ if(isset($_SESSION['views']))
 		$result = mysqli_query($conn,"SELECT * FROM tracks WHERE id='$track_id'");	
 		if(mysqli_num_rows($result) == 1)
 		{	
-		if (!mysqli_query($conn,"INSERT INTO playlist_track (playlist_id, track_id) VALUES ('$list_id', '$track_id')"))
-		{
-			die('Error: ' . mysqli_error($conn));
-		}
-		echo "added";
-		
-		
+			if (!mysqli_query($conn,"INSERT INTO playlist_track (playlist_id, track_id) VALUES ('$list_id', '$track_id')"))
+			{
+				die('Error: ' . mysqli_error($conn));
+			}
+			echo "added";
+
+
 		}	
 		else
 		{
@@ -31,7 +31,7 @@ if(isset($_SESSION['views']))
 		echo "playlist not yours";
 	}
 	//echo $row['id'];
-	
+
 	//echo $track_id . " " . $list_id;
 
 	/*

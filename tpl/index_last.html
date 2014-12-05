@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <title>music player</title>
-      <meta name="viewport" content="width=device-width; initial-scale=1.0; mininum-scale=0.5; maximum-scale=1.0; user-scalable=no;" />
-<script>
+	<head>
+		<title>music player</title>
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; mininum-scale=0.5; maximum-scale=1.0; user-scalable=no;" />
+		<script>
 {literal}	
 
 function gohome() {	
 	loadXMLDoc("search.php?type=track&term=",
-		document.getElementById("content_main"),
-		function(){hidePlaylist();},
-		true);
+			document.getElementById("content_main"),
+			function(){hidePlaylist();},
+			true);
 }
 window.onpopstate = function(event) {
 
 	if(!ishidden())
 	{
-	loadXMLDoc(event.state.getU,
-		document.getElementById(event.state.toC),
-		function(){}, //eval(nextF),
-		false);
+		loadXMLDoc(event.state.getU,
+				document.getElementById(event.state.toC),
+				function(){}, //eval(nextF),
+				false);
 	}
 	else
 		hidePlaylist();
 }
 
 function loadXMLDoc(location,to_container,next_function,logHistory){ //to_container -> hova(TAG) tölti be  next_function - a kovetkezo fuggveny	
-	
+
 	logHistory = typeof logHistory !== 'undefined' ? logHistory : false;		
-	
+
 	//new Function(argument, functionBody);
-	
+
 	document.getElementById("loading_bar").style["display"]="block";//Loading bar megjeleintese
 	var geturl=location;  //pl search.php?type=all&term=(term)
-	
+
 	if(logHistory){
 		var stateObj = { getU: geturl, toC: to_container.id };	//, nextF: next_function.toString()
 		history.pushState(stateObj, "page 2", "?" +geturl); //A # utani reszt a php nem kapja meg
 	}
-	
+
 	var xmlhttp;
 	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
-	   xmlhttp=new XMLHttpRequest();
+		xmlhttp=new XMLHttpRequest();
 	}
 	else{// code for IE6, IE5
-	   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	xmlhttp.onreadystatechange=function(){
-	   if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
 			var respTxt = xmlhttp.responseText;//DOMParser().parseFromString()
 			to_container.innerHTML="";
 			to_container.innerHTML = respTxt;//betoltes
-		
+
 			next_function();
 			document.getElementById("loading_bar").style["display"]="none";//Loading bar megjeleintese
-		 }
+		}
 	}
 	xmlhttp.open("GET",geturl,true);
 	xmlhttp.send();	
@@ -66,15 +66,15 @@ function playlistAdd(list_id) {
 	var geturl="http://bordak.eu/sowl/add_to_playlist.php?track_id=" + list_id.parentNode.id + "&list_id=" + list_id.value;  
 	var xmlhttp;
 	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
-	   xmlhttp=new XMLHttpRequest();
+		xmlhttp=new XMLHttpRequest();
 	}
 	else{// code for IE6, IE5
-	   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	xmlhttp.onreadystatechange=function(){
-	   if (xmlhttp.readyState==4 && xmlhttp.status==200){		
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){		
 			document.getElementById("loading_bar").style["display"]="none";//Loading bar megjeleintese
-		 }
+		}
 	}
 	xmlhttp.open("GET",geturl,true);
 	xmlhttp.send();
@@ -82,15 +82,15 @@ function playlistAdd(list_id) {
 
 
 {/literal}	  
-</script>
-      <link rel="stylesheet" type="text/css" href="tpl/style.css">
-   </head>
-   <body style="margin:0px; padding:0px; background-color:#d4eeee;">
-<script>
+		</script>
+		<link rel="stylesheet" type="text/css" href="tpl/style.css">
+	</head>
+	<body style="margin:0px; padding:0px; background-color:#d4eeee;">
+		<script>
 {literal}
 var mobile_device=0;///0- nem mobil   1- mobil
- //mobil ellenorzés
- if (navigator.userAgent.match(/Android/i) ||
+//mobil ellenorzés
+if (navigator.userAgent.match(/Android/i) ||
 		navigator.userAgent.match(/webOS/i) ||
 		navigator.userAgent.match(/iPhone/i) ||
 		navigator.userAgent.match(/iPad/i) ||
@@ -99,95 +99,95 @@ var mobile_device=0;///0- nem mobil   1- mobil
 		navigator.userAgent.match(/Windows Phone/i) || 
 		navigator.userAgent.match(/IEMobile/i) || 
 		navigator.userAgent.match(/Opera Mini/i)
-	){
+   ){
 	mobile_device=1;
-	}		
+}		
 {/literal}	  
-</script>
-      <div id="header" style=" "  >
-		<div id="fejlec" style="">            
-			<div id="fejlec_cim"  style=" float:left;">
-				 <label onclick="gohome()">music player</label>
-			</div>
-			<!--gombok-->
+		</script>
+		<div id="header" style=" "  >
+			<div id="fejlec" style="">            
+				<div id="fejlec_cim"  style=" float:left;">
+					<label onclick="gohome()">music player</label>
+				</div>
+				<!--gombok-->
 				{if $username eq ''}
-					<div id="login_button" onclick="location.href='login.php'" style="float:right; width:40px; height:100%;">
-					</div>	
+				<div id="login_button" onclick="location.href='login.php'" style="float:right; width:40px; height:100%;">
+				</div>	
 				{else}
-					{literal}
-					<div id="logout_button" onclick="location.href='logout.php'" style="float:right;  width:40px; height:100%;">
-					</div>					
-					<div id="profil_button" onclick="loadXMLDoc('user.php',
-					document.getElementById('content_main'),
-					function(){hidePlaylist();},
-					true);" style="float:right;  width:40px; height:100%;">
-					</div> 	
-					{/literal}									
- 				{/if}
-			<!--kereso-->
-				
-			<div id="search_button" onclick="keresesClick()" style="float:right; width:40px; height:100%;">
-			</div>		
-			<input type="text" id="search_box" name="term" value="" class="inactive" placeholder="Kereses" style="float:right; height:100%; ">
-			            
-         </div>			 
-      </div>
-      <div style="width:90%; margin:auto; margin-bottom:80px; margin-top:20px;">
-		<!--lejatszo kontener-->
-		<div id="playlist_container" style="display:none; padding:10px;">
-			<div style="font-family:Arial; font-size:22px; margin:0px 0px 10px 0px;">
-				PlayList 				
-				<div onclick="document.getElementById('Track_List').innerHTML=''" style="float:right; font-size:18px; cursor:pointer;">
-					X
+				{literal}
+				<div id="logout_button" onclick="location.href='logout.php'" style="float:right;  width:40px; height:100%;">
+				</div>					
+				<div id="profil_button" onclick="loadXMLDoc('user.php',
+			    document.getElementById('content_main'),
+			    function(){hidePlaylist();},
+			    true);" style="float:right;  width:40px; height:100%;">
+				</div> 	
+				{/literal}									
+				{/if}
+				<!--kereso-->
+
+				<div id="search_button" onclick="keresesClick()" style="float:right; width:40px; height:100%;">
+				</div>		
+				<input type="text" id="search_box" name="term" value="" class="inactive" placeholder="Kereses" style="float:right; height:100%; ">
+
+			</div>			 
+		</div>
+		<div style="width:90%; margin:auto; margin-bottom:80px; margin-top:20px;">
+			<!--lejatszo kontener-->
+			<div id="playlist_container" style="display:none; padding:10px;">
+				<div style="font-family:Arial; font-size:22px; margin:0px 0px 10px 0px;">
+					PlayList 				
+					<div onclick="document.getElementById('Track_List').innerHTML=''" style="float:right; font-size:18px; cursor:pointer;">
+						X
+					</div>
+				</div>
+				<div id="Track_List" >	  
+					<!--{$tracks}-->
 				</div>
 			</div>
-			<div id="Track_List" >	  
-				<!--{$tracks}-->
+			<!--tartalom kontener-->
+			<div id="content_container" style="display:block;">
+				<div id="content_main">
+				</div>			
 			</div>
 		</div>
-		<!--tartalom kontener-->
-		<div id="content_container" style="display:block;">
-			<div id="content_main">
-			</div>			
-		</div>
-	  </div>
-	  <!--lejatszo  audio tag-->
-      <audio id="player_element" src="x.mp3" onended="nextItem()" ontimeupdate="playerTimeupdate()" onprogress="bufferProgressbar()"  preload="auto" ></audio>
-	  <!--lejatszo vezerlok-->
-      <div id="footer_player_container" onclick="Nothing()" style="display:none;" >
-         <div id="footer_player" style="display:table; table-layout:fixed; width:100%;">
-			<div id="footer_play_btn" class="footer_control_btn" onclick="togglePlayPause()" style="display:table-cell; width:50px; ">
-					
-			</div>
+		<!--lejatszo  audio tag-->
+		<audio id="player_element" src="x.mp3" onended="nextItem()" ontimeupdate="playerTimeupdate()" onprogress="bufferProgressbar()"  preload="auto" ></audio>
+		<!--lejatszo vezerlok-->
+		<div id="footer_player_container" onclick="Nothing()" style="display:none;" >
+			<div id="footer_player" style="display:table; table-layout:fixed; width:100%;">
+				<div id="footer_play_btn" class="footer_control_btn" onclick="togglePlayPause()" style="display:table-cell; width:50px; ">
+
+				</div>
 			<div id="song_current_time" style="display:table-cell;">
 			</div>
 			<div style="display:table-cell; padding:5px;">
 				<div id="now_playing_container" style="overflow-x:hidden;">
 					<!--kiiras-->
-				   <div id="now_playing" style="line-height:20px; ">
-					  -
-				   </div>
+					<div id="now_playing" style="line-height:20px; ">
+						-
+					</div>
 				</div>
 				<!--tolto csik-->
 				<div id="progress" onclick="progressClick(event)" style="float:left; position:relative;">
-				   <div id="progress_position" style="position:absolute;"></div>
-				   <div id="progress_loaded" style="position:absolute;"></div>
+					<div id="progress_position" style="position:absolute;"></div>
+					<div id="progress_loaded" style="position:absolute;"></div>
 				</div>				
 			</div>
 			<div id="song_duration" style="display:table-cell; ">
 			</div>
 			<div id="playlist_button" onclick="showhidePlaylist()" style="display:table-cell; width:50px;">
-			
+
 			</div>
-         </div>
-      </div>
-	<div id="loading_bar" >
-		<div></div>
-		<div></div>
-		<div></div>
-		<div></div>
-	</div>
-<script>
+			</div>
+		</div>
+		<div id="loading_bar" >
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<script>
 {literal}	  
 document.getElementById("search_box").addEventListener('keydown',function(e){
 	e.stopPropagation();//nem kuldi tovabb az esemenytaz alattalevoknek
@@ -202,15 +202,15 @@ document.getElementById("search_box").addEventListener('keydown',function(e){
 	if(bill==13){
 		//Kereses - Enter
 		loadXMLDoc("search.php?type=all&term="+document.getElementById("search_box").value,
-			document.getElementById("content_main"),
-			function(){},
-			true);
+				document.getElementById("content_main"),
+				function(){},
+				true);
 		hidePlaylist();
 	}
 });
 {/literal}	  
-</script>
-<script>
+		</script>
+		<script>
 {literal}	  
 function keresesClick(){
 	//Kereso gomb - gombnyomás
@@ -229,24 +229,24 @@ function Item_Click(e){
 		{
 			case "track":
 				loadXMLDoc("search.php?type=track&term=" + getUrlVariable("term"),
-					document.getElementById("Track_List"),
-					function(){playAtThis(e.id);},
-					false);
-					//togglePlayPause();
-			break;
+						document.getElementById("Track_List"),
+						function(){playAtThis(e.id);},
+						false);
+				//togglePlayPause();
+				break;
 			case "list":
 				loadXMLDoc("playlist.php?id=" + e.getAttribute("id"),
-					document.getElementById("Track_List"),
-					function(){/*startPlaylist();*/},
-					true);
-					showPlaylist();
-			break;
+						document.getElementById("Track_List"),
+						function(){/*startPlaylist();*/},
+						true);
+				showPlaylist();
+				break;
 			case "user":
 				loadXMLDoc("user.php?name=" + e.getAttribute("name"),
-					document.getElementById("content_main"),
-					function(){},
-					true);
-			break;
+						document.getElementById("content_main"),
+						function(){},
+						true);
+				break;
 		}
 	}
 }
@@ -261,163 +261,163 @@ function getUrlVariable(variableName){
 	}
 }
 {/literal}	  
-</script>	
-<script>
+		</script>	
+	<script>
 {literal}
 //site-url betoltese
 var toload = '{/literal}{$toload}{literal}';
 loadXMLDoc(toload+"",
-	(toload.indexOf("playlist") > -1)? document.getElementById("Track_List"):document.getElementById("content_main"),
-	function(){
-if(toload.indexOf("playlist") > -1){showPlaylist();}},
-	true);
+		(toload.indexOf("playlist") > -1)? document.getElementById("Track_List"):document.getElementById("content_main"),
+		function(){
+			if(toload.indexOf("playlist") > -1){showPlaylist();}},
+			true);
 {/literal}
-</script>
+	</script>
 
-<script>
+	<script>
 {literal}	  
- //mobil ellenorzés
+//mobil ellenorzés
 if (mobile_device==1){	/*Ha mobil, mozgathato a lejatszo kiirasa*/
 	document.getElementById("now_playing_container").style["overflow-x"] = "scroll";
 }
 {/literal}	  
-</script>
-<script>
+	</script>
+	<script>
 {literal}	  
- var Dir = "./upload/uploads/";
- var player = document.getElementById("player_element");
- 
- var act_i;
- var next_i;       
- 
- function Nothing(){         
- 
- }   
- function playThis(t){	
+var Dir = "./upload/uploads/";
+var player = document.getElementById("player_element");
+
+var act_i;
+var next_i;       
+
+function Nothing(){         
+
+}   
+function playThis(t){	
 	next_i = t;
 	playItem();
- }
- function playAtThis(t_id){
+}
+function playAtThis(t_id){
 	next_i = document.getElementById("Track_List").querySelector("[id='"+t_id+"']");
 	playItem();
- }
- function startPlaylist(){
+}
+function startPlaylist(){
 	next_i = document.getElementById("Track_List").getElementsByTagName("div")[0];
 	playItem();
- }         
- function togglePlayPause(){
- 
+}         
+function togglePlayPause(){
+
 	if(player.paused){
 		play();
 	}
 	else{
 		pause();
 	}
- }
- function play(){
+}
+function play(){
 	player.play();
 	//document.getElementById("play_btn").id="pause_btn";
 	document.getElementById("footer_play_btn").id = "footer_pause_btn";
- }
- function pause(){
+}
+function pause(){
 	player.pause();
 	//document.getElementById("pause_btn").id="play_btn";
 	document.getElementById("footer_pause_btn").id = "footer_play_btn";
- }
- function prevItem(){         	
+}
+function prevItem(){         	
 	next_i = get_prevElement(act_i);//.getAttribute("type")=="track"?get_prevElement(act_i):act_i;
 	playItem();       	
- }
- function nextItem(){
+}
+function nextItem(){
 	next_i = get_nextElement(act_i);//.getAttribute("type")=="track"?get_nextElement(act_i):act_i;
 	if(next_i==act_i){startPlaylist();togglePlayPause();}
 	else{
-	playItem();
+		playItem();
 	}
- }
- function playItem(){
- 
+}
+function playItem(){
+
 	if(document.getElementById("footer_player_container").style["display"]=="none"){
 		document.getElementById("footer_player_container").style["display"]="block"; //Lejatszo megjelenitese
 	}
-	
+
 	player.pause()
-	player.src="";
+		player.src="";
 	player.load();
-	
+
 	player.src=Dir+""+next_i.getAttribute("sid");
 	player.load();
 	player.play();
 	document.getElementById("now_playing").innerHTML = next_i.innerHTML;
-	
+
 	act_i=next_i;  //Eddigi kovetkezo lesz az aktualis
-	
+
 	document.getElementsByClassName("footer_control_btn")[0].id = "footer_pause_btn";
- }		 
- function get_nextElement(n){
+}		 
+function get_nextElement(n){
 	x = n.nextSibling;
 	while (x.nodeType!=1 && x.getAttribute('type')!='track')
-	  {
-		  x=x.nextSibling;
-		  if(x==null){return n;}//ha nincs akkor onmagaval ter vissza
-	  }
+	{
+		x=x.nextSibling;
+		if(x==null){return n;}//ha nincs akkor onmagaval ter vissza
+	}
 	return x;
- }
- function get_prevElement(n){
+}
+function get_prevElement(n){
 	x = n.previousSibling;
 	while (x.nodeType!=1 && x.getAttribute('type')!='track')
-	  {
-		  x=x.previousSibling;
-		  if(x==null){return n;}//ha nincs akkor onmagaval ter vissza
-	  }
+	{
+		x=x.previousSibling;
+		if(x==null){return n;}//ha nincs akkor onmagaval ter vissza
+	}
 	return x;
- }
- 
- 
- function increaseVolume(){
+}
+
+
+function increaseVolume(){
 	if(player.volume <= 0.9){player.volume+=0.1;}
- }
- function decreaseVolume(){
+}
+function decreaseVolume(){
 	if(player.volume >= 0.1){player.volume-=0.1;}
- }
- 
- function progressClick(event){
+}
+
+function progressClick(event){
 	pos_x = event.offsetX ? (event.offsetX) : event.pageX-document.getElementById("progress").offsetLeft;
 	percent = (pos_x*100)/document.getElementById("progress").offsetWidth;
 	player.currentTime = ((player.duration*percent)/100);
- }
- function playerTimeupdate(){
+}
+function playerTimeupdate(){
 	Progressbar();
 	if(!isNaN(player.duration)){// ha a hossz nem NaN
-	document.getElementById("song_current_time").innerHTML = SecToTime(player.currentTime);// idő
-	document.getElementById("song_duration").innerHTML = SecToTime(player.duration);}//hossz
- }
- function SecToTime(sec){//Csak perc másodperc mm:ss 
+		document.getElementById("song_current_time").innerHTML = SecToTime(player.currentTime);// idő
+		document.getElementById("song_duration").innerHTML = SecToTime(player.duration);}//hossz
+}
+function SecToTime(sec){//Csak perc másodperc mm:ss 
 	sec=Math.round(sec);
 	return Math.floor(sec/60)+":"+((sec%60)>9?(sec%60):"0"+(sec%60));
- }
- function bufferProgressbar(){
-	
+}
+function bufferProgressbar(){
+
 	if(player.buffered.length>0)
 	{
 		pc = (player.buffered.end(0)/player.duration)*100+"%";
 		document.getElementById("progress_loaded").style["width"] = pc;
 	}
-	
- }
- function Progressbar(){
+
+}
+function Progressbar(){
 	p = (player.currentTime/player.duration)*100+"%";	
 	document.getElementById("progress_position").style["width"] = p;
- }
- function ishidden()
- {
- 	var playl_c=document.getElementById("playlist_container");
- 	if(playl_c.style["display"]=="block")
- 		return true;
- 	else
- 		return false;
- }
- function showhidePlaylist(){
+}
+function ishidden()
+{
+	var playl_c=document.getElementById("playlist_container");
+	if(playl_c.style["display"]=="block")
+		return true;
+	else
+		return false;
+}
+function showhidePlaylist(){
 	var playl_c=document.getElementById("playlist_container");
 	var cont_c=document.getElementById("content_container");
 	if(playl_c.style["display"]=="block"){
@@ -428,27 +428,27 @@ if (mobile_device==1){	/*Ha mobil, mozgathato a lejatszo kiirasa*/
 		playl_c.style["display"]="block";
 		cont_c.style["display"]="none";
 	}
- }
- function showPlaylist(){
+}
+function showPlaylist(){
 	var playl_c=document.getElementById("playlist_container");
 	var cont_c=document.getElementById("content_container");
 	playl_c.style["display"]="block";
 	cont_c.style["display"]="none";
- }
- function hidePlaylist(){
+}
+function hidePlaylist(){
 	var playl_c=document.getElementById("playlist_container");
 	var cont_c=document.getElementById("content_container");
 	playl_c.style["display"]="none";
 	cont_c.style["display"]="block";
- }
-         
-             
+}
+
+
 {/literal}	  		 
-</script>
-<script>
+	</script>
+	<script>
 {literal}
-	  //KEYDOWN
- document.onkeydown = function(e){
+//KEYDOWN
+document.onkeydown = function(e){
 	if(window.event) // IE
 	{
 		bill = e.keyCode;
@@ -457,7 +457,7 @@ if (mobile_device==1){	/*Ha mobil, mozgathato a lejatszo kiirasa*/
 	{
 		bill = e.which;
 	}
-	
+
 	if(bill==32){
 		e.preventDefault();
 		togglePlayPause();
@@ -478,9 +478,9 @@ if (mobile_device==1){	/*Ha mobil, mozgathato a lejatszo kiirasa*/
 		e.preventDefault();
 		decreaseVolume();
 	}	
-		
- }
+
+}
 {/literal}	  		 
-</script>
-   </body>
+	</script>
+	</body>
 </html>

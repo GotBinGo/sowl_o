@@ -18,10 +18,10 @@ if(isset($_SESSION['views']))
 			echo "delete {$row['file_name']}";
 			$value = "uploads/" . $row['file_name'];
 			if (file_exists($value)) {
-     	   		unlink($value);
-    		}
+				unlink($value);
+			}
 			echo "delete record";
-			
+
 			$sql="DELETE FROM tracks WHERE id='$id'";
 			if (!mysqli_query($conn,$sql)) {
 				die('Error: ' . mysqli_error($conn));
@@ -42,6 +42,6 @@ if(isset($_SESSION['views']))
 }
 else
 {
-echo "not logged in";
+	echo "not logged in";
 }
 ?>

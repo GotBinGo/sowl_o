@@ -1,383 +1,383 @@
-<!DOCTYPE html>
-<html>
-   <head>
-      <title>music player</title>
-      <meta name="viewport" content="width=device-width; initial-scale=1.0; mininum-scale=0.5; maximum-scale=1.0; user-scalable=no;" />
-      <script>
-		{literal}	  
-		function loadXMLDoc(location,term,to_container,next_function) //to_container -> hova(TAG) tölti be  next_function - a kovetkezo fuggveny
-         {
-		 document.getElementById("loading_bar").style["display"]="block";//Loading bar megjeleintese
-         var geturl=location+term;  //pl search.php?type=all&term=(term)
-         var xmlhttp;
-         if (window.XMLHttpRequest)
-           {// code for IE7+, Firefox, Chrome, Opera, Safari
-           xmlhttp=new XMLHttpRequest();
-           }
-         else
-           {// code for IE6, IE5
-           xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-           }
-         xmlhttp.onreadystatechange=function()
-           {
-           if (xmlhttp.readyState==4 && xmlhttp.status==200)
-             {
-				to_container.innerHTML="";
-				to_container.innerHTML=xmlhttp.responseText;//betoltes
-				next_function();
-				document.getElementById("loading_bar").style["display"]="none";//Loading bar megjeleintese
-             }
-           }
-         xmlhttp.open("GET",geturl,true);
-         xmlhttp.send();
-         }
-		 {/literal}	  
-      </script>
-      <link rel="stylesheet" type="text/css" href="tpl/style.css">
-   </head>
-   <body style="margin:0px; padding:0px; background-color:#ffffff;">
-   <script>
-	  {literal}
-		var mobile_device=0;///0- nem mobil   1- mobil
-         //mobil ellenorzés
-         if (navigator.userAgent.match(/Android/i) ||
-         		navigator.userAgent.match(/webOS/i) ||
-         		navigator.userAgent.match(/iPhone/i) ||
-         		navigator.userAgent.match(/iPad/i) ||
-         		navigator.userAgent.match(/iPod/i) ||
-         		navigator.userAgent.match(/BlackBerry/) || 
-         		navigator.userAgent.match(/Windows Phone/i) || 
-         		navigator.userAgent.match(/IEMobile/i) || 
-         		navigator.userAgent.match(/Opera Mini/i)
-         		)
-			{mobile_device=1;}		
-		 {/literal}	  
-      </script>
-      <div id="header" style="background-color:#000000; color:#f0f0f0; "  >
-         <!--[if lt IE 9]>
-		 <table style="width:80%; margin:auto;">
-            <tr style="width:100%">
-               <td width="150">
-                  <div style="  color:#f0f0f0;  padding:10px 0px; font-size:24px; font-family:Helvetica Neue, Arial;  ">
-                     music player
-					</div>
-               </td>
-               <td width="70" height="45" style="padding:0px; margin:0px; ">
-                  <div style="  color:#f0f0f0;  width:100%; height:100%; margin:0px; padding:10px 0px; float:left; display:block; position:relative; vertical-align:middle; ">
-                    <input type="text" id="term" name="term" value="" style="border-radius:5px; height:25px; background-color:#bbbbbb; border:none;">					
-                  </div>
-               </td>
-            </tr>
-         </table>
-		 <![endif]-->
-		<div id="fejlec" style="">            
-			<div id="fejlec_cim"  style=" float:left;">
-				 music player
-			</div>
-			<!--gombok-->
-				{if $username eq ''}
-					<div id="login_button" onclick="location.href='login.php'" style="float:right; width:40px; height:100%;">
-					</div>	
-				{else}
-					<div id="logout_button" onclick="location.href='logout.php'" style="float:right;  width:40px; height:100%;">
-					</div>
-					<div id="profil_button" onclick="location.href='#'" style="float:right;  width:40px; height:100%;">
-					</div> 										
- 				{/if}
-			<!--kereso-->
-				
-			<div id="search_button" onclick="Kereses_Click()" style="float:right; width:40px; height:100%;">
-			</div>		
-			<input type="text" id="search_box" name="term" value="" class="inactive" placeholder="Kereses" style="float:right; height:100%; ">
-			            
-         </div>			 
-      </div>	  
-      <div style="height:15px;"></div>
-      <div style="width:90%; margin:auto; margin-bottom:100px;">
-		<!--lejatszo kontener-->
-		
-		<!--tartalom kontener-->
-		<div id="content_container" >
-			<div id="content_main">
-			{$tracks}
-			</div>
-		</div>
-	  </div>
-	  <!--lejatszo  audio tag-->
-      <audio id="player_element" src="" onended="play_ended()" ontimeupdate="Player_Timeupdate()" onprogress="Buffer_Progressbar()"  preload="auto" ></audio>
-	  <!--lejatszo vezerlok-->
-      <div id="footer_player_container" onclick="Nothing()" >
-         <div id="footer_player" style="display:table; table-layout:fixed; width:100%;">
-			<div id="footer_play_btn" class="footer_control_btn" onclick="toggle()" style="display:table-cell; width:50px; ">
-					
-			</div>
-			<div id="song_current_time" style="display:table-cell;">
-			</div>
-			<div style="display:table-cell; padding:5px;">
-				<div id="now_playing_container" style="overflow-x:hidden;">
-					<!--kiiras-->
-				   <div id="now_playing" style="line-height:20px; ">
-					  -
-				   </div>
-				</div>
-				<!--tolto csik-->
-				<div id="progress" onclick="progress_Click(event)" style="float:left; position:relative;">
-				   <div id="progress_position" style="position:absolute;"></div>
-				   <div id="progress_loaded" style="position:absolute;"></div>
-				</div>				
-			</div>
-			<div id="song_duration" style="display:table-cell; ">
-		
-			</div>
-
-			<div id="playlist_button" onclick="Show_Hide_Playlist()" style="display:table-cell; width:50px;">			
-			</div>
-				
-				<!--új-->
-			<div style="display:table-cell; width:50px; ">			
-			<button onclick="rep_togg(this)" style="width:50px; background-color: #000000; color: #ffffff;">0</button>
-			</div>
-				<!--/új-->
-		
-			
-         </div>
-		 	
-      </div>
-	  <!--lejatszo gomb-    //fiafaszvoltez
-      <span id="footer_play_btn" class="footer_control_btn" onclick="Play_Pause()" style="display:none;">
-      </span>
-	  <!--lejatszasi lista gomb
-		<div id="playlist_button" onclick="Show_Hide_Playlist()" style=" display:none; z-index:99; position:fixed; bottom:0px; right:0px;  width:40px; margin:0px 5px; height:50px;">
-		</div>-->
-		
-<div id="loading_bar" style="display:none; position:fixed; top:0px; left:0px; width:100%; height:100%; padding:0px; background-color:rgba(0,0,0,.6);">
-<style>
-{literal}
-#tartalom{
-background: #ff8080;
-width:20px;
-height:20px;
-margin:auto;
-border-radius:10px;
-    animation: loading 0.8s;
-	-webkit-animation: loading 0.8s;
-	-moz-animation: loading 0.8s; 
-	
-	animation-iteration-count:infinite;
-	-webkit-animation-iteration-count:infinite;
-	-moz-animation-iteration-count:infinite;
-    
-}
-
-/* Chrome, Safari, Opera */
-@-webkit-keyframes loading {
-    0% {background: rgba(255,0,0,0.3); width:20px; height:20px; border-radius:10px; margin:15px auto;}
-	30%{ background: rgba(255,0,0,1); width:50px; height:50px; border-radius:25px; margin:0px auto;}
-	100% {background: rgba(255,0,0,0.3);  width:20px; height:20px;  border-radius:10px; margin:15px auto; }
-}
-
-/* Standard syntax */
-@keyframes loading {
-	0% {background: rgba(255,0,0,0.3); width:20px; height:20px; border-radius:10px; margin:15px auto;}
-	30%{ background: rgba(255,0,0,1); width:50px; height:50px; border-radius:25px; margin:0px auto;}
-	100% {background: rgba(255,0,0,0.3);  width:20px; height:20px;  border-radius:10px; margin:15px auto; }
-}
-{/literal}
-</style>
-<div id="tartalom">
-
-</div>
-</div>
-	<script>
-		{literal}	  
-		document.getElementById("search_box").addEventListener('keydown',function(e)
-		{
-			if(window.event) // IE
-			{
-				bill = e.keyCode;
-			}
-			else if(e.which) // Netscape/Firefox/Opera
-			{
-				bill = e.which;
-			}
-			if(bill==13)
-			{
-				//Kereses - Enter
-				loadXMLDoc("search.php?type=all&term=",document.getElementById("search_box").value,document.getElementById("content_main"),function(){});
-
-			}
-		});
-		{/literal}	  
-	  </script>
-	  <script>
-		{literal}	  
-			function Kereses_Click()
-			{
-				//Kereso gomb - gombnyomás
-				var kereso_doboz=document.getElementById("search_box");
-				if(kereso_doboz.getAttribute("class")=="inactive")
-				{
-					kereso_doboz.setAttribute("class","active");
-					kereso_doboz.focus();
-				}
-				else{ kereso_doboz.setAttribute("class","inactive");}
-			}
-		{/literal}	  
-	  </script>		
-      <script>
-	  {literal}	  
-         //mobil ellenorzés
-         if (mobile_device==1)
-         {	/*Ha mobil, mozgathato a lejatszo kiirasa*/
-         	document.getElementById("now_playing_container").style["overflow-x"]="scroll";
-			//document.write('<link rel="stylesheet" type="text/css" href="mobile_style.css">');
-         }
-		 else
-		 {
-			//document.write('<link rel="stylesheet" type="text/css" href="pc_style.css">');		 
-		 }
-		 {/literal}	  
-      </script>
-
-<script> 
-{literal}
-function Item_Click(e) //tracks must be in a div
-{	
-	var sid_list = [];
-	for(var i = 0; i < e.parentNode.children.length; i++)
-	{
-		sid_list.push(e.parentNode.children[i].attributes.sid.value);
-	}
-	tracks = sid_list;
-	index = e.attributes.count.value;
-	next();
-}
-var setto = 0;
-function progress_Click(event)//Zene porgetes
-{
-
-pos_x = event.offsetX?(event.offsetX):event.pageX-document.getElementById("progress").offsetLeft;
-percent=(pos_x*100)/document.getElementById("progress").offsetWidth;
-setto = ((player.duration*percent)/100);
-
-
-
-}
-function Player_Timeupdate()
-{
-	Progressbar();
-
-	if(!isNaN(player.duration)){// ha a hossz nem NaN
-
-		document.getElementById("song_current_time").innerHTML=Math.floor(player.currentTime/60)+":"+Math.round(player.currentTime)%60;// idő
-
-		document.getElementById("song_duration").innerHTML=Math.floor(player.duration/60)+":"+Math.round(player.duration)%60;}//hossz
-
-}
-function Buffer_Progressbar()//BUFFER-Tolto csik
-{
-	if(player.buffered.length>0)
-	{
-		pc=(player.buffered.end(0)/player.duration)*100+"%";
-		document.getElementById("progress_loaded").style["width"]=pc;
-	}}
-
-function Progressbar()//Tolto csik
-{
-if(setto != 0)
-{
-player.currentTime = setto;
-setto = 0;
-}
-	p=(player.currentTime/player.duration)*100+"%";	
-	document.getElementById("progress_position").style["width"]=p;
-}
-
-{/literal}
-</script> 
-<script> //player
-{literal}
-var path = "http://bordak.eu/sowl/upload/uploads/"
-var player = document.getElementById("player_element");
-var tracks = [];
-var index = 0;
-var replay = 0;
-load_next()
-function toggle(e)
-{
-	if (player.paused)
-	{
-		play();		
-	}
-	else
-	{
-		pause();	
-	}
-}
-function play() 
-{
-	player.playbackRate=1;
-	player.play();
-	//e.innerHTML = "pause";
-	document.getElementById("footer_play_btn").id="footer_pause_btn";
-}
-function pause() 
-{
-	player.pause();
-	//e.innerHTML = "play";
-	document.getElementById("footer_pause_btn").id="footer_play_btn";
-}
-function load_next() 
-{
-	player.src = path + tracks[index] ;
-	if(tracks.length > index+1)
-	{
-		index++;
-	}
-	else
-	{
-		index = 0;		
-	}
-	player.load();
-}
-function next()
-{
-	load_next();
-	play();
-}
-function play_ended()
-{
-	if(replay == 2)
-	{
-		play();
-	}
-	else
-	{
-		if(replay == 0 && index == 0)
-		{
-			
-		}
-		else
-		{	
-			next();
-		}
-	}
-}
-function rep_togg(e)
-{	
-	if(replay < 2)
-	{
-		replay++;
-	}
-	else
-	{
-		replay = 0;
-	}
-	e.innerHTML = replay;
-	
-}
-{/literal}
-</script>
-
-   </body>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>music player</title>
+		<meta name="viewport" content="width=device-width; initial-scale=1.0; mininum-scale=0.5; maximum-scale=1.0; user-scalable=no;" />
+		<script>
+{literal}	  
+function loadXMLDoc(location,term,to_container,next_function) //to_container -> hova(TAG) tölti be  next_function - a kovetkezo fuggveny
+{
+	document.getElementById("loading_bar").style["display"]="block";//Loading bar megjeleintese
+	var geturl=location+term;  //pl search.php?type=all&term=(term)
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			to_container.innerHTML="";
+			to_container.innerHTML=xmlhttp.responseText;//betoltes
+			next_function();
+			document.getElementById("loading_bar").style["display"]="none";//Loading bar megjeleintese
+		}
+	}
+	xmlhttp.open("GET",geturl,true);
+	xmlhttp.send();
+}
+{/literal}	  
+		</script>
+		<link rel="stylesheet" type="text/css" href="tpl/style.css">
+	</head>
+	<body style="margin:0px; padding:0px; background-color:#ffffff;">
+		<script>
+{literal}
+var mobile_device=0;///0- nem mobil   1- mobil
+//mobil ellenorzés
+if (navigator.userAgent.match(/Android/i) ||
+		navigator.userAgent.match(/webOS/i) ||
+		navigator.userAgent.match(/iPhone/i) ||
+		navigator.userAgent.match(/iPad/i) ||
+		navigator.userAgent.match(/iPod/i) ||
+		navigator.userAgent.match(/BlackBerry/) || 
+		navigator.userAgent.match(/Windows Phone/i) || 
+		navigator.userAgent.match(/IEMobile/i) || 
+		navigator.userAgent.match(/Opera Mini/i)
+   )
+{mobile_device=1;}		
+{/literal}	  
+		</script>
+		<div id="header" style="background-color:#000000; color:#f0f0f0; "  >
+			<!--[if lt IE 9]>
+	   <table style="width:80%; margin:auto;">
+	   <tr style="width:100%">
+	   <td width="150">
+	   <div style="  color:#f0f0f0;  padding:10px 0px; font-size:24px; font-family:Helvetica Neue, Arial;  ">
+	   music player
+	   </div>
+	   </td>
+	   <td width="70" height="45" style="padding:0px; margin:0px; ">
+	   <div style="  color:#f0f0f0;  width:100%; height:100%; margin:0px; padding:10px 0px; float:left; display:block; position:relative; vertical-align:middle; ">
+	   <input type="text" id="term" name="term" value="" style="border-radius:5px; height:25px; background-color:#bbbbbb; border:none;">					
+	   </div>
+	   </td>
+	   </tr>
+	   </table>
+	   <![endif]-->
+	   <div id="fejlec" style="">            
+		   <div id="fejlec_cim"  style=" float:left;">
+			   music player
+		   </div>
+		   <!--gombok-->
+		   {if $username eq ''}
+		   <div id="login_button" onclick="location.href='login.php'" style="float:right; width:40px; height:100%;">
+		   </div>	
+		   {else}
+		   <div id="logout_button" onclick="location.href='logout.php'" style="float:right;  width:40px; height:100%;">
+		   </div>
+		   <div id="profil_button" onclick="location.href='#'" style="float:right;  width:40px; height:100%;">
+		   </div> 										
+		   {/if}
+		   <!--kereso-->
+
+		   <div id="search_button" onclick="Kereses_Click()" style="float:right; width:40px; height:100%;">
+		   </div>		
+		   <input type="text" id="search_box" name="term" value="" class="inactive" placeholder="Kereses" style="float:right; height:100%; ">
+
+	   </div>			 
+		</div>	  
+		<div style="height:15px;"></div>
+		<div style="width:90%; margin:auto; margin-bottom:100px;">
+			<!--lejatszo kontener-->
+
+			<!--tartalom kontener-->
+			<div id="content_container" >
+				<div id="content_main">
+					{$tracks}
+				</div>
+			</div>
+		</div>
+		<!--lejatszo  audio tag-->
+		<audio id="player_element" src="" onended="play_ended()" ontimeupdate="Player_Timeupdate()" onprogress="Buffer_Progressbar()"  preload="auto" ></audio>
+		<!--lejatszo vezerlok-->
+		<div id="footer_player_container" onclick="Nothing()" >
+			<div id="footer_player" style="display:table; table-layout:fixed; width:100%;">
+				<div id="footer_play_btn" class="footer_control_btn" onclick="toggle()" style="display:table-cell; width:50px; ">
+
+				</div>
+			<div id="song_current_time" style="display:table-cell;">
+			</div>
+			<div style="display:table-cell; padding:5px;">
+				<div id="now_playing_container" style="overflow-x:hidden;">
+					<!--kiiras-->
+					<div id="now_playing" style="line-height:20px; ">
+						-
+					</div>
+				</div>
+				<!--tolto csik-->
+				<div id="progress" onclick="progress_Click(event)" style="float:left; position:relative;">
+					<div id="progress_position" style="position:absolute;"></div>
+					<div id="progress_loaded" style="position:absolute;"></div>
+				</div>				
+			</div>
+			<div id="song_duration" style="display:table-cell; ">
+
+			</div>
+
+			<div id="playlist_button" onclick="Show_Hide_Playlist()" style="display:table-cell; width:50px;">			
+			</div>
+
+			<!--új-->
+			<div style="display:table-cell; width:50px; ">			
+				<button onclick="rep_togg(this)" style="width:50px; background-color: #000000; color: #ffffff;">0</button>
+			</div>
+			<!--/új-->
+
+
+			</div>
+
+		</div>
+		<!--lejatszo gomb-    //fiafaszvoltez
+	  <span id="footer_play_btn" class="footer_control_btn" onclick="Play_Pause()" style="display:none;">
+	  </span>
+	  <!--lejatszasi lista gomb
+	   <div id="playlist_button" onclick="Show_Hide_Playlist()" style=" display:none; z-index:99; position:fixed; bottom:0px; right:0px;  width:40px; margin:0px 5px; height:50px;">
+	   </div>-->
+
+	   <div id="loading_bar" style="display:none; position:fixed; top:0px; left:0px; width:100%; height:100%; padding:0px; background-color:rgba(0,0,0,.6);">
+		   <style>
+{literal}
+#tartalom{
+	background: #ff8080;
+	width:20px;
+	height:20px;
+	margin:auto;
+	border-radius:10px;
+	animation: loading 0.8s;
+	-webkit-animation: loading 0.8s;
+	-moz-animation: loading 0.8s; 
+
+	animation-iteration-count:infinite;
+	-webkit-animation-iteration-count:infinite;
+	-moz-animation-iteration-count:infinite;
+
+}
+
+    /* Chrome, Safari, Opera */
+    @-webkit-keyframes loading {
+	    0% {background: rgba(255,0,0,0.3); width:20px; height:20px; border-radius:10px; margin:15px auto;}
+	    30%{ background: rgba(255,0,0,1); width:50px; height:50px; border-radius:25px; margin:0px auto;}
+	    100% {background: rgba(255,0,0,0.3);  width:20px; height:20px;  border-radius:10px; margin:15px auto; }
+    }
+
+    /* Standard syntax */
+    @keyframes loading {
+	    0% {background: rgba(255,0,0,0.3); width:20px; height:20px; border-radius:10px; margin:15px auto;}
+	    30%{ background: rgba(255,0,0,1); width:50px; height:50px; border-radius:25px; margin:0px auto;}
+	    100% {background: rgba(255,0,0,0.3);  width:20px; height:20px;  border-radius:10px; margin:15px auto; }
+    }
+    {/literal}
+		   </style>
+		   <div id="tartalom">
+
+		   </div>
+	   </div>
+	   <script>
+{literal}	  
+document.getElementById("search_box").addEventListener('keydown',function(e)
+		{
+			if(window.event) // IE
+			{
+				bill = e.keyCode;
+			}
+			else if(e.which) // Netscape/Firefox/Opera
+			{
+				bill = e.which;
+			}
+			if(bill==13)
+			{
+				//Kereses - Enter
+				loadXMLDoc("search.php?type=all&term=",document.getElementById("search_box").value,document.getElementById("content_main"),function(){});
+
+			}
+		});
+{/literal}	  
+	   </script>
+	   <script>
+{literal}	  
+function Kereses_Click()
+{
+	//Kereso gomb - gombnyomás
+	var kereso_doboz=document.getElementById("search_box");
+	if(kereso_doboz.getAttribute("class")=="inactive")
+	{
+		kereso_doboz.setAttribute("class","active");
+		kereso_doboz.focus();
+	}
+	else{ kereso_doboz.setAttribute("class","inactive");}
+}
+{/literal}	  
+	   </script>		
+	   <script>
+{literal}	  
+//mobil ellenorzés
+if (mobile_device==1)
+{	/*Ha mobil, mozgathato a lejatszo kiirasa*/
+	document.getElementById("now_playing_container").style["overflow-x"]="scroll";
+	//document.write('<link rel="stylesheet" type="text/css" href="mobile_style.css">');
+}
+else
+{
+	//document.write('<link rel="stylesheet" type="text/css" href="pc_style.css">');		 
+}
+{/literal}	  
+	   </script>
+
+	   <script> 
+{literal}
+function Item_Click(e) //tracks must be in a div
+{	
+	var sid_list = [];
+	for(var i = 0; i < e.parentNode.children.length; i++)
+	{
+		sid_list.push(e.parentNode.children[i].attributes.sid.value);
+	}
+	tracks = sid_list;
+	index = e.attributes.count.value;
+	next();
+}
+var setto = 0;
+function progress_Click(event)//Zene porgetes
+{
+
+	pos_x = event.offsetX?(event.offsetX):event.pageX-document.getElementById("progress").offsetLeft;
+	percent=(pos_x*100)/document.getElementById("progress").offsetWidth;
+	setto = ((player.duration*percent)/100);
+
+
+
+}
+function Player_Timeupdate()
+{
+	Progressbar();
+
+	if(!isNaN(player.duration)){// ha a hossz nem NaN
+
+		document.getElementById("song_current_time").innerHTML=Math.floor(player.currentTime/60)+":"+Math.round(player.currentTime)%60;// idő
+
+		document.getElementById("song_duration").innerHTML=Math.floor(player.duration/60)+":"+Math.round(player.duration)%60;}//hossz
+
+}
+function Buffer_Progressbar()//BUFFER-Tolto csik
+{
+	if(player.buffered.length>0)
+	{
+		pc=(player.buffered.end(0)/player.duration)*100+"%";
+		document.getElementById("progress_loaded").style["width"]=pc;
+	}}
+
+function Progressbar()//Tolto csik
+{
+	if(setto != 0)
+	{
+		player.currentTime = setto;
+		setto = 0;
+	}
+	p=(player.currentTime/player.duration)*100+"%";	
+	document.getElementById("progress_position").style["width"]=p;
+}
+
+{/literal}
+	   </script> 
+	   <script> //player
+{literal}
+var path = "http://bordak.eu/sowl/upload/uploads/"
+var player = document.getElementById("player_element");
+var tracks = [];
+var index = 0;
+var replay = 0;
+	load_next()
+function toggle(e)
+{
+	if (player.paused)
+	{
+		play();		
+	}
+	else
+	{
+		pause();	
+	}
+}
+function play() 
+{
+	player.playbackRate=1;
+	player.play();
+	//e.innerHTML = "pause";
+	document.getElementById("footer_play_btn").id="footer_pause_btn";
+}
+function pause() 
+{
+	player.pause();
+	//e.innerHTML = "play";
+	document.getElementById("footer_pause_btn").id="footer_play_btn";
+}
+function load_next() 
+{
+	player.src = path + tracks[index] ;
+	if(tracks.length > index+1)
+	{
+		index++;
+	}
+	else
+	{
+		index = 0;		
+	}
+	player.load();
+}
+function next()
+{
+	load_next();
+	play();
+}
+function play_ended()
+{
+	if(replay == 2)
+	{
+		play();
+	}
+	else
+	{
+		if(replay == 0 && index == 0)
+		{
+
+		}
+		else
+		{	
+			next();
+		}
+	}
+}
+function rep_togg(e)
+{	
+	if(replay < 2)
+	{
+		replay++;
+	}
+	else
+	{
+		replay = 0;
+	}
+	e.innerHTML = replay;
+
+}
+{/literal}
+	   </script>
+
+	</body>
 </html>

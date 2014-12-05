@@ -13,7 +13,7 @@ if(isset($_SESSION['views']))
 		$val = 0;
 		if($public == "true" || $public == "1")
 			$val = 1;
-		
+
 		if (!mysqli_query($conn,"UPDATE playlists SET public = '$val' WHERE id='$list_id'"))
 		{
 			die('Error: ' . mysqli_error($conn));
