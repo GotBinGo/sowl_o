@@ -37,9 +37,7 @@ if(count($_FILES > 0))
 				$url = "http://" . $_SERVER["HTTP_HOST"] . dirname($_SERVER["REQUEST_URI"]) . "/../upload/insert.php?author="
 					. $au . "&title=" . $ti;
 				$homepage = file_get_contents($url,false,$context);                
-				var_dump($_SERVER);
-				echo(getcwd() . "\n");
-				if(move_uploaded_file($file['tmp_name'], "/a/sowl/upload/uploads/" . $homepage))
+				if(move_uploaded_file($file['tmp_name'], "../upload/uploads/" . $homepage))
 				{
 					$sql="UPDATE tracks SET file_type='".$file['type']."' WHERE file_name='" . $homepage ."'";
 					if (!mysqli_query($conn,$sql)) {
