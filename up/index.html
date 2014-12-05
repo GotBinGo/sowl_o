@@ -144,7 +144,7 @@ function readfiles() {
 				}
 			}
 
-			xhr.open('POST', './upload.php');
+			xhr.open('POST', 'upload.php');
 			xhr.onload = function() {
 				progress.value = progress.innerHTML = 100;
 			};

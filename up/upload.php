@@ -34,23 +34,12 @@ if(count($_FILES > 0))
 				 */
 				$ti = rawurlencode($ti);
 				$au = rawurlencode($au);
-				$url = "../upload/insert.php?author=" . $au ."&title=" . $ti;
-				//    $url = rawurlencode(utf8_encode($url));
-				/*$parts = parse_url($url);
-				$path_parts = array_map('rawurldecode', explode('/', $parts['path']));
-				$url = $parts['scheme'] . '://' .
-				$parts['host'] .
-				implode('/', array_map('rawurlencode', $path_parts));*/
-				//$url = rawurlencode($url);
-				//$url = str_replace(' ', '%20', $url);
-
-				//var_dump($url);
-
-				/*  die $url;
-				$homepage = "";*/
+				$url = "http://" . $_SERVER["HTTP_HOST"] . dirname($_SERVER["REQUEST_URI"]) . "/../upload/insert.php?author="
+					. $au . "&title=" . $ti;
 				$homepage = file_get_contents($url,false,$context);                
-				echo "$homepage";
-				if(move_uploaded_file($file['tmp_name'], "../upload/uploads/" . $homepage))
+				var_dump($_SERVER);
+				echo(getcwd() . "\n");
+				if(move_uploaded_file($file['tmp_name'], "/a/sowl/upload/uploads/" . $homepage))
 				{
 					$sql="UPDATE tracks SET file_type='".$file['type']."' WHERE file_name='" . $homepage ."'";
 					if (!mysqli_query($conn,$sql)) {
