@@ -1,9 +1,10 @@
 <?php
-$conn=mysqli_connect("127.0.0.1","bcophm_music",'123456',"bcophm_music");
+require_once("config.php");
+$conn=mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 mysqli_query($conn, "set names 'utf8'");
 if (mysqli_connect_errno()) 
 {
-	echo "Failed to connect to MySQL: " . mysqli_connect_error();
+	echo("Failed to connect to MySQL: " . mysqli_connect_error());
 	return;
 }
 ?>
