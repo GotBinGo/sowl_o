@@ -1,8 +1,7 @@
 <?php	
 $id = mysql_escape_string($_GET['id']);
 include("conn.php");
-require_once('libs/Smarty.class.php');
-$smarty = new Smarty;
+require_once('smarty.php');
 
 session_start();
 if(isset($_SESSION['views']))

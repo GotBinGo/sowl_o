@@ -1,6 +1,5 @@
 <?php
-require_once('libs/Smarty.class.php');
-$smarty = new Smarty;
+require_once('smarty.php');
 $username = mysql_escape_string($_POST['username']);
 $password = mysql_escape_string($_POST['password']);
 include("conn.php");

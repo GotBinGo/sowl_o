@@ -1,7 +1,6 @@
 <?php	
-require_once('libs/Smarty.class.php');
+require_once('smarty.php');
 require_once('conn.php');
-$smarty = new Smarty;
 
 $term = mysql_escape_string($_GET['term']);
 $type = mysql_escape_string($_GET['type']);

@@ -2,8 +2,7 @@
 $name = mysql_escape_string($_GET['name']);
 include("conn.php");
 
-require_once('libs/Smarty.class.php');
-$smarty = new Smarty;
+require_once('smarty.php');
 session_start();
 if($name == "")
 	$name =  $_SESSION['views'][1];
