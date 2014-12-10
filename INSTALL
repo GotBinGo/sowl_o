@@ -1,0 +1,10 @@
+MySQL:
+	Follow the steps described in install.php
+
+Smarty:
+	Download the latest package and copy (or link) its 'libs'
+	directory to project root.
+
+PHP:
+	We use mysql and mysqli modules.
+
