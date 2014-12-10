@@ -4,7 +4,7 @@ require_once('conn.php');
 
 $term = mysql_escape_string($_GET['term']);
 $type = mysql_escape_string($_GET['type']);
-$num = mysql_escape_string($_GET['num']);
+$num = isset($_GET['num']) ? mysql_escape_string($_GET['num']) : 0;
 $limit = "";
 if($num > 0)
 	$limit = "LIMIT ".$num;
@@ -65,6 +65,8 @@ else
 		//$jk = "kay";
 		//		echo "\\$jku\\";
 		$result = mysqli_query($conn,"SELECT *, levenshtein_ratio(track_name, '$term') AS lr FROM tracks ORDER BY lr DESC");
+		if($result === false)
+			echo("query failed: " . $conn->error . "\n");
 		//		$result = mysqli_query($conn,"SELECT * , levenshtein_ratio(track_name,'$term') AS lr FROM tracks AND (file_type='audio/mpeg' OR file_type='audio/mp3') ORDER BY lr");
 		//		$result = mysqli_query($conn,"SELECT *  FROM tracks WHERE $jkt AND (file_type='audio/mpeg' OR file_type='audio/mp3') ORDER BY id $limit");
 		//$result = mysqli_query($conn,"SELECT * FROM tracks WHERE (author_name LIKE '%$term%' OR track_name LIKE '%$term%') AND (file_type='audio/mpeg' OR file_type='audio/mp3') ORDER BY id $limit");
@@ -125,6 +127,7 @@ else
 			}
 
 			$smarty->assign('avatar', $row[3]);
+			$smarty->assign('pub', -1);
 			$smarty->display('tpl/list.html');
 		}		
 	}

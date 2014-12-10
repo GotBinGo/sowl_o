@@ -1,5 +1,5 @@
 <?php	
-$name = mysql_escape_string($_GET['name']);
+$name = isset($_GET['name']) ? mysql_escape_string($_GET['name']) : "";
 include("conn.php");
 
 require_once('smarty.php');

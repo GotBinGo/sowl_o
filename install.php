@@ -135,19 +135,15 @@ $db->query("delete from users;");
 $db->query("insert into users (name, password, display_name) VALUES".
 	"('root', 'e10adc3949ba59abbe56e057f20f883e', 'Alapértelmezett felhasználó');");
 
-$db->query("
-DROP FUNCTION IF EXISTS `levenshtein`;
+$fn_query_string = "DROP FUNCTION IF EXISTS `levenshtein`;
 CREATE FUNCTION `levenshtein`(`s1` VARCHAR(255) CHARACTER SET utf8, `s2` VARCHAR(255) CHARACTER SET utf8)
 	RETURNS TINYINT UNSIGNED
 	NO SQL
 	DETERMINISTIC
 BEGIN
 	DECLARE s1_len, s2_len, i, j, c, c_temp TINYINT UNSIGNED;
-	-- max strlen=255 for this function
 	DECLARE cv0, cv1 VARBINARY(256);
 	
-	-- if any param is NULL return NULL
-	-- (consistent with builtin functions)
 	IF (s1 + s2) IS NULL THEN
 		RETURN NULL;
 	END IF;
@@ -159,8 +155,6 @@ BEGIN
 		i = 1,
 		c = 0;
 	
-	-- if any string is empty,
-	-- distance is the length of the other one
 	IF (s1 = s2) THEN
 		RETURN 0;
 	ELSEIF (s1_len = 0) THEN
@@ -203,6 +197,8 @@ BEGIN
 	
 	RETURN c;
 END;
+
+
 DROP FUNCTION IF EXISTS `levenshtein_ratio`;
 CREATE FUNCTION `levenshtein_ratio`(`s1` VARCHAR(255) CHARACTER SET utf8, `s2` VARCHAR(255) CHARACTER SET utf8)
 	RETURNS TINYINT UNSIGNED
@@ -214,7 +210,72 @@ BEGIN
 	DECLARE s2_len TINYINT UNSIGNED DEFAULT CHAR_LENGTH(s2);
 	RETURN ((levenshtein(s1, s2) / IF(s1_len > s2_len, s1_len, s2_len)) * 100);
 END;
-");
+
+
+DROP FUNCTION IF EXISTS levenshtein_lentz;
+CREATE FUNCTION levenshtein_lentz(s1 VARCHAR(255) CHARACTER SET utf8, s2 VARCHAR(255) CHARACTER SET utf8)
+	RETURNS INT
+	DETERMINISTIC
+BEGIN
+	DECLARE s1_len, s2_len, i, j, c, c_temp, cost INT;
+	DECLARE s1_char CHAR CHARACTER SET utf8;
+	-- max strlen=255 for this function
+	DECLARE cv0, cv1 VARBINARY(256);
+
+	SET s1_len = CHAR_LENGTH(s1),
+		s2_len = CHAR_LENGTH(s2),
+		cv1 = 0x00,
+		j = 1,
+		i = 1,
+		c = 0;
+
+	IF (s1 = s2) THEN
+		RETURN (0);
+	ELSEIF (s1_len = 0) THEN
+		RETURN (s2_len);
+	ELSEIF (s2_len = 0) THEN
+		RETURN (s1_len);
+	END IF;
+
+	WHILE (j <= s2_len) DO
+		SET cv1 = CONCAT(cv1, CHAR(j)),
+		j = j + 1;
+	END WHILE;
+
+	WHILE (i <= s1_len) DO
+		SET s1_char = SUBSTRING(s1, i, 1),
+		c = i,
+		cv0 = CHAR(i),
+		j = 1;
+
+		WHILE (j <= s2_len) DO
+			SET c = c + 1,
+			cost = IF(s1_char = SUBSTRING(s2, j, 1), 0, 1);
+
+			SET c_temp = ORD(SUBSTRING(cv1, j, 1)) + cost;
+			IF (c > c_temp) THEN
+				SET c = c_temp;
+			END IF;
+
+			SET c_temp = ORD(SUBSTRING(cv1, j+1, 1)) + 1;
+			IF (c > c_temp) THEN
+				SET c = c_temp;
+			END IF;
+
+			SET cv0 = CONCAT(cv0, CHAR(c)),
+				j = j + 1;
+		END WHILE;
+
+		SET cv1 = cv0,
+		i = i + 1;
+	END WHILE;
+
+	RETURN (c);
+END;
+";
+//$fn_query_string = file_get_contents("string.sql");
+
+$result = $db->multi_query($fn_query_string);
 
 if($result === false)
 	echo("failed to add function levenshtein_ratio: " . $db->error . "\n");
