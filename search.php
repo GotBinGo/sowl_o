@@ -12,7 +12,6 @@ if($num > 0)
 
 
 
-
 if($type == 'all' || $type == '')
 {
 	//echo "search results";
@@ -82,9 +81,10 @@ else
 	{
 		//$result = mysqli_query($conn,"SELECT id, user_id, name, avatar FROM playlists WHERE name LIKE '%$term%' AND public ORDER BY id $limit");
 		$result = mysqli_query($conn,"SELECT id, user_id, name, avatar FROM playlists WHERE $jkl AND public ORDER BY id $limit");
+		if($result === false)
+			echo("list query failed: " . $conn->error . "\n");
 	}
 
-	mysqli_close($conn);
 	$count = 0;
 	echo $type."s with \"".$term."\"" ;
 	while($row = mysqli_fetch_array($result))
@@ -99,6 +99,8 @@ else
 			$smarty->assign('count', $count);
 			if($user_id != 0)
 				$smarty->assign('playlists', $playlists);
+			else
+				$smarty->assign('playlists', '');
 
 			$smarty->display('tpl/playlist_div.html');
 
@@ -133,5 +135,6 @@ else
 	}
 }
 
+mysqli_close($conn);
 
 ?>

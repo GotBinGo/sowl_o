@@ -10,17 +10,11 @@ if(isset($_SESSION['views']))
 	$n = $session[0];
 
 	$playlists = array();
-	$user_id = 0;
-	session_start();
-	if(isset($_SESSION['views']))
+	$user_id = $session[0];
+	$result = mysqli_query($conn,"SELECT id, name FROM playlists WHERE user_id='$user_id'");
+	while($row = mysqli_fetch_array($result))
 	{
-		$session = $_SESSION['views'];	
-		$user_id = $session[0];
-		$result = mysqli_query($conn,"SELECT id, name FROM playlists WHERE user_id='$user_id'");
-		while($row = mysqli_fetch_array($result))
-		{
-			array_push($playlists, array($row['id'], $row['name']));
-		}
+		array_push($playlists, array($row['id'], $row['name']));
 	}
 
 	$result = mysqli_query($conn,"SELECT * FROM playlists WHERE id = '$id' AND  (public = '1' OR user_id = '$n')");

@@ -88,16 +88,18 @@ $result = $db->query("create table if not exists playlists( ".
 	"name varchar(255) not null, ".
 	"user_id int(11) not null, ".
 	"public tinyint(1) not null, ".
-	"avatar varchar(255) not null ".
-	") engine=MyISAM auto_increment=24 default charset=utf8;");
+	"avatar varchar(255) not null, ".
+	"primary key(id) ".
+	") default charset=utf8;");
 if($result === false)
 	echo("couldn't create table 'playlists': " . $db->error . "\n");
 
 $result = $db->query("create table if not exists playlist_track ( ".
 	"id int(11) not null, ".
 	"playlist_id int(11) not null, ".
-	"track_id int(11) not null ".
-	") engine=MyISAM auto_increment=166 default charset=utf8;");
+	"track_id int(11) not null, ".
+	"primary key(id) ".
+	") default charset=utf8;");
 if($result === false)
 	echo("couldn't create table 'playlist_track': " . $db->error . "\n");
 
@@ -109,27 +111,26 @@ $result = $db->query("create table if not exists tracks ( ".
 	"user_id int(11) not null, ".
 	"upload_date date not null, ".
 	"file_type text not null ".
-	") engine=MyISAM auto_increment=826 default charset=utf8;");
+	") default charset=utf8;");
 if($result === false)
 	echo("couldn't create table 'tracks': " . $db->error . "\n");
 
 $result = $db->query("create table if not exists users ( ".
-	"id int(11) not null, ".
+	"id int(11) not null auto_increment, ".
 	"name varchar(255) not null, ".
 	"password varchar(255) not null, ".
 	"salt varchar(255) not null, ".
 	"fbid varchar(255) not null, ".
 	"display_name varchar(255) not null, ".
-	"avatar varchar(255) not null ".
-	") engine=MyISAM auto_increment=6 default charset=utf8;");
+	"avatar varchar(255) not null, ".
+	"primary key(id) ".
+	") default charset=utf8;");
 if($result === false)
 	echo("couldn't create table 'users': " . $db->error . "\n");
 
 
-$db->query("alter table 'playlists' add primary key ('id');");
-$db->query("alter table 'playlist_track' add primary key ('id');");
 $db->query("alter table 'tracks' add primary key ('id'), add key 'track_id' ('id');");
-$db->query("alter table 'users' add primary key ('id');");
+$db->query("alter table 'users' auto_increment = 1;");
 
 $db->query("delete from users;");
 $db->query("insert into users (name, password, display_name) VALUES".
@@ -273,7 +274,6 @@ BEGIN
 	RETURN (c);
 END;
 ";
-//$fn_query_string = file_get_contents("string.sql");
 
 $result = $db->multi_query($fn_query_string);
 
