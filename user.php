@@ -62,7 +62,7 @@ if(mysqli_num_rows($result) == 1)
 		$ki_p = ob_get_clean();
 		echo $ki_p;*/
 	}
-	if($_SESSION['views'][0] == $user_id)
+	if(isset($_SESSION['views']) && $_SESSION['views'][0] == $user_id)
 	{
 		$smarty->assign('type', "list");
 		$smarty->assign('id',0);

@@ -63,7 +63,7 @@ else
 
 		//$jk = "kay";
 		//		echo "\\$jku\\";
-		$result = mysqli_query($conn,"SELECT *, levenshtein_ratio(track_name, '$term') AS lr FROM tracks ORDER BY lr DESC");
+		$result = mysqli_query($conn,"SELECT *, levenshtein_ratio(track_name, '$term') AS lr FROM tracks ORDER BY lr ASC");
 		if($result === false)
 			echo("query failed: " . $conn->error . "\n");
 		//		$result = mysqli_query($conn,"SELECT * , levenshtein_ratio(track_name,'$term') AS lr FROM tracks AND (file_type='audio/mpeg' OR file_type='audio/mp3') ORDER BY lr");
@@ -87,7 +87,7 @@ else
 
 	$count = 0;
 	echo $type."s with \"".$term."\"" ;
-	while($row = mysqli_fetch_array($result))
+	while($result && $row = mysqli_fetch_array($result))
 	{
 		if($type == 'track')
 		{	
@@ -134,7 +134,5 @@ else
 		}		
 	}
 }
-
-mysqli_close($conn);
 
 ?>

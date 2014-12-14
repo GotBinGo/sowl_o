@@ -241,14 +241,14 @@ document.getElementById("search_box").addEventListener('keyup',function(e){
 	{
 		bill = e.which;
 	}
-	//if(bill==13){
+	if(bill==13){
 	//Kereses - Enter
 	loadXMLDoc("search.php?type=all&term="+document.getElementById("search_box").value,
 			document.getElementById("content_main"),
 			function(){},
 			true);
 	hidePlaylist();
-	//}
+	}
 });
 {/literal}	  
 		</script>
