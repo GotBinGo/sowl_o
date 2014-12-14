@@ -70,7 +70,8 @@ if($root_pass != '')
 	$db->close();
 }
 
-$db = new mysqli(DB_HOST, DB_USER, DB_PASS);
+$db = new mysqli(DB_HOST, DB_USER, DB_PASS); //celszeru lenne conn.php-t hszanalni
+$db->set_charset("utf8"); //mysqli milyen kodolast var
 $db->query("set names 'utf-8';");
 $db->query("SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO';");
 $db->query("SET time_zone = '+00:00';");
