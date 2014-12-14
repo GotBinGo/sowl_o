@@ -12,12 +12,12 @@ require_once('config.php');
 define('MYSQL_ROOT_PASSWORD', '');
 
 
-function create_user($db, $username, $host = "localhost", $password = "123456")
+function create_user($conn, $username, $host = "localhost", $password = "123456")
 {
-	$result = $db->query("create user '$username'@'$host' identified by '$password';");
+	$result = $conn->query("create user '$username'@'$host' identified by '$password';");
 	$result2 = false;
 	if($result !== false)
-		$result2 = $db->query("grant all privileges on *.* to '$username'@'$host' with grant option;");
+		$result2 = $conn->query("grant all privileges on *.* to '$username'@'$host' with grant option;");
 
 	return $result && $result2;
 }
@@ -51,40 +51,39 @@ else
 $user_found = false;
 if($root_pass != '')
 {
-	$db = new mysqli(DB_HOST, 'root', $root_pass);
-	$result = $db->query("select User from mysql.user where User = '" . DB_USER . "';");
+	$conn = new mysqli(DB_HOST, 'root', $root_pass);
+	$result = $conn->query("select User from mysql.user where User = '" . DB_USER . "';");
 	if($result === false)
-		echo("couldn't check user list: " . $db->error . "\n");
+		echo("couldn't check user list: " . $conn->error . "\n");
 
 	if(get_single_result($result) == DB_USER)
 		$user_found = true;
 
 	if(!$user_found)
 	{
-		$result = create_user($db, DB_USER, DB_HOST, DB_PASS);
+		$result = create_user($conn, DB_USER, DB_HOST, DB_PASS);
 
 		if($result == false)
 			echo("couldn't create MySQL user");
 	}
 
-	$db->close();
+	$conn->close();
 }
 
-$db = new mysqli(DB_HOST, DB_USER, DB_PASS); //celszeru lenne conn.php-t hszanalni
-$db->set_charset("utf8"); //mysqli milyen kodolast var
-$db->query("set names 'utf-8';");
-$db->query("SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO';");
-$db->query("SET time_zone = '+00:00';");
+require_once("conn.php");
+$conn->set_charset("utf8"); //mysqli milyen kodolast var
+$conn->query("SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO';");
+$conn->query("SET time_zone = '+00:00';");
 
-$result = $db->query("create database if not exists " . DB_NAME . ";");
+$result = $conn->query("create database if not exists " . DB_NAME . ";");
 if($result === false)
-	echo("error while trying to create database: " . $db->error . "\n");
+	echo("error while trying to create database: " . $conn->error . "\n");
 
-$result = $db->query("use " . DB_NAME . ";");
+$result = $conn->query("use " . DB_NAME . ";");
 if($result === false)
-	echo("error while trying to select database: " . $db->error . "\n");
+	echo("error while trying to select database: " . $conn->error . "\n");
 
-$result = $db->query("create table if not exists playlists( ".
+$result = $conn->query("create table if not exists playlists( ".
 	"id int(11) not null auto_increment, ".
 	"name varchar(255) not null, ".
 	"user_id int(11) not null, ".
@@ -93,18 +92,18 @@ $result = $db->query("create table if not exists playlists( ".
 	"primary key(id) ".
 	") default charset=utf8;");
 if($result === false)
-	echo("couldn't create table 'playlists': " . $db->error . "\n");
+	echo("couldn't create table 'playlists': " . $conn->error . "\n");
 
-$result = $db->query("create table if not exists playlist_track ( ".
+$result = $conn->query("create table if not exists playlist_track ( ".
 	"id int(11) not null auto_increment, ".
 	"playlist_id int(11) not null, ".
 	"track_id int(11) not null, ".
 	"primary key(id) ".
 	") default charset=utf8;");
 if($result === false)
-	echo("couldn't create table 'playlist_track': " . $db->error . "\n");
+	echo("couldn't create table 'playlist_track': " . $conn->error . "\n");
 
-$result = $db->query("create table if not exists tracks ( ".
+$result = $conn->query("create table if not exists tracks ( ".
 	"id int(11) not null auto_increment, ".
 	"file_name text character set utf8 collate utf8_general_ci not null, ".
 	"author_name text character set utf8 collate utf8_general_ci not null, ".
@@ -115,9 +114,9 @@ $result = $db->query("create table if not exists tracks ( ".
 	"primary key(id) ".
 	") default charset=utf8;");
 if($result === false)
-	echo("couldn't create table 'tracks': " . $db->error . "\n");
+	echo("couldn't create table 'tracks': " . $conn->error . "\n");
 
-$result = $db->query("create table if not exists users ( ".
+$result = $conn->query("create table if not exists users ( ".
 	"id int(11) not null auto_increment, ".
 	"name varchar(255) not null, ".
 	"password varchar(255) not null, ".
@@ -128,15 +127,15 @@ $result = $db->query("create table if not exists users ( ".
 	"primary key(id) ".
 	") default charset=utf8;");
 if($result === false)
-	echo("couldn't create table 'users': " . $db->error . "\n");
+	echo("couldn't create table 'users': " . $conn->error . "\n");
 
 
-$db->query("alter table 'users' auto_increment = 1;");
-$db->query("alter table 'tracks' add key track_id(id);");
-$db->query("alter table 'playlists' auto_increment = 1;");
+$conn->query("alter table 'users' auto_increment = 1;");
+$conn->query("alter table 'tracks' add key track_id(id);");
+$conn->query("alter table 'playlists' auto_increment = 1;");
 
-$db->query("delete from users;");
-$db->query("insert into users (name, password, display_name) VALUES".
+$conn->query("delete from users;");
+$conn->query("insert into users (name, password, display_name) VALUES".
 	"('root', 'e10adc3949ba59abbe56e057f20f883e', 'Alapértelmezett felhasználó');");
 
 $fn_query_string = "DROP FUNCTION IF EXISTS `levenshtein`;
@@ -278,13 +277,13 @@ BEGIN
 END;
 ";
 
-$result = $db->multi_query($fn_query_string);
+$result = $conn->multi_query($fn_query_string);
 
 if($result === false)
-	echo("failed to add function levenshtein_ratio: " . $db->error . "\n");
+	echo("failed to add function levenshtein_ratio: " . $conn->error . "\n");
 
 
-$db->close();
+$conn->close();
 
 echo("done.\n");
 
