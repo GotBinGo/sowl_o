@@ -309,8 +309,10 @@ div {
 	}
 	#fejlec_cim{
 		font-size:34px;
+		padding-top:6px;
 	}
-	#search_box	{
+	#search_box
+	{
 		transition:width .2s;
 	}
 
