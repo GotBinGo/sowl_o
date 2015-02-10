@@ -1,5 +1,6 @@
-﻿body{
+body{
 	overflow-y:scroll;
+	font-family:"Helvetica", "Helvetica Neue", Arial;  
 }
 div {
 	display:block;
@@ -12,13 +13,14 @@ div {
 	padding:0px 10px;
 }
 .List_Item{
-	margin:5px 0px ;
-	font-family:Helvetica, Arial, sans-serif;
+	margin:0;
+	border-bottom:1px solid white; 
+	font-family:Helvetica Neue, Arial; 
 	display:block;
 	position:relative;/**/
 }
 .List_Item .title{
-	padding:15px 5px 15px 25px ;
+	padding:15px 5px 15px 25px ; 
 	display:inline-block;
 }
 .List_Item[type=track] .list-item-contols{
@@ -47,8 +49,21 @@ div {
 	height:30px;
 	margin-right:5px;
 }
-
-
+.List_Item img{
+	vertical-align:middle;
+	border-radius:50%;
+}
+.list_header{
+	font-size:34px;
+	padding:0 0 15px 0;
+	border-bottom: 1px solid #fff;
+}
+.list_header  img{
+	border-radius: 50%;
+	width:120px;
+	height:120px;
+	vertical-align: text-top;
+}
 #header{
 	top:0px;
 	left:0px;
@@ -59,17 +74,22 @@ div {
 	height:40px;
 	border:none;
 }
-#fejlec_cim{
-	margin-top:8px;
-	font-size:24px;
-	font-family:Helvetica, Arial, sans-serif;
+#fejlec_cim{ 
+	margin-top:2px; 
+	font-size:24px; 
+	font-family:"Bauhaus 93","Helvetica", "Helvetica Neue", Arial;   
 }
 #search_box{
-	border-radius:0px;
+	border-radius:0px; 
 	border:none;
 	box-sizing:border-box;
+	outline:none;
 }
-#playlist_container{
+#content_container, #playlist_container{
+	color:#ffffff;
+	padding:15px;
+	/*box-shadow: 5px 5px 8px #000, -5px -5px 8px #000, 5px -5px 8px #000, -5px 5px 8px #000;*/
+	box-shadow:0 0 8px 3px #000;
 }
 #now_playing{
 	font-family:Arial;
@@ -80,8 +100,8 @@ div {
 	vertical-align:bottom;
 	padding-bottom:8px;
 	text-align:center;
-	font-family:"Helvetica Neue", Arial;
-	font-size:12px;
+	font-family:"Helvetica", "Helvetica Neue", Arial; 
+	font-size:12px; 
 }
 #footer_player_container{
 	position:fixed;
@@ -95,8 +115,8 @@ div {
 
 /*Toltocsik*/
 #progress{
-	width:100%;
-	height:10px;
+	width:100%; 
+	height:10px; 
 	margin:5px 0px; /*10 0*/
 	overflow:hidden;
 	border-radius:5px;
@@ -155,7 +175,6 @@ div {
 
 /*Login*/
 #login_box{
-	background-color:#006680;
 	padding:10px;	
 }
 #login_box form{
@@ -171,25 +190,23 @@ div {
 	box-sizing:border-box;
 }
 #login_box input[type=submit]{
-	width:100%;
-	border-radius:0px;
+	width:100%; 
+	border-radius:0px; 
 	border:0;
 	font-weight:bold;
-	color:#ffffff;
-	background-color:#0088aa;
 }
 
 /*Login end*/
 
 /*Loading*/
 #loading_bar{
-	position:fixed;
+	position:fixed; 
 	top:0px;
 	left:0px;
-	display:none;
-	width:100%;
-	height:5px;
-	padding:0px;
+	display:none; 
+	width:100%; 
+	height:5px; 
+	padding:0px; 
 	overflow:hidden;
 }
 #loading_bar div {
@@ -228,7 +245,6 @@ div {
 		left: 100%;
 	}
 }
-
 @keyframes loading_animation {
 	0% {
 		left: 0%;
@@ -241,11 +257,20 @@ div {
 
 
 /*SZINEK*/
-.List_Item{
-	background-color:#afdde9;
+body{
+	background-color: #181818;
 }
-#playlist_button,#footer_play_btn,#footer_pause_btn,#search_box,#progress_position{
+.List_Item{
+	//background-color:#252525;
+}
+#playlist_button{
+
+}
+#footer_play_btn,#footer_pause_btn,#progress_position{
 	background-color:#00b5e3;
+}
+#search_box{
+	background-color: #777777;
 }
 #progress_loaded{
 	background-color:#0088aa;
@@ -254,13 +279,19 @@ div {
 	background-color:#004455
 }
 #footer_player_container, #header{
-	background-color:#006680;
+	background-color:#353535;
 }
-#playlist_container{
-	background-color:#37abc8;
+#content_container, #playlist_container{
+	background-color:#252525;
+}
+#login_box{
+	background-color: #333333;
+}
+#login_box input[type=submit]{
+	background-color: #0088AA;
 }
 .List_Item{
-	color:#004455;
+	color:#ffffff;
 }
 #fejlec_cim{
 	color:#00b5e3;
@@ -270,6 +301,9 @@ div {
 }
 #playlist_container{
 	color:#ffffff;
+}
+#login_box input[type=submit]{
+	color: #ffffff;
 }
 
 
@@ -301,41 +335,45 @@ div {
 		width:300px;
 	}
 	.List_Item:hover{
-		background-color:#87cdde;
+		background-color:#555555;
 		cursor:pointer;
 	}
 	#fejlec{
-		width:90%;
+		width:90%; 
 	}
 	#fejlec_cim{
 		font-size:34px;
-		padding-top:6px;
 	}
-	#search_box
-	{
+	#search_box	{
 		transition:width .2s;
 	}
 
 	/*Gombok*/
 	#search_button:hover ,#search_button:focus{
-		background-color:#0088aa;
+		background-color:#777777;
 	}
 	#login_button:hover ,#login_button:focus{
-		background-color:rgba(0,255,0,.3);
+		//background-color:rgba(0,255,0,.3);
+		background-color:#777777;
 	}
 	#logout_button:hover ,#logout_button:focus{
-		background-color:rgba(255,0,0,.3);
+		//background-color:rgba(255,0,0,.3);
+		background-color:#777777;
 	}
 	#profil_button:hover ,#profil_button:focus{
-		background-color:rgba(0,0,255,.3);
+		//background-color:rgba(0,0,255,.3);
+		background-color:#777777;
 	}
 	#upload_button:hover ,#upload_button:focus{
-		background-color:rgba(0,0,255,.3);
+		//background-color:rgba(0,0,255,.3);
+		background-color:#777777;
 	}
-	#playlist_button:hover ,#playlist_button:focus,
+	#playlist_button:hover ,#playlist_button:focus{
+		background-color:#555555;
+	}
 	#footer_pause_btn:hover,#footer_pause_btn:focus,
 	#footer_play_btn:hover,#footer_play_btn:focus{
-		background-color:#0088aa;
+		background-color:#555555;
 	}
 	/*Login*/
 	#login_box{

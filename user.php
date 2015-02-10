@@ -20,9 +20,9 @@ if(mysqli_num_rows($result) == 1)
 	{
 		$avatar = "upload/img/user/" . $avatar;
 	}
-	echo "<img src='$avatar' height='42' width='42'>"; 
+	echo "<div class=\"list_header\"><img src='$avatar' height='42' width='42'>"; 
 	$ki = $row['display_name'];
-	echo "$ki</br>";
+	echo "$ki</div>";
 	$id = $row['id'];
 
 	if(isset($_SESSION['views']) && $_SESSION['views'][0] == $user_id )

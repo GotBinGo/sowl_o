@@ -12,7 +12,7 @@ if(mysqli_num_rows($result) == 1)
 	{
 		session_start();
 		$_SESSION['views']=array($row[0],$row[1]);
-		echo "logged in";
+		//echo "Logging in to our secure system";
 		echo "<meta http-equiv='refresh' content='0; url=./'/>";
 
 	}
@@ -21,6 +21,7 @@ if(mysqli_num_rows($result) == 1)
 		echo "login error";
 	}
 }
-
+else
+	echo "<meta http-equiv='refresh' content='0; url=./'/>";
 
 ?>

@@ -38,6 +38,7 @@ if(mysqli_num_rows($result) == 1 || ($id == 0 && isset($_SESSION['views'])))
 		//$avatar = "";
 		$avatar = "upload/img/list/" . $avatar;
 	}
+	echo "<div class=\"list_header\">";
 	echo "<img src='$avatar' height='42' width='42'>"; 
 	$user_id = $row['user_id'];	
 	if($id == 0)
@@ -50,6 +51,8 @@ if(mysqli_num_rows($result) == 1 || ($id == 0 && isset($_SESSION['views'])))
 		echo $row['name']."<a class='download_btn' onclick='event.stopPropagation()' href='upload/down_list.php?id=$id' download></a>";			
 		$result = mysqli_query($conn,"SELECT t.id AS id, t.file_name AS file_name , t.author_name AS author_name, t.track_name AS track_name FROM playlist_track AS pt, tracks AS t WHERE t.id = pt.track_id AND pt.playlist_id = '$id' ORDER BY t.id");
 	}
+	echo "</div>";
+
 	$count = 0;	
 	if(mysqli_num_rows($result) > 0)
 	{			

@@ -7,41 +7,42 @@
 	<style>
 
 	#holder {
-		border: 10px dashed #ccc; 
-		width: 300px; 
-		min-height: 300px;
+		border: 10px dashed #ccc;
+		width: 100%;
+		min-height: 450px;
 		margin: 20px auto;
+		box-sizing:border-box;
 	}
 	#holder.bg {
 		background:url('uploadbg.svg') no-repeat;
 		background-position:center;
 		background-size:300px;
 	}
-	#holder.hover { 
-		border: 10px dashed #0c0; 
+	#holder.hover {
+		border: 10px dashed #0c0;
 	}
-	#holder img { 
-		display: block; 
-		margin: 10px auto; 
+	#holder img {
+		display: block;
+		margin: 10px auto;
 	}
-	#holder p { 
-		margin: 10px; 
-		font-size: 14px; 
+	#holder p {
+		margin: 10px;
+		font-size: 14px;
 	}
-	progress { 
-		width: 100%; 
+	progress {
+		width: 100%;
 		height:40px;
 	}
-	.fail { 
-		background: #c00; 
-		padding: 2px; color: #fff; 
+	.fail {
+		background: #c00;
+		padding: 2px; color: #fff;
 	}
-	.hidden { 
+	.hidden {
 		display: none !important;
 	}
 	.file_preview{
 		display:inline-block;
-		text-align:center; 
+		text-align:center;
 		width:80px;
 		margin:10px;
 		font-size:12px; 	
@@ -51,10 +52,10 @@
 		text-overflow: ellipsis;
 	}
 	.file_preview .file_icon{
-		background-size:80px; 
-		background-position:center; 
-		width:inherit; 
-		height:80px; 
+		background-size:80px;
+		background-position:center;
+		width:inherit;
+		height:80px;
 	}
 	.mp3icon{
 		background:url('mp3logo.svg') no-repeat;
@@ -65,7 +66,7 @@
 	<section id="wrapper">
 		<article>
 			<div id="holder" class="bg">
-			</div> 
+			</div>
 			<p id="upload" class="hidden">
 			<label>
 				Drag & drop not supported in your browser:
@@ -74,8 +75,8 @@
 			</label>
 			</p>
 			<p>
-			<progress id="uploadprogress" min="0" max="100" value="0">
-			</progress>
+			<!--<progress id="uploadprogress" min="0" max="100" value="0">
+			</progress>-->
 			</p>
 		</article>
 	</section>
@@ -86,7 +87,7 @@ var holder = document.getElementById('holder'),
 	    dnd: 'draggable' in document.createElement('span'),
 	    formdata: !!window.FormData,
 	    progress: "upload" in new XMLHttpRequest
-    }, 
+    },
     acceptedTypes = {
 	    //'image/png': true,
 	    //'image/jpeg': true,
@@ -111,7 +112,7 @@ function previewfile(file) {
 		  };
 		  reader.readAsDataURL(file);*/
 		holder.innerHTML +=	"<div class='file_preview' file-id='"+file.size+"'>	<div class='file_icon mp3icon'></div><div class='file_name'>"+ file.name+"</div><div class='file_size'>"+(file.size ? (file.size/1024|0) + 'K' : '')+"</div><div class='progress'>0%</div></div>";
-	}  
+	} 
 	else {
 		/*holder.innerHTML += '<p>Uploaded ' + file.name + ' ' + (file.size ? (file.size/1024|0) + 'K' : '');		
 		  console.log(file);*/
@@ -165,7 +166,7 @@ function readfiles() {
 	reader.readAsBinaryString(files[0]);
 }
 
-if (tests.dnd) { 
+if (tests.dnd) {
 	holder.ondragover = function () { this.className = 'hover'; return false; };
 	holder.ondragend = function () { this.className = ''; return false; };
 	holder.ondrop = function (e) {
@@ -190,7 +191,7 @@ if (tests.dnd) {
 			}
 		}
 	}
-} 
+}
 else {
 	fileupload.className = 'hidden';
 	fileupload.querySelector('input').onchange = function () {
