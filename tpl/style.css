@@ -190,10 +190,8 @@ div {
 	box-sizing:border-box;
 }
 #login_box input[type=submit]{
-	width:100%; 
-	border-radius:0px; 
-	border:0;
 	font-weight:bold;
+	padding:0;
 }
 
 /*Login end*/
