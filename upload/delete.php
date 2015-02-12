@@ -1,19 +1,18 @@
 <?php
-require_once('../db.php');
+set_include_path("..:" . get_include_path());
+require_once('db.php');
 session_start();
 if(isset($_SESSION['views']))
 {
-	$session = $_SESSION['views'];
+	$user = $_SESSION['views'];
 	$id = mysqli_real_escape_string($conn, $_GET['id']);
 	$id = htmlspecialchars($id, ENT_QUOTES, 'UTF-8');
 	if(strlen($id))
 	{
-		$n =  $session[0];
-
 		$sql="SELECT user_id, file_name FROM tracks WHERE id = '$id'";
 		$result = mysqli_query($conn,$sql);
 		$row = mysqli_fetch_array($result);
-		if ($row['user_id'] == $n)
+		if ($row['user_id'] == $user->id)
 		{
 			echo "delete {$row['file_name']}";
 			$value = "uploads/" . $row['file_name'];

@@ -1,0 +1,47 @@
+Database Manager Interface:
+    require_once("db.php");
+    Access through: $db
+    Everything except for boolean functions returns FALSE on failure and sets $db->error accordingly
+
+    ->error: Last error as string
+    ->users: User management (see below)
+
+
+User Management:
+    class User
+      ->id: User ID
+      ->name: Username
+      ->display_name: User display name
+      ->fbid: User Facebook FBID
+      ->avatar: Path of the avatar of the user
+      ->last_login: Date of the last login of user
+
+    class UserHandle
+      Provides cached database access to a record
+      ->get() => User
+        Retrieves user data
+
+
+    ->authenticate($username, $password) => UserHandle
+        Safely checks the validity of login data
+
+    ->byID($id) => UserHandle
+        Gets user data by ID
+    
+Playlist Management:
+    class Playlist
+      ->id: ID
+      ->name: Name
+      ->owner_id: User ID of the owner
+      ->isPublic: Boolean, true if the playlist is marked public
+      ->avatar: Path of the avatar
+
+    class PlaylistHandle
+      Provides cached database access to a record
+      ->get() => Playlist
+        Retrieves playlist data
+
+    ->byID($id) => PlaylistHandle
+        Gets playlist data by ID
+
+

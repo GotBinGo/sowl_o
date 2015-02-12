@@ -52,9 +52,8 @@ else
 		session_start();
 		if(isset($_SESSION['views']))
 		{
-			$session = $_SESSION['views'];	
-			$user_id = $session[0];
-			$result = mysqli_query($conn,"SELECT id, name FROM playlists WHERE user_id='$user_id'");
+			$user = $_SESSION['views'];	
+			$result = mysqli_query($conn,"SELECT id, name FROM playlists WHERE user_id='$user->id'");
 			while($row = mysqli_fetch_array($result))
 			{
 				array_push($playlists, array($row['id'], $row['name']));

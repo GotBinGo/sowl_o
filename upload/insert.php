@@ -1,9 +1,10 @@
 <?php
-require_once('../db.php');
+set_include_path("..:" . get_include_path());
+require_once('db.php');
 session_start();
 if(isset($_SESSION['views']))
 {
-	$session = $_SESSION['views'];
+	$user = $_SESSION['views'];
 	$filename = md5(microtime().rand()) . ".mp3";
 	$author = mysqli_real_escape_string($conn, $_GET['author']);
 	$title = mysqli_real_escape_string($conn, $_GET['title']);
@@ -11,8 +12,7 @@ if(isset($_SESSION['views']))
 	$title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
 	if(strlen($author) > 0 && strlen($title) > 0)
 	{
-		$n =  $session[0];
-		$sql="INSERT INTO tracks (file_name, author_name, track_name, user_id) VALUES ('$filename', '$author', '$title', '$n')";
+		$sql="INSERT INTO tracks (file_name, author_name, track_name, user_id) VALUES ('$filename', '$author', '$title', '$user->id')";
 		if (!mysqli_query($conn,$sql)) {
 			die('Error: ' . mysqli_error($conn));
 		}

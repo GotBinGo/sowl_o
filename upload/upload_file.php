@@ -1,5 +1,6 @@
 <?php
-include('../pass.php');
+set_include_path("..:" . get_include_path());
+include('pass.php');
 $con=mysqli_connect("127.0.0.1","bcophm_music",$pass,"bcophm_music");
 if (mysqli_connect_errno()) 
 {

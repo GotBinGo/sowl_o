@@ -6,18 +6,16 @@ require_once('smarty.php');
 session_start();
 if(isset($_SESSION['views']))
 {
-	$session = $_SESSION['views'];
-	$n = $session[0];
+	$user = $_SESSION['views'];
 
 	$playlists = array();
-	$user_id = $session[0];
-	$result = mysqli_query($conn,"SELECT id, name FROM playlists WHERE user_id='$user_id'");
+	$result = mysqli_query($conn,"SELECT id, name FROM playlists WHERE user_id='$user->id'");
 	while($row = mysqli_fetch_array($result))
 	{
 		array_push($playlists, array($row['id'], $row['name']));
 	}
 
-	$result = mysqli_query($conn,"SELECT * FROM playlists WHERE id = '$id' AND  (public = '1' OR user_id = '$n')");
+	$result = mysqli_query($conn,"SELECT * FROM playlists WHERE id = '$id' AND  (public = '1' OR user_id = '$user->id')");
 }
 else
 {
@@ -27,7 +25,6 @@ else
 
 if(mysqli_num_rows($result) == 1 || ($id == 0 && isset($_SESSION['views'])))
 {
-
 	$row = mysqli_fetch_array($result);		
 	$avatar =  $row['avatar'];
 	if($avatar == "")
@@ -41,11 +38,10 @@ if(mysqli_num_rows($result) == 1 || ($id == 0 && isset($_SESSION['views'])))
 	}
 	echo "<div class=\"list_header\">";
 	echo "<img src='$avatar' height='42' width='42'>"; 
-	$user_id = $row['user_id'];	
 	if($id == 0)
 	{
 		echo "Uploads";	
-		$result = mysqli_query($conn,"SELECT * FROM tracks WHERE user_id = '$n' ORDER BY id");			
+		$result = mysqli_query($conn,"SELECT * FROM tracks WHERE user_id = '$user->id' ORDER BY id");			
 	}
 	else
 	{

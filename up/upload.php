@@ -1,5 +1,6 @@
 <?php
-require_once('../db.php');
+set_include_path("..:" . get_include_path());
+require_once('db.php');
 if(count($_FILES > 0))
 {
 	foreach ($_FILES as $file)

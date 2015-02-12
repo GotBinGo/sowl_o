@@ -1,5 +1,7 @@
 <?php
+require_once("db/types.php");
 
-require_once("db/main.php");
+$db = new DatabaseConnection();
+$conn = $db->conn;
 
 ?>

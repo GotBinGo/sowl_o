@@ -4,14 +4,10 @@ require_once("db.php");
 
 require_once('smarty.php');
 session_start();
-if($name == "")
-	$name =  $_SESSION['views'][1];
-$result = mysqli_query($conn,"SELECT * FROM users WHERE name = '$name'");
-if(mysqli_num_rows($result) == 1)
+if(isset($_SESSION["views"]))
 {
-	$row = mysqli_fetch_array($result);
-	$user_id = $row['id'];
-	$avatar = $row['avatar'];
+	$user = $_SESSION['views']->get();
+	$avatar = $user->avatar;
 	if($avatar == "")
 	{
 		$avatar = "upload/img/default_user.png";
@@ -21,66 +17,57 @@ if(mysqli_num_rows($result) == 1)
 		$avatar = "upload/img/user/" . $avatar;
 	}
 	echo "<div class=\"list_header\"><img src='$avatar' height='42' width='42'>"; 
-	$ki = $row['display_name'];
-	echo "$ki</div>";
-	$id = $row['id'];
+	echo "$user->display_name</div>";
 
-	if(isset($_SESSION['views']) && $_SESSION['views'][0] == $user_id )
-	{
+	echo "<input type='text' placeholder='Create new playlist' name='cPlaylist' onkeydown='event.stopPropagation(); if(event.keyCode==13){createPlaylist(this.value);}'>";
+	$result2 = mysqli_query($conn,"SELECT * FROM playlists WHERE user_id='$user->id'"); //belépve
+}
+else
+{
+	$avatar = "upload/img/default_user.png";
+	$result2 = mysqli_query($conn,"SELECT * FROM playlists WHERE user_id='$id' AND public"); //csak a publikus listák
+}
 
-		echo "<input type='text' placeholder='Create new playlist' name='cPlaylist' onkeydown='event.stopPropagation(); if(event.keyCode==13){createPlaylist(this.value);}'>";
-		$result2 = mysqli_query($conn,"SELECT * FROM playlists WHERE user_id='$id'"); //belépve
-	}
+while($row = mysqli_fetch_array($result2))	
+{
+	$smarty->assign('type', "list");
+	$smarty->assign('id', $row['id']);
+	$smarty->assign('name2', $row['name']);							
+	$avatar = $row['avatar'];
+	if($avatar == "")
+		$avatar = "upload/img/default_list.png";
 	else
-	{
-		$result2 = mysqli_query($conn,"SELECT * FROM playlists WHERE user_id='$id' AND public"); //csak a publikus listák
-	}
-	while($row = mysqli_fetch_array($result2))	
-	{
-		//$ki = $row['id'] ." ".$row['name'];
-		//echo "$ki</br>";	
+		$avatar = "upload/img/list/" . $avatar;			
 
-		$smarty->assign('type', "list");
-		$smarty->assign('id', $row['id']);
-		$smarty->assign('name2', $row['name']);							
-		$avatar = $row['avatar'];
-		if($avatar == "")
-			$avatar = "upload/img/default_list.png";
-		else
-			$avatar = "upload/img/list/" . $avatar;			
-
-		$smarty->assign('avatar', $avatar);
-		if($name == $_SESSION['views'][1])
-			$smarty->assign('pub',$row['public'] );
-		else
-			$smarty->assign('pub',"");
-		$smarty->display('tpl/list.html');
+	$smarty->assign('avatar', $avatar);
+	if($name == $_SESSION['views'][1])
+		$smarty->assign('pub',$row['public'] );
+	else
+		$smarty->assign('pub',"");
+	$smarty->display('tpl/list.html');
 		/*
 		ob_start();
 		$_GET['id'] = $row['id'];
 		include 'playlist.php';
 		$ki_p = ob_get_clean();
 		echo $ki_p;*/
-	}
-	if(isset($_SESSION['views']) && $_SESSION['views'][0] == $user_id)
-	{
-		$smarty->assign('type', "list");
-		$smarty->assign('id',0);
-		$smarty->assign('name2', "Uploads");							
-		$smarty->assign('pub',"" );
-		$avatar = "";
-		if($avatar == "")
-			$avatar = "upload/img/default_list.png";
-		else
-			$avatar = "upload/img/list/" . $avatar;			
-
-		$smarty->assign('avatar', $avatar);
-		$smarty->display('tpl/list.html');
-	}
 }
-else
+
+if(isset($_SESSION['views']))
 {
-	echo "no user with that name";
+	$smarty->assign('type', "list");
+	$smarty->assign('id',0);
+	$smarty->assign('name2', "Uploads");							
+	$smarty->assign('pub',"" );
+	$user = $_SESSION["views"]->get();
+	$avatar = $user->avatar;
+	if($avatar == "")
+		$avatar = "upload/img/default_list.png";
+	else
+		$avatar = "upload/img/list/" . $avatar;			
+
+	$smarty->assign('avatar', $avatar);
+	$smarty->display('tpl/list.html');
 }
 mysqli_close($conn);
 ?>	
