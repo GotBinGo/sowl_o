@@ -21,6 +21,7 @@ if(isset($_SESSION['views']))
 }
 else
 {
+	$playlists = array();
 	$result = mysqli_query($conn,"SELECT * FROM playlists WHERE id = '$id' AND public = '1'");
 }
 

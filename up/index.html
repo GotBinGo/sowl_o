@@ -5,89 +5,90 @@
 	<meta name="viewport" content="width=620">
 	<title>Uploader</title>
 	<style>
-
-	#holder {
-		border: 10px dashed #ccc;
-		width: 100%;
-		min-height: 450px;
-		margin: 20px auto;
-		box-sizing:border-box;
-	}
-	#holder.bg {
-		background:url('uploadbg.svg') no-repeat;
-		background-position:center;
-		background-size:300px;
-	}
-	#holder.hover {
-		border: 10px dashed #0c0;
-	}
-	#holder img {
-		display: block;
-		margin: 10px auto;
-	}
-	#holder p {
-		margin: 10px;
-		font-size: 14px;
-	}
-	progress {
-		width: 100%;
-		height:40px;
-	}
-	.fail {
-		background: #c00;
-		padding: 2px; color: #fff;
-	}
-	.hidden {
-		display: none !important;
-	}
-	.file_preview{
-		display:inline-block;
-		text-align:center;
-		width:80px;
-		margin:10px;
-		font-size:12px; 	
-	}
-	.file_preview .file_name,.file_size{			
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	.file_preview .file_icon{
-		background-size:80px;
-		background-position:center;
-		width:inherit;
-		height:80px;
-	}
-	.mp3icon{
-		background:url('mp3logo.svg') no-repeat;
-	}
+		#holder {
+			border: 10px dashed rgba(0, 0, 0,0.2); 
+			width: 100%; 
+			min-height: 450px;
+			margin: 10px auto;
+			box-sizing:border-box;
+			cursor:pointer;
+			background-color:rgba(255,255,255,0);
+		}
+		#holder:hover{
+			background-color:rgba(255, 255, 255,0.05);
+			-webkit-transition: background-color .2s;
+			transition: background-color .2s;
+		}
+		#holder.bg {
+			background-image:url('uploadbg.svg');
+			background-repeat: no-repeat;
+			background-position:center;
+			background-size:300px;
+		}
+		#holder.hover { 
+			border: 10px dashed #00b5e3; 
+			background-color:rgba(255,255,255,0.05);
+			-webkit-transition: background-color .2s;
+			transition: background-color .2s;
+		}
+		#holder img { 
+			display: block; 
+			margin: 10px auto; 
+		}
+		#holder p { 
+			margin: 10px; 
+			font-size: 14px; 
+		}
+		#filebrowser{/*Unvisible*/
+			position:absolute;
+			width:0;
+			height:0;
+		}
+		progress { 
+			width: 100%; 
+			height:15px;
+		}
+		.hidden { 
+			display: none !important;
+		}
+		.file_preview{
+			display:inline-block;
+			text-align:center; 
+			width:80px;
+			margin:10px;
+			font-size:12px; 	
+		}
+		.file_preview .file_name,.file_size{			
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.file_preview .file_icon{
+			background-size:80px; 
+			background-position:center; 
+			width:inherit; 
+			height:80px; 
+		}
+		.mp3icon{
+			background:url('mp3logo.svg') no-repeat;
+		}
 	</style>
 </head>
 <body>
 	<section id="wrapper">
 		<article>
-			<div id="holder" class="bg">
-			</div>
-			<p id="upload" class="hidden">
-			<label>
-				Drag & drop not supported in your browser:
-				<br>
-				<input type="file">
-			</label>
-			</p>
-			<p>
-			<!--<progress id="uploadprogress" min="0" max="100" value="0">
-			</progress>-->
-			</p>
+			<input type="file" id="filebrowser" multiple/>
+			<div id="holder" class="bg"></div> 
+			<progress id="uploadprogress" min="0" max="100" value="0"></progress>
 		</article>
 	</section>
 	<script>
 var holder = document.getElementById('holder'),
-    tests = {
+    tests = {//HTML tests
 	    filereader: typeof FileReader != 'undefined',
 	    dnd: 'draggable' in document.createElement('span'),
 	    formdata: !!window.FormData,
 	    progress: "upload" in new XMLHttpRequest
-    },
+    }, 
     acceptedTypes = {
 	    //'image/png': true,
 	    //'image/jpeg': true,
@@ -95,62 +96,46 @@ var holder = document.getElementById('holder'),
 	    'audio/mpeg': true,
 	    'audio/mp3': true
     },
-    progress = document.getElementById('uploadprogress'),
-    fileupload = document.getElementById('upload');
+    progress = document.getElementById('uploadprogress');
+fileBrowser = document.getElementById('filebrowser');
 var files = new Array();
 
-
-function previewfile(file) {
+function previewFile(file) {
 	if (tests.filereader === true && acceptedTypes[file.type] === true) {
-		/*var reader = new FileReader();
-		  reader.onload = function (event) {
-		  var image = new Image();
-		  image.src = event.target.result;
-		  image.width = 250; // a fake resize
-		  holder.appendChild(image);
-
-		  };
-		  reader.readAsDataURL(file);*/
 		holder.innerHTML +=	"<div class='file_preview' file-id='"+file.size+"'>	<div class='file_icon mp3icon'></div><div class='file_name'>"+ file.name+"</div><div class='file_size'>"+(file.size ? (file.size/1024|0) + 'K' : '')+"</div><div class='progress'>0%</div></div>";
-	} 
+	}  
 	else {
-		/*holder.innerHTML += '<p>Uploaded ' + file.name + ' ' + (file.size ? (file.size/1024|0) + 'K' : '');		
-		  console.log(file);*/
 		holder.innerHTML +=	"<div class='file_preview' file-id='"+file.size+"'>	<div class='file_icon'></div><div class='file_name'>"+ file.name+"</div><div class='file_size'>"+(file.size ? (file.size/1024|0) + 'K' : '')+"</div><div class='progress'>0%</div></div>";
 	}
 }
 
-function readfiles() {
+function readFiles() {
 	var name = files[0].name;
+	var type = files[0].type;
 	var reader = new FileReader();
 	reader.onload = function (event) {
-		var formData = tests.formdata ? new FormData() : null;
-		if (tests.formdata)					
-			formData.append("name",name);
-		formData.append("file",b64toBlob((event.target.result)));
-		//previewfile(files[0]);
-
-
+		var formData = tests.formdata ? new FormData() : null;//create new form
+		if (tests.formdata){				
+			formData.append("name",name);//FORM - name
+			formData.append("file",b64toBlob((event.target.result),type));//FORM - file
+		}		
 		// now post a new XHR request
 		if (tests.formdata) {
-			var xhr = new XMLHttpRequest();
+			var xhr = new XMLHttpRequest();//new XHR
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4) {				
 					document.querySelector("[file-id='"+files[0].size+"'] .progress").innerHTML="OK";
 					console.log(files[0].name+" uploaded\n"+xhr.responseText);
 					files.shift();
 					if(files.length>0)				
-						readfiles(files);
-
+						readFiles(files);					
 				}
-			}
-
-			xhr.open('POST', 'upload.php');
+			}			
+			xhr.open('POST', './upload.php');
 			xhr.onload = function() {
 				progress.value = progress.innerHTML = 100;
 			};
-
-			if (tests.progress) {
+			if (tests.progress) {//Progress bar
 				xhr.upload.onprogress = function (event) {
 					if (event.lengthComputable) {
 						var complete = (event.loaded / event.total * 100 | 0);
@@ -159,47 +144,39 @@ function readfiles() {
 					}
 				}
 			}
-
 			xhr.send(formData);
 		}
 	};
 	reader.readAsBinaryString(files[0]);
 }
-
-if (tests.dnd) {
-	holder.ondragover = function () { this.className = 'hover'; return false; };
-	holder.ondragend = function () { this.className = ''; return false; };
-	holder.ondrop = function (e) {
-		this.className = '';
-		e.preventDefault();
-
-		if(files.length==0){//ha mar nincs folyamatban feltoltes
-			for (var i = 0; i < e.dataTransfer.files.length; i++) {
-				if(e.dataTransfer.files[i].type=="audio/mp3" || e.dataTransfer.files[i].type=="audio/mpeg"){
-					files.push(e.dataTransfer.files[i]);
-					previewfile(e.dataTransfer.files[i]);
-				}
-			}
-			if(files.length>0)readfiles();
-		}
-		else{
-			for (var i = 0; i < e.dataTransfer.files.length; i++) {
-				if(e.dataTransfer.files[i].type=="audio/mp3" || e.dataTransfer.files[i].type=="audio/mpeg"){
-					files.push(e.dataTransfer.files[i])				
-						previewfile(e.dataTransfer.files[i]);
-				}
-			}
+function processFiles(tFiles)//Process transfered files
+{
+	var restartreadFiles = false;
+	if(files.length==0)
+		restartreadFiles=true;
+	for (var i = 0; i < tFiles.length; i++) {
+		if(tFiles[i].type=="audio/mp3" || tFiles[i].type=="audio/mpeg"){
+			files.push(tFiles[i]);
+			previewFile(tFiles[i]);
 		}
 	}
-}
-else {
-	fileupload.className = 'hidden';
-	fileupload.querySelector('input').onchange = function () {
-		readfiles(this.files);
-	};
+	if(restartreadFiles && files.length>0)readFiles();
 }
 
-
+if (tests.dnd) { //Drag & drop file uploader
+	holder.ondragover = function () { this.className = 'hover'; return false; };
+	holder.ondragleave = function () { this.className = ''; return false; };
+	holder.onclick = function () { fileBrowser.click(); return false; };
+	//holder.ondragend = function () { this.className = ''; return false; };
+	holder.ondrop = function (e) {		
+		e.preventDefault();		
+		processFiles(e.dataTransfer.files);
+		this.className = '';
+	}
+}
+fileBrowser.onchange = function () {//Normal file uploader
+	processFiles(this.files);
+};
 function b64toBlob(b64Data, contentType, sliceSize) {
 	contentType = contentType || '';
 	sliceSize = sliceSize || 512;
@@ -220,11 +197,10 @@ function b64toBlob(b64Data, contentType, sliceSize) {
 		byteArrays.push(byteArray);
 	}
 
-	var blob = new Blob(byteArrays, {type: "audio/mp3"});
+	//var blob = new Blob(byteArrays, {type: "audio/mp3"});
+	var blob = new Blob(byteArrays, {type: contentType});
 	return blob;
 }
 	</script>
-
-
 </body>
 </html>

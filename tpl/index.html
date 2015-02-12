@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>music player</title>
-		<meta name="viewport" content="width=device-width; initial-scale=1.0; mininum-scale=0.5; maximum-scale=1.0; user-scalable=no;" />
-		<script>
+<head>
+	<meta charset="utf-8">
+	<title>music player</title>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; mininum-scale=0.5; maximum-scale=1.0; user-scalable=no;" />
+	<script>
 {literal}	
 
 function gohome() {	
@@ -111,11 +111,11 @@ function bgXHReq(geturl){
 
 
 {/literal}	  
-		</script>
-		<link rel="stylesheet" type="text/css" href="tpl/style.css">
-	</head>
-	<body style="margin:0px; padding:0px;">
-		<script>
+	</script>
+	<link rel="stylesheet" type="text/css" href="tpl/style.css">
+</head>
+<body style="margin:0px; padding:0px;">
+	<script>
 {literal}
 var mobile_device=0;///0- nem mobil   1- mobil
 //mobil ellenorzés
@@ -132,105 +132,105 @@ if (navigator.userAgent.match(/Android/i) ||
 	mobile_device=1;
 }		
 {/literal}	  
-		</script>
-		<div id="header" style=" "  >
-			<div id="fejlec" style="">            
-				<div id="fejlec_cim"  style="cursor:pointer;float:left;">
-					<a onclick="gohome()">music player</a>
-				</div>
-				<!--gombok-->
-				{if $username eq ''}
-				<div id="login_button" onclick="loginClick()" style="float:right; width:40px; height:100%;">
-				</div>					
-				{else}
-				{literal}
-				<div id="logout_button" onclick="location.href='logout.php'" style="float:right;  width:40px; height:100%;">
-				</div>					
-				<div id="profil_button" onclick="loadXMLDoc('user.php',
-			    document.getElementById('content_main'),
-			    function(){hidePlaylist();},
-			    true);" style="float:right;  width:40px; height:100%;">
-				</div> 	
-				<div id="upload_button" onclick="uploadClick()" style="float:right;  width:40px; height:100%;">
-				</div>
-				{/literal}									
-				{/if}
-				<!--kereso-->
+	</script>
+	<div id="header" style=" "  >
+		<div id="fejlec" style="">            
+			<div id="fejlec_cim"  style="cursor:pointer;float:left;">
+				<a onclick="gohome()">music player</a>
+			</div>
+			<!--gombok-->
+			{if $username eq ''}
+			<div id="login_button" onclick="loginClick()" style="float:right; width:40px; height:100%;">
+			</div>					
+			{else}
+			{literal}
+			<div id="logout_button" onclick="location.href='logout.php'" style="float:right;  width:40px; height:100%;">
+			</div>					
+			<div id="profil_button" onclick="loadXMLDoc('user.php',
+			   document.getElementById('content_main'),
+			   function(){hidePlaylist();},
+			   true);" style="float:right;  width:40px; height:100%;">
+			</div> 	
+			<div id="upload_button" onclick="uploadClick()" style="float:right;  width:40px; height:100%;">
+			</div>
+			{/literal}									
+			{/if}
+			<!--kereso-->
 
-				<div id="search_button" onclick="keresesClick()" style="float:right; width:40px; height:100%;">
-				</div>		
-				<input type="text" id="search_box" name="term" value="" class="inactive" placeholder="Kereses" style="float:right; height:100%; ">
+			<div id="search_button" onclick="keresesClick()" style="float:right; width:40px; height:100%;">
+			</div>		
+			<input type="text" id="search_box" name="term" value="" class="inactive" placeholder="Kereses" style="float:right; height:100%; ">
 
-			</div>			 
-		</div>
-		{if $username eq ''}
-		<!--Login box-->
-		<div id="login_box" style="display:none;">
-			<form name='login' action='login_process.php' method='post'>
-				<input id="login_username" type='text' name='username' placeholder="Username" maxlength='20' tabindex="1" autofocus />		
-				<input id="login_password" type='password' name='password' placeholder="Password" tabindex="1" />			
-				<input id="login_submit" type='submit' value='Login' style="" />
-			</form>
-			<p style="font-size:15px; margin:5px 0 2px 0; color:#fff;">Nincs még fiókod?<a href="#" style="text-decoration:underline; float:right; color:#00b5e3;">Regisztráció</a></p>
-		</div>	
-		<!--Login box end-->
-		{/if}
-		<div style="width:90%; margin:auto; margin-bottom:80px; margin-top:20px;">
-			<!--lejatszo kontener-->
-			<div id="playlist_container" style="display:none;">
-				<div style="font-family:Arial; font-size:22px; margin:0px 0px 10px 0px;">
-					PlayList 				
-					<div onclick="document.getElementById('Track_List').innerHTML=''" style="float:right; font-size:18px; cursor:pointer;">
-						X
-					</div>
-				</div>
-				<div id="Track_List" >	  
-					<!--{$tracks}-->
+		</div>			 
+	</div>
+	{if $username eq ''}
+	<!--Login box-->
+	<div id="login_box" style="display:none;">
+		<form name='login' action='login_process.php' method='post'>
+			<input id="login_username" type='text' name='username' placeholder="Username" maxlength='20' tabindex="1" autofocus />		
+			<input id="login_password" type='password' name='password' placeholder="Password" tabindex="1" />			
+			<input id="login_submit" type='submit' value='Login' style="" />
+		</form>
+		<p style="font-size:15px; margin:5px 0 2px 0; color:#fff;">Nincs még fiókod?<a href="#" style="text-decoration:underline; float:right; color:#00b5e3;">Regisztráció</a></p>
+	</div>	
+	<!--Login box end-->
+	{/if}
+	<div style="width:90%; margin:auto; margin-bottom:80px; margin-top:20px;">
+		<!--lejatszo kontener-->
+		<div id="playlist_container" style="display:none;">
+			<div style="font-family:Arial; font-size:22px; margin:0px 0px 10px 0px;">
+				PlayList 				
+				<div onclick="document.getElementById('Track_List').innerHTML=''" style="float:right; font-size:18px; cursor:pointer;">
+					X
 				</div>
 			</div>
-			<!--tartalom kontener-->
-			<div id="content_container" style="display:block;">
-				<div id="content_main">
-				</div>			
+			<div id="Track_List" >	  
+				<!--{$tracks}-->
 			</div>
 		</div>
-		<!--lejatszo  audio tag-->
-		<audio id="player_element" src onended="nextItem()" ontimeupdate="playerTimeupdate()" onprogress="bufferProgressbar()"  preload="auto" ></audio>
-		<!--lejatszo vezerlok-->
-		<div id="footer_player_container" onclick="Nothing()" style="display:none;" >
-			<div id="footer_player" style="display:table; table-layout:fixed; width:100%;">
-				<div id="footer_play_btn" class="footer_control_btn" onclick="togglePlayPause()" style="display:table-cell; width:50px; ">
-
-				</div>
-			<div id="song_current_time" style="display:table-cell;">
-			</div>
-			<div style="display:table-cell; padding:5px;">
-				<div id="now_playing_container" style="overflow-x:hidden;">
-					<!--kiiras-->
-					<div id="now_playing" style="line-height:20px; ">
-						-
-					</div>
-				</div>
-				<!--tolto csik-->
-				<div id="progress" onclick="progressClick(event)" style="float:left; position:relative;">
-					<div id="progress_position" style="position:absolute;"></div>
-					<div id="progress_loaded" style="position:absolute;"></div>
-				</div>				
-			</div>
-			<div id="song_duration" style="display:table-cell; ">
-			</div>
-			<div id="playlist_button" onclick="showhidePlaylist()" style="display:table-cell; width:50px;">
+		<!--tartalom kontener-->
+		<div id="content_container" style="display:block;">
+			<div id="content_main">
+			</div>			
+		</div>
+	</div>
+	<!--lejatszo  audio tag-->
+	<audio id="player_element" src onended="nextItem()" ontimeupdate="playerTimeupdate()" onprogress="bufferProgressbar()"  preload="auto" ></audio>
+	<!--lejatszo vezerlok-->
+	<div id="footer_player_container" onclick="Nothing()" style="display:none;" >
+		<div id="footer_player" style="display:table; table-layout:fixed; width:100%;">
+			<div id="footer_play_btn" class="footer_control_btn" onclick="togglePlayPause()" style="display:table-cell; width:50px; ">
 
 			</div>
+		<div id="song_current_time" style="display:table-cell;">
+		</div>
+		<div style="display:table-cell; padding:5px;">
+			<div id="now_playing_container" style="overflow-x:hidden;">
+				<!--kiiras-->
+				<div id="now_playing" style="line-height:20px; ">
+					-
+				</div>
 			</div>
+			<!--tolto csik-->
+			<div id="progress" onclick="progressClick(event)" style="float:left; position:relative;">
+				<div id="progress_position" style="position:absolute;"></div>
+				<div id="progress_loaded" style="position:absolute;"></div>
+			</div>				
 		</div>
-		<div id="loading_bar" >
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
+		<div id="song_duration" style="display:table-cell; ">
 		</div>
-		<script>
+		<div id="playlist_button" onclick="showhidePlaylist()" style="display:table-cell; width:50px;">
+
+		</div>
+		</div>
+	</div>
+	<div id="loading_bar" >
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+	</div>
+	<script>
 {literal}	  
 document.getElementById("search_box").addEventListener('keyup',function(e){
 	e.stopPropagation();//nem kuldi tovabb az esemenytaz alattalevoknek
@@ -243,24 +243,24 @@ document.getElementById("search_box").addEventListener('keyup',function(e){
 		bill = e.which;
 	}
 	if(bill==13){
-	//Kereses - Enter
-	loadXMLDoc("search.php?type=all&term="+document.getElementById("search_box").value,
-			document.getElementById("content_main"),
-			function(){},
-			true);
-	hidePlaylist();
+		//Kereses - Enter
+		loadXMLDoc("search.php?type=all&term="+document.getElementById("search_box").value,
+				document.getElementById("content_main"),
+				function(){},
+				true);
+		hidePlaylist();
 	}
 });
 {/literal}	  
-		</script>
-		<script>
+	</script>
+	<script>
 {literal}	
 function loginClick(){
 	document.querySelector('#login_box').style['display'] =	(document.querySelector('#login_box').style['display']=='block') ? 'none' : 'block';
 	document.querySelector('#login_box #login_username').focus();
 }
 function uploadClick(){
-	document.getElementById('content_main').innerHTML="<iframe src='./up' style='width:100%; height:600px; border:0px;'></iframe>";
+	document.getElementById('content_main').innerHTML="<iframe src='./up' style='width:100%; height:500px; border:0px;'></iframe>";
 }  
 function keresesClick(){
 	//Kereso gomb - gombnyomás
@@ -316,7 +316,7 @@ function getUrlVariable(variableName){
 	}
 }
 {/literal}	  
-		</script>	
+	</script>	
 
 	<script>
 {literal}	  
@@ -326,7 +326,7 @@ if (mobile_device==1){	/*Ha mobil, mozgathato a lejatszo kiirasa*/
 }
 {/literal}	  
 	</script>
-					<script>
+	<script>
 {literal}	  
 var Dir = "./upload/uploads/";
 var player = document.getElementById("player_element");
@@ -493,8 +493,8 @@ function hidePlaylist(){
 
 
 {/literal}	  		 
-					</script>
-					<script>
+	</script>
+	<script>
 {literal}
 //KEYDOWN
 document.onkeyup = function(e){
@@ -530,6 +530,6 @@ document.onkeyup = function(e){
 
 }
 {/literal}	  		 
-					</script>
-	</body>
+	</script>
+</body>
 </html>
