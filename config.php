@@ -8,4 +8,6 @@ define('DB_NAME', 'db_refactor');
 // Smarty directories
 define('SMARTY_COMPILE_DIR', '/tmp/smarty/templates_c');
 define('SMARTY_CACHE_DIR', '/tmp/smarty/cache');
+
+date_default_timezone_set("UTC");
 ?>
