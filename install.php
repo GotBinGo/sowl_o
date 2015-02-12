@@ -9,8 +9,104 @@
 
 require_once('config.php');
 
-define('MYSQL_ROOT_PASSWORD', '');
+define('MYSQL_ROOT_PASSWORD', '123456');
 
+class Field
+{
+	public $nullable;
+	public $type;
+	public $name;
+	public $auto_increment;
+	public $primary_key;
+	public function __construct($type, $name, $nullable, $auto_increment, $primary_key)
+	{
+		$this->type = $type;
+		$this->name = $name;
+		$this->nullable = $nullable;
+		$this->auto_increment = $auto_increment;
+		$this->primary_key = $primary_key;
+	}
+
+	public function getCreateLine()
+	{
+		return  $this->name ." "
+			. $this->type 
+			. ($this->type == "text" ? " character set utf8 collate utf8_general_ci " : " ")
+			. ($this->nullable ? "" : " not null") 
+			. ($this->auto_increment ? " auto_increment" : "" );
+	}
+}
+
+class Value
+{
+	public $name;
+	public $value;
+	public function __construct($name, $value)
+	{
+		$this->name = $name;
+		$this->value = $value;
+	}
+}
+
+class Record
+{
+	public $values;
+	public function __construct($values)
+	{
+		$this->values = $values;
+	}
+
+	public function insertToTable($conn, $table)
+	{
+		$querystr = "insert into '$table' ";
+		$namesstr = "(";
+		$valuesstr = "(";
+		foreach($this->values as $current)
+		{
+			$namesstr .= $current->name . ", ";
+			$valuesstr .= "'$current->value', ";
+		}
+		$namesstr[strlen($namesstr) - 1] = ')';
+		$valuesstr[strlen($valuesstr) - 1] = ')';
+		$querystr .= $namesstr . " VALUES" . $valuesstr . ";";
+
+		$conn->query($querystr);
+	}
+}
+
+function create_table($conn, $name, $fields)
+{
+	$conn->query("drop table if exists " . $name . ";");
+	
+	$querystr = "create table if not exists " . $name . " (";
+	$keys = array();
+	foreach($fields as $field)
+	{
+		$querystr .= $field->getCreateLine() . ", ";
+		if($field->primary_key)
+			$keys[] = $field;
+	}
+	if(sizeof($keys) > 0)
+	{
+		$keysstr = "primary key(";
+		foreach($keys as $key)
+			$keysstr .= $key->name . ",";
+		$keysstr = substr($keysstr, 0, strlen($keysstr) - 1);
+		$keysstr .= ") ";
+		$querystr .= $keysstr;
+	}
+	else
+		echo("error in create_table: no primary key");
+
+	$querystr .= " ) default charset=utf8;";
+
+	$result = $conn->query($querystr);
+	if($result === false)
+		echo("couldn't create table " . $name . ": " . $conn->error);
+
+	$conn->query("delete from '$name';");
+	$conn->query("alter table '$name' auto_increment=1;");
+}
 
 function create_user($conn, $username, $host = "localhost", $password = "123456")
 {
@@ -29,6 +125,21 @@ function get_single_result($result, $index = 0, $field = 0)
 	return $row[$field];
 }
 
+function create_database($conn, $db_name)
+{
+	$querystr = "create database if not exists ".$db_name.";";
+	$result = $conn->query($querystr);
+	if($result === false)
+		echo("error while trying to create database: " . $conn->error . "\n");
+}
+
+function use_database($conn, $db_name)
+{
+	$result = $conn->query("use '$db_name';");
+	if($result === false)
+		echo("error while trying to select database: " . $conn->error . "\n");
+}
+
 if(MYSQL_ROOT_PASSWORD == '' && extension_loaded("ncurses"))
 {
 	echo("Enter MySQL root password: ");
@@ -39,11 +150,6 @@ if(MYSQL_ROOT_PASSWORD == '' && extension_loaded("ncurses"))
 
 	if(extension_loaded("ncurses"))
 		ncurses_echo();
-}
-elseif(MYSQL_ROOT_PASSWORD == '')
-{
-	echo("No MySQL root password found in install.php, skipping user creation.\n");
-	$root_pass = '';
 }
 else
 	$root_pass = MYSQL_ROOT_PASSWORD;
@@ -67,76 +173,112 @@ if($root_pass != '')
 			echo("couldn't create MySQL user");
 	}
 
+	create_database($conn, DB_NAME);
+
 	$conn->close();
 }
 
-require_once("conn.php");
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 $conn->set_charset("utf8"); //mysqli milyen kodolast var
 $conn->query("SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO';");
 $conn->query("SET time_zone = '+00:00';");
 
-$result = $conn->query("create database if not exists " . DB_NAME . ";");
-if($result === false)
-	echo("error while trying to create database: " . $conn->error . "\n");
-
-$result = $conn->query("use " . DB_NAME . ";");
-if($result === false)
-	echo("error while trying to select database: " . $conn->error . "\n");
-
-$result = $conn->query("create table if not exists playlists( ".
-	"id int(11) not null auto_increment, ".
-	"name varchar(255) not null, ".
-	"user_id int(11) not null, ".
-	"public tinyint(1) not null, ".
-	"avatar varchar(255) not null, ".
-	"primary key(id) ".
-	") default charset=utf8;");
-if($result === false)
-	echo("couldn't create table 'playlists': " . $conn->error . "\n");
-
-$result = $conn->query("create table if not exists playlist_track ( ".
-	"id int(11) not null auto_increment, ".
-	"playlist_id int(11) not null, ".
-	"track_id int(11) not null, ".
-	"primary key(id) ".
-	") default charset=utf8;");
-if($result === false)
-	echo("couldn't create table 'playlist_track': " . $conn->error . "\n");
-
-$result = $conn->query("create table if not exists tracks ( ".
-	"id int(11) not null auto_increment, ".
-	"file_name text character set utf8 collate utf8_general_ci not null, ".
-	"author_name text character set utf8 collate utf8_general_ci not null, ".
-	"track_name text character set utf8 collate utf8_general_ci not null, ".
-	"user_id int(11) not null, ".
-	"upload_date date not null, ".
-	"file_type text not null, ".
-	"primary key(id) ".
-	") default charset=utf8;");
-if($result === false)
-	echo("couldn't create table 'tracks': " . $conn->error . "\n");
-
-$result = $conn->query("create table if not exists users ( ".
-	"id int(11) not null auto_increment, ".
-	"name varchar(255) not null, ".
-	"password varchar(255) not null, ".
-	"salt varchar(255) not null, ".
-	"fbid varchar(255) not null, ".
-	"display_name varchar(255) not null, ".
-	"avatar varchar(255) not null, ".
-	"primary key(id) ".
-	") default charset=utf8;");
-if($result === false)
-	echo("couldn't create table 'users': " . $conn->error . "\n");
 
 
-$conn->query("alter table 'users' auto_increment = 1;");
-$conn->query("alter table 'tracks' add key track_id(id);");
-$conn->query("alter table 'playlists' auto_increment = 1;");
 
-$conn->query("delete from users;");
+
+create_table($conn, "playlists", 
+	array(
+		//         type              name          nullable auto_increment primary_key
+		new Field( "int(11)",        "id",         false,   true,          true),
+		new Field( "varchar(255)",   "name",       false,   false,         false),
+		new Field( "int(11)",        "user_id",    false,   false,         false),
+		new Field( "tinyint(1)",     "public",     false,   false,         false),
+		new Field( "varchar(255)",   "avatar",     false,   false,         false)
+	));
+
+create_table($conn, "playlists_tracks", 
+	array(
+		//         type              name          nullable auto_increment primary_key
+		new Field( "int(11)",        "id",         false,   true,          true),
+		new Field( "int(11)",        "playlist_id",false,   false,         false),
+		new Field( "int(11)",        "track_id",   false,   false,         false)
+	));
+
+create_table($conn, "tracks", 
+	array(
+		//         type              name          nullable auto_increment primary_key
+		new Field( "int(11)",        "id",         false,   true,          true),
+		new Field( "text",           "file_name",  false,   false,         false),
+		new Field( "text",           "author_name",false,   false,         false),
+		new Field( "text",           "track_name", false,   false,         false),
+		new Field( "int(11)",        "user_id",    false,   false,         false),
+		new Field( "date",           "upload_date",false,   false,         false),
+		new Field( "text",           "file_type",  false,   false,         false)
+	));
+
+create_table($conn, "tags", 
+	array(
+		//         type              name          nullable auto_increment primary_key
+		new Field( "int(11)",        "track_id",   false,   false,          true),
+		new Field( "varchar(255)",   "tag",        false,   false,          true)
+	));
+
+create_table($conn, "ratings", 
+	array(
+		//         type              name          nullable auto_increment primary_key
+		new Field( "int(11)",        "user_id",   false,   false,          true),
+		new Field( "int(11)",        "track_id",  false,   false,          true),
+		new Field( "int(11)",        "rating",    false,   false,          false)
+	));
+
+create_table($conn, "track_comments", 
+	array(
+		//         type              name          nullable auto_increment primary_key
+		new Field( "int(11)",        "id",        false,   true,           true),
+		new Field( "int(11)",        "user_id",   false,   false,          false),
+		new Field( "int(11)",        "track_id",  false,   false,          false),
+		new Field( "text",           "comment",   false,   false,          false)
+	));
+
+create_table($conn, "playlist_comments", 
+	array(
+		//         type              name          nullable auto_increment primary_key
+		new Field( "int(11)",        "id",        false,   true,           true),
+		new Field( "int(11)",        "user_id",   false,   false,          false),
+		new Field( "int(11)",        "playlist_id",false,  false,          false),
+		new Field( "text",           "comment",   false,   false,          false)
+	));
+
+create_table($conn, "users", 
+	array(
+		//         type              name          nullable auto_increment primary_key
+		new Field( "int(11)",        "id",         false,   true,          true),
+		new Field( "varchar(255)",   "name",       false,   false,         false),
+		new Field( "varchar(255)",   "password",   false,   false,         false),
+		new Field( "varchar(255)",   "salt",       false,   false,         false),
+		new Field( "varchar(255)",   "fbid",        true,   false,         false),
+		new Field( "varchar(255)",   "display_name",false,  false,         false),
+		new Field( "varchar(255)",   "avatar",      true,   false,         false),
+		new Field( "date",           "last_login",  true,   false,         false),
+	));
+
+create_table($conn, "followings", 
+	array(
+		//         type              name          nullable auto_increment primary_key
+		new Field( "int(11)",        "follower_id",false,   false,          true),
+		new Field( "int(11)",        "followed_id",false,   false,          true)
+	));
+
 $conn->query("insert into users (name, password, display_name) VALUES".
 	"('root', 'e10adc3949ba59abbe56e057f20f883e', 'Alapértelmezett felhasználó');");
+
+(new Record(array(
+	new Value("name", "root"),
+	new Value("password", "e10adc3949ba59abbe56e057f20f883e"),
+	new Value("display_name", "Alapértelmezett felhasználó")
+)))->insertToTable($conn, "users");
+
 
 $fn_query_string = "DROP FUNCTION IF EXISTS `levenshtein`;
 CREATE FUNCTION `levenshtein`(`s1` VARCHAR(255) CHARACTER SET utf8, `s2` VARCHAR(255) CHARACTER SET utf8)
