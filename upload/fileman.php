@@ -27,7 +27,7 @@ table
 
 
 <?php
-include('../conn.php');
+require_once('../db.php');
 
 $result = mysqli_query($conn,"SELECT * FROM tracks ORDER BY id");
 echo "<table border='1'>

@@ -1,6 +1,6 @@
 <?php	
 require_once('smarty.php');
-require_once('conn.php');
+require_once('db.php');
 
 $term = mysql_escape_string($_GET['term']);
 $type = mysql_escape_string($_GET['type']);

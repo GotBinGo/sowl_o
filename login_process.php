@@ -2,7 +2,7 @@
 require_once('smarty.php');
 $username = mysql_escape_string($_POST['username']);
 $password = mysql_escape_string($_POST['password']);
-include("conn.php");
+require_once("db.php");
 $result = mysqli_query($conn,"SELECT id, name, password , salt FROM users WHERE name='$username'");
 mysqli_close($conn);
 if(mysqli_num_rows($result) == 1)

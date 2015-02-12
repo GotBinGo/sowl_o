@@ -1,6 +1,6 @@
 <?php	
 $id = mysql_escape_string($_GET['id']);
-include("conn.php");
+require_once("db.php");
 require_once('smarty.php');
 
 session_start();

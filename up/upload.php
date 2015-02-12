@@ -1,5 +1,5 @@
 <?php
-include('../conn.php');
+require_once('../db.php');
 if(count($_FILES > 0))
 {
 	foreach ($_FILES as $file)

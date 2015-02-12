@@ -1,5 +1,5 @@
 <?php
-include("../conn.php");
+require_once("../db.php");
 $files = array();
 $id = mysql_escape_string($_GET['id']);
 $result = mysqli_query($conn,"SELECT t.id AS id, t.file_name AS file_name , t.author_name AS author_name, t.track_name AS track_name FROM playlist_track AS pt, tracks AS t WHERE t.id = pt.track_id AND pt.playlist_id = '$id' ORDER BY t.id");
