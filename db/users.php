@@ -17,8 +17,15 @@ class User
 		$res->name = $row["name"];
 		$res->display_name = $row["display_name"];
 		$res->fbid = $row["fbid"];
+
 		$res->avatar = $row["avatar"];
+		if($res->avatar == NULL)
+			$res->avatar = "upload/img/default_user.png";
+		else
+			$res->avatar = "upload/img/user/" . $res->avatar;
+
 		$res->last_login = $row["last_login"];
+
 
 		return $res;
 	}
@@ -29,7 +36,7 @@ class UserHandle
 	public $obj;
 	public $id;
 	private $manager;
-	public function __construct($manager, $id, $obj)
+	public function __construct($manager, $id, $obj = NULL)
 	{
 		$this->id = $id;
 		$this->manager = $manager;
@@ -38,31 +45,38 @@ class UserHandle
 
 	public function get()
 	{
-		if(isset($this->obj))
+		if(isset($this->obj) && $this->obj != NULL)
 			return $this->obj;
 		else
 		{
-			return $this->manager->retrieveByID($this->id);
+			return $this->obj = $this->manager->users->retrieveByID($this->id);
 		}
+	}
+
+	public function getViewablePlaylists()
+	{
+		return $this->manager->playlists->byCondition("public OR user_id = '$this->id'");
+	}
+
+	public function getPlaylists()
+	{
+		return $this->manager->playlists->byUserID($this->id);
 	}
 }
 
 class UserManager
 {
-	// does not own connection
-	private $conn;
 	private $manager;
 
-	public function __construct($conn, $manager)
+	public function __construct($manager)
 	{
-		$this->conn = $conn;
 		$this->manager = $manager;
 	}
 
 	public function authenticate($username, $password)
 	{
-		$uname = $this->conn->escape_string($username);
-		$passw = $this->conn->escape_string($password);
+		$uname = $this->manager->escapeString($username);
+		$passw = $this->manager->escapeString($password);
 
 		$row = $this->manager->getRecord("users", "name = '$uname'");
 		if($row === FALSE)
@@ -72,8 +86,15 @@ class UserManager
 		if($pwhash != $row["password"])
 			return FALSE;
 
-		return new UserHandle($this, $row["id"],
+		return new UserHandle($this->manager, $row["id"],
 			User::fromDBRecord($row));
+	}
+
+	public function login($userhnd)
+	{
+		$value = date("Y-m-d H:i:s");
+		$field = new DBField("last_login", $value);
+		return $this->manager->updateTable("users", "id = '$userhnd->id'", array( $field ));
 	}
 
 	public function retrieveByID($id)
@@ -82,8 +103,12 @@ class UserManager
 		if($row === FALSE)
 			return FALSE;
 
-		return new UserHandle($this, $row["id"],
-			User::fromDBRecord($row));
+		return User::fromDBRecord($row);
+	}
+
+	public function byID($id)
+	{
+		return new UserHandle($this->manager, $id);
 	}
 
 }

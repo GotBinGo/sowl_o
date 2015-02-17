@@ -1,6 +1,7 @@
 <?php	
 require_once('smarty.php');
 require_once('db.php');
+session_start();
 
 $term = mysql_escape_string($_GET['term']);
 $type = mysql_escape_string($_GET['type']);
@@ -9,7 +10,8 @@ $limit = "";
 if($num > 0)
 	$limit = "LIMIT ".$num;
 
-
+if(isset($_SESSION["views"]))
+	$user = $db->users->byID($_SESSION["views"]);
 
 
 if($type == 'all' || $type == '')
@@ -29,8 +31,6 @@ if($type == 'all' || $type == '')
 }
 else
 {
-
-
 	$terms = explode(" ", $term);
 	$srt = array();
 	$sru = array();
@@ -48,21 +48,18 @@ else
 	if($type == 'track')
 	{
 		$playlists = array();
-		$user_id = 0;
-		session_start();
-		if(isset($_SESSION['views']))
+		if(isset($user))
 		{
-			$user = $_SESSION['views'];	
-			$result = mysqli_query($conn,"SELECT id, name FROM playlists WHERE user_id='$user->id'");
-			while($row = mysqli_fetch_array($result))
+			$result = $user->getPlaylists();
+			foreach($result as $row)
 			{
-				array_push($playlists, array($row['id'], $row['name']));
+				array_push($playlists, array($row->id, $row->get()->name));
 			}
 		}
 
 		//$jk = "kay";
 		//		echo "\\$jku\\";
-		$result = mysqli_query($conn,"SELECT *, levenshtein_ratio(track_name, '$term') AS lr FROM tracks ORDER BY lr ASC");
+		$result = mysqli_query($conn,"SELECT *, levenshtein_ratio(author_name || ' ' || track_name, '$term') AS lr FROM tracks ORDER BY lr ASC");
 		if($result === false)
 			echo("query failed: " . $conn->error . "\n");
 		//		$result = mysqli_query($conn,"SELECT * , levenshtein_ratio(track_name,'$term') AS lr FROM tracks AND (file_type='audio/mpeg' OR file_type='audio/mp3') ORDER BY lr");

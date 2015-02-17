@@ -3,7 +3,7 @@ require_once("db.php");
 session_start();
 if(isset($_SESSION['views']))
 {
-	$user = $_SESSION['views'];
+	$user = $db->users->byID($_SESSION['views']);
 	$result = mysqli_query($conn,"SELECT * FROM playlists WHERE user_id = '$user->id'");
 	while($row = mysqli_fetch_array($result))	
 	{

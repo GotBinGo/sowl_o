@@ -3,7 +3,7 @@ require_once('db.php');
 session_start();
 if(isset($_SESSION['views']))
 {
-	$user = $_SESSION['views'];
+	$user = $db->users->byID($_SESSION['views']);
 	$list_id = mysqli_real_escape_string($conn, $_GET['id']);	
 	$public = mysqli_real_escape_string($conn, $_GET['public']);	
 	$result = mysqli_query($conn,"SELECT * FROM playlists WHERE id='$list_id' AND user_id='$user->id'");

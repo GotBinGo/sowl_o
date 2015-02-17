@@ -6,7 +6,7 @@ require_once('smarty.php');
 session_start();
 if(isset($_SESSION['views']))
 {
-	$user = $_SESSION['views'];
+	$user = $db->users->byID($_SESSION['views']);
 
 	$playlists = array();
 	$result = mysqli_query($conn,"SELECT id, name FROM playlists WHERE user_id='$user->id'");

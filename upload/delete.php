@@ -4,7 +4,7 @@ require_once('db.php');
 session_start();
 if(isset($_SESSION['views']))
 {
-	$user = $_SESSION['views'];
+	$user = $db->users->byID($_SESSION['views']);
 	$id = mysqli_real_escape_string($conn, $_GET['id']);
 	$id = htmlspecialchars($id, ENT_QUOTES, 'UTF-8');
 	if(strlen($id))

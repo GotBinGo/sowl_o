@@ -260,7 +260,7 @@ create_table($conn, "users",
 		new Field( "varchar(255)",   "fbid",        true,   false,         false),
 		new Field( "varchar(255)",   "display_name",false,  false,         false),
 		new Field( "varchar(255)",   "avatar",      true,   false,         false),
-		new Field( "date",           "last_login",  true,   false,         false),
+		new Field( "datetime",       "last_login",  true,   false,         false),
 	));
 
 create_table($conn, "followings", 

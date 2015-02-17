@@ -1,11 +1,11 @@
 <?php
 require_once('smarty.php');
-require_once('db/types.php');
+require_once('db.php');
 
 session_start();
 if(isset($_SESSION['views']))
 {
-	$user = $_SESSION['views']->get();
+	$user = $db->users->byID($_SESSION["views"])->get();
 	$smarty->assign('username', $user->name);
 }
 else

@@ -4,7 +4,7 @@ require_once('db.php');
 session_start();
 if(isset($_SESSION['views']))
 {
-	$user = $_SESSION['views'];
+	$user = $db->users->byID($_SESSION['views']);
 	$filename = md5(microtime().rand()) . ".mp3";
 	$author = mysqli_real_escape_string($conn, $_GET['author']);
 	$title = mysqli_real_escape_string($conn, $_GET['title']);
