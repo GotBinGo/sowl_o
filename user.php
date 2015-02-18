@@ -1,42 +1,34 @@
 <?php	
-$name = isset($_GET['name']) ? mysql_escape_string($_GET['name']) : "";
 require_once("db.php");
 
 require_once('smarty.php');
 session_start();
+$name = isset($_GET['name']) ? $db->escapeString($_GET['name']) : "";
+
 if(isset($_SESSION["views"]))
 {
-	$userhnd = $db->users->byID($_SESSION['views']);
-	$user = $userhnd->get();
-	$avatar = $user->avatar;
-	echo "<div class=\"list_header\"><img src='$avatar' height='42' width='42'>"; 
-	echo "$user->display_name</div>";
-
-	echo "<input type='text' placeholder='Create new playlist' name='cPlaylist' onkeydown='event.stopPropagation(); if(event.keyCode==13){createPlaylist(this.value);}'>";
-	//$result2 = mysqli_query($conn,"SELECT * FROM playlists WHERE user_id='$user->id'"); //belépve
-	$result2 = $userhnd->getPlaylists();
+	$viewerhnd = $db->users->byID($_SESSION["views"]);
 }
 else
 {
-	$avatar = "upload/img/default_user.png";
-	//$result2 = mysqli_query($conn,"SELECT * FROM playlists WHERE user_id='$id' AND public"); //csak a publikus listák
-	$result2 = $db->playlists->getPublic();
+	$viewerhnd = NULL;
 }
 
-while($row = mysqli_fetch_array($result2))	
+$viewedhnd = $name == "" ? $viewerhnd : $db->users->byName($name);
+$vieweduser = $viewedhnd->get();
+
+echo("<div class=\"list_header\"><img src=\"$vieweduser->avatar\" height=\"42\" width=\"42\">$vieweduser->display_name</div>");
+
+$lists = $viewedhnd->getPlaylistsVisibleTo($viewerhnd);
+
+foreach($lists as $record)
 {
 	$smarty->assign('type', "list");
-	$smarty->assign('id', $row['id']);
-	$smarty->assign('name2', $row['name']);							
-	$avatar = $row['avatar'];
-	if($avatar == "")
-		$avatar = "upload/img/default_list.png";
-	else
-		$avatar = "upload/img/list/" . $avatar;			
-
-	$smarty->assign('avatar', $avatar);
+	$smarty->assign('id', $record->id);
+	$smarty->assign('name2', $record->name);							
+	$smarty->assign('avatar', $record->avatar);
 	if($name == $user->name)
-		$smarty->assign('pub',$row['public'] );
+		$smarty->assign('pub', $record->isPublic);
 	else
 		$smarty->assign('pub',"");
 	$smarty->display('tpl/list.html');

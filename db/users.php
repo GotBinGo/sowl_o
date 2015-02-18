@@ -58,6 +58,19 @@ class UserHandle
 		return $this->manager->playlists->byCondition("public OR user_id = '$this->id'");
 	}
 
+	public function getPlaylistsVisibleTo($user)
+	{
+		if($user && $user->id == $this->id)
+			return $this->getPlaylists();
+
+		return $user->getPublicPlaylists();
+	}
+
+	public function getPublicPlaylists()
+	{
+		return $this->manager->playlists->byCondition("public AND user_id = '$this->id'");
+	}
+
 	public function getPlaylists()
 	{
 		return $this->manager->playlists->byUserID($this->id);
@@ -111,6 +124,12 @@ class UserManager
 		return new UserHandle($this->manager, $id);
 	}
 
+	public function byName($name)
+	{
+		$row = $this->manager->getRecord("users", "name = '$name'");
+		return new UserHandle($this->manager, $row['id'],
+			User::fromDBRecord($row));
+	}
 }
 
 ?>
