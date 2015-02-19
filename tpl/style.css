@@ -1,6 +1,7 @@
 body{
-	overflow-y:scroll;
-	font-family:"Helvetica", "Helvetica Neue", Arial;  
+	//overflow-y:scroll;
+	font-family:"Helvetica", "Helvetica Neue", Arial;
+	height:100%;
 }
 div {
 	display:block;
@@ -9,18 +10,18 @@ div {
 	width:0px;
 	padding:0px;
 }
-#search_box.active{	
+#search_box.active{
 	padding:0px 10px;
 }
 .List_Item{
 	margin:0;
-	border-bottom:1px solid white; 
-	font-family:Helvetica Neue, Arial; 
+	border-bottom:1px solid white;
+	font-family:Helvetica Neue, Arial;
 	display:block;
 	position:relative;/**/
 }
 .List_Item .title{
-	padding:15px 5px 15px 25px ; 
+	padding:15px 5px 15px 25px ;
 	display:inline-block;
 }
 .List_Item[type=track] .list-item-contols{
@@ -74,22 +75,76 @@ div {
 	height:40px;
 	border:none;
 }
-#fejlec_cim{ 
-	margin-top:2px; 
-	font-size:24px; 
-	font-family:"Bauhaus 93","Helvetica", "Helvetica Neue", Arial;   
+#fejlec_cim{
+	margin-top:2px;
+	font-size:24px;
+	font-family:"Bauhaus 93","Helvetica", "Helvetica Neue", Arial;
 }
 #search_box{
-	border-radius:0px; 
+	border-radius:0px;
 	border:none;
 	box-sizing:border-box;
 	outline:none;
 }
-#content_container, #playlist_container{
+#main_content{
+	margin:auto;
+	margin-bottom:80px;
+	margin-top:20px;
+}
+#content_container{
 	color:#ffffff;
 	padding:15px;
 	/*box-shadow: 5px 5px 8px #000, -5px -5px 8px #000, 5px -5px 8px #000, -5px 5px 8px #000;*/
 	box-shadow:0 0 8px 3px #000;
+}
+/*PLAYER*/
+#player{
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	width:100%;
+	z-index:50;
+	max-height:100%;
+}
+#player_menu{
+	height:100vh;
+	width:100%;
+	position:absolute;
+	bottom:0px;
+	left:0px;
+}
+#player_menu.inactive
+{
+	transform:translateY(100%);
+}
+#player_menu.active
+{
+	transform:translateY(0);
+}
+#player_menu_content{
+	position:absolute;
+	top:0;
+	bottom:50px;
+	left:0;
+	right:0;
+	overflow-y:scroll;
+}
+#playlist_container{
+	box-shadow:0 0 8px 3px #000;
+	box-sizing:border-box;
+	padding:10px;
+}
+#playlist_container #Track_List
+{
+	max-height:100%;
+}
+#footer_player_container{/*Controls*/
+	z-index:80;
+	position:absolute;
+	width:100%;
+	height:50px;
+	bottom:0px;
+	left:0px;
 }
 #now_playing{
 	font-family:Arial;
@@ -100,23 +155,13 @@ div {
 	vertical-align:bottom;
 	padding-bottom:8px;
 	text-align:center;
-	font-family:"Helvetica", "Helvetica Neue", Arial; 
-	font-size:12px; 
+	font-family:"Helvetica", "Helvetica Neue", Arial;
+	font-size:12px;
 }
-#footer_player_container{
-	position:fixed;
-	bottom:0px;
-	left:0px;
-	float:left;
-	width:100%;
-	height:50px;/*65*/
-	z-index:99;
-}
-
 /*Toltocsik*/
 #progress{
-	width:100%; 
-	height:10px; 
+	width:100%;
+	height:10px;
 	margin:5px 0px; /*10 0*/
 	overflow:hidden;
 	border-radius:5px;
@@ -124,16 +169,15 @@ div {
 #progress_loaded{
 	width:0%;
 	height:10px;
-	z-index:5;
+	z-index:85;
 	/*border-radius:5px;*/
 }
 #progress_position{
 	width:0%;
 	height:10px;
-	z-index:10;
+	z-index:90;
 	/*border-radius:5px ;*/
 }
-
 /*Gombok*/
 #footer_pause_btn, #footer_play_btn{
 	height:100%;
@@ -167,15 +211,15 @@ div {
 	background-repeat:no-repeat;
 	background-size:40px;
 }
-#playlist_button{
+#playermenu_button{
 	background-image:url('content/playlist_icon.svg');
 	background-repeat:no-repeat;
 	background-size:50px;
 }
-
+/**PLAYER END/
 /*Login*/
 #login_box{
-	padding:10px;	
+	padding:10px;
 }
 #login_box form{
 	width:100%;
@@ -198,13 +242,13 @@ div {
 
 /*Loading*/
 #loading_bar{
-	position:fixed; 
+	position:fixed;
 	top:0px;
 	left:0px;
-	display:none; 
-	width:100%; 
-	height:5px; 
-	padding:0px; 
+	display:none;
+	width:100%;
+	height:5px;
+	padding:0px;
 	overflow:hidden;
 }
 #loading_bar div {
@@ -261,7 +305,7 @@ body{
 .List_Item{
 	//background-color:#252525;
 }
-#playlist_button{
+#playermenu_button{
 
 }
 #footer_play_btn,#footer_pause_btn,#progress_position{
@@ -276,10 +320,13 @@ body{
 #progress{
 	background-color:#004455
 }
-#footer_player_container, #header{
+#footer_player_container, #header, #player_menu{
 	background-color:#353535;
 }
-#content_container, #playlist_container{
+#content_container{
+	background-color:#252525;
+}
+#playlist_container{
 	background-color:#252525;
 }
 #login_box{
@@ -315,21 +362,21 @@ body{
 
 @media all and (max-width: 700px)
 {
-	#search_box.active{	
-		width:100%;			
+	#search_box.active{
+		width:100%;
 	}
 	#fejlec_cim{
 		padding-left:10px;
 	}
 	/*Login*/
-	#login_box{	
+	#login_box{
 		width:inherit;
 	}
 	/*Login end*/
 }
 @media all and (min-width: 701px)
 {
-	#search_box.active{	
+	#search_box.active{
 		width:300px;
 	}
 	.List_Item:hover{
@@ -337,13 +384,22 @@ body{
 		cursor:pointer;
 	}
 	#fejlec{
-		width:90%; 
+		width:90%;
 	}
 	#fejlec_cim{
 		font-size:34px;
 	}
 	#search_box	{
 		transition:width .2s;
+	}
+	#main_content{
+		width:90%;
+	}
+	#player_menu{
+		transition: .5s
+	}
+	#player_menu_content{
+		padding:15px;
 	}
 
 	/*Gombok*/
@@ -366,7 +422,7 @@ body{
 		//background-color:rgba(0,0,255,.3);
 		background-color:#777777;
 	}
-	#playlist_button:hover ,#playlist_button:focus{
+	#playermenu_button:hover ,#playermenu_button:focus{
 		background-color:#555555;
 	}
 	#footer_pause_btn:hover,#footer_pause_btn:focus,
@@ -379,12 +435,23 @@ body{
 		position:absolute;
 		top:45px;
 		right:5%;
-		width:300px;	
+		width:300px;
 		box-shadow: 5px 5px 10px -5px rgba(0,0,0,0.5),-5px 5px 10px -5px rgba(0,0,0,0.5);
 	}
 	#login_box input[type=submit]:hover{
 		background-color:#006680;
 	}
 	/*Login end*/
-
+	*::-webkit-scrollbar-track{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+		background-color: #333;
+	}
+	*::-webkit-scrollbar{
+		width: 10px;
+		//background-color: #F5F5F5;
+	}
+	*::-webkit-scrollbar-thumb{
+		background-color: #00b5e3;
+		//border: 2px solid #555555;
+	}
 }

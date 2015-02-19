@@ -5,17 +5,17 @@
 	<title>music player</title>
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; mininum-scale=0.5; maximum-scale=1.0; user-scalable=no;" />
 	<script>
-{literal}	
+{literal}
 
-function gohome() {	
+function gohome() {
 	loadXMLDoc("search.php?type=track&term=",
 			document.getElementById("content_main"),
-			function(){hidePlaylist();},
+			function(){hidePlayerMenu();},
 			true);
 }
 window.onpopstate = function(event) {
 
-	if(!ishidden())
+	if(!isPlayerMenuHidden())
 	{
 		loadXMLDoc(event.state.getU,
 				document.getElementById(event.state.toC),
@@ -23,7 +23,7 @@ window.onpopstate = function(event) {
 				false);
 	}
 	else
-		hidePlaylist();
+		hidePlayerMenu();
 }
 
 window.onload = function(){
@@ -33,7 +33,7 @@ window.onload = function(){
 				document.getElementById("content_main"),
 				function(){}, //eval(nextF),
 				false);
-		hidePlaylist();
+		hidePlayerMenu();
 	}
 	else gohome();
 }
@@ -44,13 +44,13 @@ window.onhashchange = function(){
 				document.getElementById("content_main"),
 				function(){}, //eval(nextF),
 				false);
-		hidePlaylist();
+		hidePlayerMenu();
 	}
 }
 
-function loadXMLDoc(location,to_container,next_function,logHistory){ //to_container -> hova(TAG) tölti be  next_function - a kovetkezo fuggveny	
+function loadXMLDoc(location,to_container,next_function,logHistory){ //to_container -> hova(TAG) tölti be  next_function - a kovetkezo fuggveny
 
-	logHistory = typeof logHistory !== 'undefined' ? logHistory : false;		
+	logHistory = typeof logHistory !== 'undefined' ? logHistory : false;
 
 	//new Function(argument, functionBody);
 
@@ -80,18 +80,18 @@ function loadXMLDoc(location,to_container,next_function,logHistory){ //to_contai
 		}
 	}
 	xmlhttp.open("GET",geturl,true);
-	xmlhttp.send();	
+	xmlhttp.send();
 }
 
 function createPlaylist(plName) {
-	var geturl="create_playlist.php?name="+plName; 
-	bgXHReq(geturl);	
+	var geturl="create_playlist.php?name="+plName;
+	bgXHReq(geturl);
 }
 function playlistAdd(list_id) {
-	var geturl="add_to_playlist.php?track_id=" + list_id.parentNode.parentNode.id + "&list_id=" + list_id.value; 
-	bgXHReq(geturl);	
+	var geturl="add_to_playlist.php?track_id=" + list_id.parentNode.parentNode.id + "&list_id=" + list_id.value;
+	bgXHReq(geturl);
 }
-function bgXHReq(geturl){	
+function bgXHReq(geturl){
 	document.getElementById("loading_bar").style["display"]="block"; //Loading bar megjeleintese
 	var xmlhttp;
 	if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -101,7 +101,7 @@ function bgXHReq(geturl){
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	xmlhttp.onreadystatechange=function(){
-		if (xmlhttp.readyState==4 && xmlhttp.status==200){		
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
 			document.getElementById("loading_bar").style["display"]="none";//Loading bar megjeleintese
 		}
 	}
@@ -110,7 +110,7 @@ function bgXHReq(geturl){
 }
 
 
-{/literal}	  
+{/literal}
 	</script>
 	<link rel="stylesheet" type="text/css" href="tpl/style.css">
 </head>
@@ -124,104 +124,109 @@ if (navigator.userAgent.match(/Android/i) ||
 		navigator.userAgent.match(/iPhone/i) ||
 		navigator.userAgent.match(/iPad/i) ||
 		navigator.userAgent.match(/iPod/i) ||
-		navigator.userAgent.match(/BlackBerry/) || 
-		navigator.userAgent.match(/Windows Phone/i) || 
-		navigator.userAgent.match(/IEMobile/i) || 
+		navigator.userAgent.match(/BlackBerry/) ||
+		navigator.userAgent.match(/Windows Phone/i) ||
+		navigator.userAgent.match(/IEMobile/i) ||
 		navigator.userAgent.match(/Opera Mini/i)
    ){
 	mobile_device=1;
-}		
-{/literal}	  
+}
+{/literal}
 	</script>
-	<div id="header" style=" "  >
-		<div id="fejlec" style="">            
-			<div id="fejlec_cim"  style="cursor:pointer;float:left;">
-				<a onclick="gohome()">music player</a>
+	<div id="main" style="height:100vh; overflow-y:scroll; width:100%">
+		<div id="header" style=" "  >
+			<div id="fejlec" style="">
+				<div id="fejlec_cim"  style="cursor:pointer;float:left;">
+					<a onclick="gohome()">music player</a>
+				</div>
+				<!--gombok-->
+				{if $username eq ''}
+				<div id="login_button" onclick="loginClick()" style="float:right; width:40px; height:100%;">
+				</div>
+				{else}
+				{literal}
+				<div id="logout_button" onclick="location.href='logout.php'" style="float:right;  width:40px; height:100%;">
+				</div>
+				<div id="profil_button" onclick="loadXMLDoc('user.php',
+				   document.getElementById('content_main'),
+				   function(){hidePlayerMenu();},
+				   true);" style="float:right;  width:40px; height:100%;">
+				</div>
+				<div id="upload_button" onclick="uploadClick()" style="float:right;  width:40px; height:100%;">
+				</div>
+				{/literal}
+				{/if}
+				<!--kereso-->
+				<div id="search_button" onclick="keresesClick()" style="float:right; width:40px; height:100%;">
+				</div>
+				<input type="text" id="search_box" name="term" value="" class="inactive" placeholder="Kereses" style="float:right; height:100%; ">
 			</div>
-			<!--gombok-->
-			{if $username eq ''}
-			<div id="login_button" onclick="loginClick()" style="float:right; width:40px; height:100%;">
-			</div>					
-			{else}
-			{literal}
-			<div id="logout_button" onclick="location.href='logout.php'" style="float:right;  width:40px; height:100%;">
-			</div>					
-			<div id="profil_button" onclick="loadXMLDoc('user.php',
-			   document.getElementById('content_main'),
-			   function(){hidePlaylist();},
-			   true);" style="float:right;  width:40px; height:100%;">
-			</div> 	
-			<div id="upload_button" onclick="uploadClick()" style="float:right;  width:40px; height:100%;">
-			</div>
-			{/literal}									
-			{/if}
-			<!--kereso-->
-
-			<div id="search_button" onclick="keresesClick()" style="float:right; width:40px; height:100%;">
-			</div>		
-			<input type="text" id="search_box" name="term" value="" class="inactive" placeholder="Kereses" style="float:right; height:100%; ">
-
-		</div>			 
-	</div>
-	{if $username eq ''}
-	<!--Login box-->
-	<div id="login_box" style="display:none;">
-		<form name='login' action='login_process.php' method='post'>
-			<input id="login_username" type='text' name='username' placeholder="Username" maxlength='20' tabindex="1" autofocus />		
-			<input id="login_password" type='password' name='password' placeholder="Password" tabindex="1" />			
-			<input id="login_submit" type='submit' value='Login' style="" />
-		</form>
-		<p style="font-size:15px; margin:5px 0 2px 0; color:#fff;">Nincs még fiókod?<a href="#" style="text-decoration:underline; float:right; color:#00b5e3;">Regisztráció</a></p>
-	</div>	
-	<!--Login box end-->
-	{/if}
-	<div style="width:90%; margin:auto; margin-bottom:80px; margin-top:20px;">
-		<!--lejatszo kontener-->
-		<div id="playlist_container" style="display:none;">
-			<div style="font-family:Arial; font-size:22px; margin:0px 0px 10px 0px;">
-				PlayList 				
-				<div onclick="document.getElementById('Track_List').innerHTML=''" style="float:right; font-size:18px; cursor:pointer;">
-					X
+		</div>
+		{if $username eq ''}
+		<!--Login box-->
+		<div id="login_box" style="display:none;">
+			<form name='login' action='login_process.php' method='post'>
+				<input id="login_username" type='text' name='username' placeholder="Username" maxlength='20' tabindex="1" autofocus />
+				<input id="login_password" type='password' name='password' placeholder="Password" tabindex="1" />
+				<input id="login_submit" type='submit' value='Login' style="" />
+			</form>
+			<p style="font-size:15px; margin:5px 0 2px 0; color:#fff;">Nincs még fiókod?<a href="#" style="text-decoration:underline; float:right; color:#00b5e3;">Regisztráció</a></p>
+		</div>
+		<!--Login box end-->
+		{/if}
+		<div id="main_content">
+			<!--tartalom kontener-->
+			<div id="content_container" style="display:block;">
+				<div id="content_main">
 				</div>
 			</div>
-			<div id="Track_List" >	  
-				<!--{$tracks}-->
-			</div>
-		</div>
-		<!--tartalom kontener-->
-		<div id="content_container" style="display:block;">
-			<div id="content_main">
-			</div>			
 		</div>
 	</div>
-	<!--lejatszo  audio tag-->
-	<audio id="player_element" src onended="nextItem()" ontimeupdate="playerTimeupdate()" onprogress="bufferProgressbar()"  preload="auto" ></audio>
-	<!--lejatszo vezerlok-->
-	<div id="footer_player_container" onclick="Nothing()" style="display:none;" >
-		<div id="footer_player" style="display:table; table-layout:fixed; width:100%;">
-			<div id="footer_play_btn" class="footer_control_btn" onclick="togglePlayPause()" style="display:table-cell; width:50px; ">
-
-			</div>
-		<div id="song_current_time" style="display:table-cell;">
-		</div>
-		<div style="display:table-cell; padding:5px;">
-			<div id="now_playing_container" style="overflow-x:hidden;">
-				<!--kiiras-->
-				<div id="now_playing" style="line-height:20px; ">
-					-
+	<!--lejatszo kontener-->
+	<div id="player">
+		<!--Lejatszasi lista-->
+		<div id="player_menu" class="inactive" style="/*display:none;*/">
+			<div id="player_menu_content">
+				<div id="playlist_container">
+					<div style="font-family:Arial; font-size:26px; margin:0px 0px 10px 0px;">
+						PlayList :: Now Playing
+					</div>
+					<div id="Track_List" >
+						<!--{$tracks}-->
+					</div>
 				</div>
 			</div>
-			<!--tolto csik-->
-			<div id="progress" onclick="progressClick(event)" style="float:left; position:relative;">
-				<div id="progress_position" style="position:absolute;"></div>
-				<div id="progress_loaded" style="position:absolute;"></div>
-			</div>				
 		</div>
-		<div id="song_duration" style="display:table-cell; ">
-		</div>
-		<div id="playlist_button" onclick="showhidePlaylist()" style="display:table-cell; width:50px;">
+		<!--lejatszo  audio tag-->
+		<audio id="player_element" src onended="nextItem()" ontimeupdate="playerTimeupdate()" onprogress="bufferProgressbar()"  preload="auto" ></audio>
+		<!--lejatszo vezerlok-->
+		<div id="footer_player_container" onclick="Nothing()" style="display:none;" >
+			<div id="footer_player" style="display:table; table-layout:fixed; width:100%;">
+				<div id="footer_play_btn" class="footer_control_btn" onclick="togglePlayPause()" style="display:table-cell; width:50px; ">
 
-		</div>
+				</div>
+				<div id="song_current_time" style="display:table-cell;">
+				</div>
+				<div style="display:table-cell; padding:5px;">
+					<div id="now_playing_container" style="overflow-x:hidden;">
+						<!--kiiras-->
+						<div id="now_playing" style="line-height:20px; ">
+							-
+						</div>
+					</div>
+					<!--tolto csik-->
+					<div id="progress" onclick="progressClick(event)" style="float:left; position:relative;">
+						<div id="progress_position" style="position:absolute;"></div>
+						<div id="progress_loaded" style="position:absolute;"></div>
+					</div>
+				</div>
+				<div id="song_duration" style="display:table-cell; ">
+				</div>
+				<div id="repeat_button" onclick="" style="display:table-cell; width:30px;">
+				</div>
+				<div id="playermenu_button" onclick="showhidePlayerMenu()" style="display:table-cell; width:50px;">
+				</div>
+			</div>
 		</div>
 	</div>
 	<div id="loading_bar" >
@@ -231,7 +236,7 @@ if (navigator.userAgent.match(/Android/i) ||
 		<div></div>
 	</div>
 	<script>
-{literal}	  
+{literal}
 document.getElementById("search_box").addEventListener('keyup',function(e){
 	e.stopPropagation();//nem kuldi tovabb az esemenytaz alattalevoknek
 	if(window.event) // IE
@@ -248,20 +253,20 @@ document.getElementById("search_box").addEventListener('keyup',function(e){
 				document.getElementById("content_main"),
 				function(){},
 				true);
-		hidePlaylist();
+		hidePlayerMenu();
 	}
 });
-{/literal}	  
+{/literal}
 	</script>
 	<script>
-{literal}	
+{literal}
 function loginClick(){
 	document.querySelector('#login_box').style['display'] =	(document.querySelector('#login_box').style['display']=='block') ? 'none' : 'block';
 	document.querySelector('#login_box #login_username').focus();
 }
 function uploadClick(){
 	document.getElementById('content_main').innerHTML="<iframe src='./up' style='width:100%; height:500px; border:0px;'></iframe>";
-}  
+}
 function keresesClick(){
 	//Kereso gomb - gombnyomás
 	var kereso_doboz=document.getElementById("search_box");
@@ -285,7 +290,7 @@ function Item_Click(e){
 				//togglePlayPause();
 				document.getElementById("Track_List").innerHTML="";
 				var tracks = document.querySelectorAll("#content_main div[type=track]")
-					for(var i=0;i<tracks.length;i++){	
+					for(var i=0;i<tracks.length;i++){
 						document.getElementById("Track_List").appendChild(tracks[i].cloneNode(true));
 					}
 				playAtThis2(e.getAttribute("count"));
@@ -312,32 +317,32 @@ function getUrlVariable(variableName){
 	var urlVars=docUrl[docUrl.length-1].split("&");
 	for(var i=0;i<urlVars.length;i++) {
 		var urlVariable = urlVars[i].split("=");
-		if(urlVariable[0]==variableName){return urlVariable[1];}	
+		if(urlVariable[0]==variableName){return urlVariable[1];}
 	}
 }
-{/literal}	  
-	</script>	
+{/literal}
+	</script>
 
 	<script>
-{literal}	  
+{literal}
 //mobil ellenorzés
 if (mobile_device==1){	/*Ha mobil, mozgathato a lejatszo kiirasa*/
 	document.getElementById("now_playing_container").style["overflow-x"] = "scroll";
 }
-{/literal}	  
+{/literal}
 	</script>
 	<script>
-{literal}	  
+{literal}
 var Dir = "./upload/uploads/";
 var player = document.getElementById("player_element");
 
 var act_i;
-var next_i;       
+var next_i;
 
-function Nothing(){         
+function Nothing(){
 
-}   
-function playThis(t){	
+}
+function playThis(t){
 	next_i = t;
 	playItem();
 }
@@ -352,7 +357,7 @@ function playAtThis2(count){
 function startPlaylist(){
 	next_i = document.getElementById("Track_List").getElementsByTagName("div")[0];
 	playItem();
-}         
+}
 function togglePlayPause(){
 
 	if(player.paused){
@@ -372,9 +377,9 @@ function pause(){
 	//document.getElementById("pause_btn").id="play_btn";
 	document.getElementById("footer_pause_btn").id = "footer_play_btn";
 }
-function prevItem(){         	
+function prevItem(){
 	next_i = get_prevElement(act_i);//.getAttribute("type")=="track"?get_prevElement(act_i):act_i;
-	playItem();       	
+	playItem();
 }
 function nextItem(){
 	next_i = get_nextElement(act_i);//.getAttribute("type")=="track"?get_nextElement(act_i):act_i;
@@ -402,7 +407,7 @@ function playItem(){
 	act_i=next_i;  //Eddigi kovetkezo lesz az aktualis
 
 	document.getElementsByClassName("footer_control_btn")[0].id = "footer_pause_btn";
-}		 
+}
 function get_nextElement(n){
 	x = n.nextSibling;
 	while (x.nodeType!=1 && x.getAttribute('type')!='track')
@@ -441,7 +446,7 @@ function playerTimeupdate(){
 		document.getElementById("song_current_time").innerHTML = SecToTime(player.currentTime);// idő
 		document.getElementById("song_duration").innerHTML = SecToTime(player.duration);}//hossz
 }
-function SecToTime(sec){//Csak perc másodperc mm:ss 
+function SecToTime(sec){//Csak perc másodperc mm:ss
 	sec=Math.round(sec);
 	return Math.floor(sec/60)+":"+((sec%60)>9?(sec%60):"0"+(sec%60));
 }
@@ -455,44 +460,44 @@ function bufferProgressbar(){
 
 }
 function Progressbar(){
-	p = (player.currentTime/player.duration)*100+"%";	
+	p = (player.currentTime/player.duration)*100+"%";
 	document.getElementById("progress_position").style["width"] = p;
 }
-function ishidden()
+function isPlayerMenuHidden()
 {
-	var playl_c=document.getElementById("playlist_container");
+	var playl_c=document.getElementById("player_menu");
 	if(playl_c.style["display"]=="block")
 		return true;
 	else
 		return false;
 }
-function showhidePlaylist(){
-	var playl_c=document.getElementById("playlist_container");
+function showhidePlayerMenu(){
+	var playl_c=document.getElementById("player_menu");
 	var cont_c=document.getElementById("content_container");
-	if(playl_c.style["display"]=="block"){
-		playl_c.style["display"]="none";
-		cont_c.style["display"]="block";
+	if(playl_c.getAttribute("class") == "inactive"){
+		//playl_c.style["display"]="none";
+		playl_c.setAttribute("class","active");
+		//cont_c.style["display"]="block";
 	}
 	else{
-		playl_c.style["display"]="block";
-		cont_c.style["display"]="none";
+		//playl_c.style["display"]="block";
+		playl_c.setAttribute("class","inactive");
+		//cont_c.style["display"]="none";
 	}
 }
-function showPlaylist(){
-	var playl_c=document.getElementById("playlist_container");
-	var cont_c=document.getElementById("content_container");
-	playl_c.style["display"]="block";
-	cont_c.style["display"]="none";
+function showPlayerMenu(){
+	var playl_c=document.getElementById("player_menu");
+	//playl_c.style["display"]="block";
+	playl_c.setAttribute("class","active");
 }
-function hidePlaylist(){
-	var playl_c=document.getElementById("playlist_container");
-	var cont_c=document.getElementById("content_container");
-	playl_c.style["display"]="none";
-	cont_c.style["display"]="block";
+function hidePlayerMenu(){
+	var playl_c=document.getElementById("player_menu");
+	playl_c.setAttribute("class","inactive");
+	//playl_c.style["display"]="none";
 }
 
 
-{/literal}	  		 
+{/literal}
 	</script>
 	<script>
 {literal}
@@ -513,7 +518,7 @@ document.onkeyup = function(e){
 	}
 	if(bill==37){
 		e.preventDefault();
-		prevItem();	
+		prevItem();
 	}
 	if(bill==39){
 		e.preventDefault();
@@ -521,15 +526,15 @@ document.onkeyup = function(e){
 	}
 	if(bill==38){
 		e.preventDefault();
-		increaseVolume();	
+		increaseVolume();
 	}
 	if(bill==40){
 		e.preventDefault();
 		decreaseVolume();
-	}	
+	}
 
 }
-{/literal}	  		 
+{/literal}
 	</script>
 </body>
 </html>
