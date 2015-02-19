@@ -80,7 +80,7 @@ class PlaylistHandle
 	{
 		$fields = array(
 			new DBField("playlist_id", $this->id),
-			new DBField("track_id", $trackid));
+			new DBField("track_id", $this->manager->escape($trackid)));
 		return $this->manager->insertToTable("playlists_tracks", $fields);
 	}
 }
@@ -153,6 +153,16 @@ class PlaylistManager
 		$query = "(" . $query . ") AND ( $q1 )";
 
 		return $this->byCondition($query, $limit);
+	}
+
+	public function create($user, $name)
+	{
+		$fields = array(
+			new DBField("name", $this->manager->escape($name)),
+			new DBField("user_id", $user->id)
+		);
+
+		return $this->manager->insertToTable("playlists", $fields);
 	}
 }
 
