@@ -4,7 +4,7 @@ if(isset($_SESSION['views']))
 {
 	unset($_SESSION['views']);
 	echo "logged out";
-	echo "<meta http-equiv='refresh' content='0; url=./'/>";
+	header("Refresh: 0; url=./");
 }
 else
 {
