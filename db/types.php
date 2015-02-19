@@ -1,8 +1,8 @@
 <?php
 require_once("config.php");
 require_once("db/users.php");
-require_once("db/playlists.php");
 require_once("db/tracks.php");
+require_once("db/playlists.php");
 
 class DatabaseConnection
 {

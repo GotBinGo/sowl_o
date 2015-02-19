@@ -10,21 +10,24 @@ class User
 	public $avatar;
 	public $last_login;
 
-	public static function fromDBRecord($row)
+	public static function fromDBRecord($row, $tablename = "")
 	{
-		$res = new User();
-		$res->id = $row["id"];
-		$res->name = $row["name"];
-		$res->display_name = $row["display_name"];
-		$res->fbid = $row["fbid"];
+		if($tablename && $tablename != "")
+			$tablename = $tablename . ".";
 
-		$res->avatar = $row["avatar"];
+		$res = new User();
+		$res->id = $row[$tablename . "id"];
+		$res->name = $row[$tablename . "name"];
+		$res->display_name = $row[$tablename . "display_name"];
+		$res->fbid = $row[$tablename . "fbid"];
+
+		$res->avatar = $row[$tablename . "avatar"];
 		if($res->avatar == NULL)
 			$res->avatar = "upload/img/default_user.png";
 		else
 			$res->avatar = "upload/img/user/" . $res->avatar;
 
-		$res->last_login = $row["last_login"];
+		$res->last_login = $row[$tablename . "last_login"];
 
 
 		return $res;
@@ -77,6 +80,11 @@ class UserHandle
 	public function getPlaylists()
 	{
 		return $this->manager->playlists->byUserID($this->id);
+	}
+
+	public function getTracks()
+	{
+		return $this->manager->tracks->byUserID($this->id);
 	}
 }
 

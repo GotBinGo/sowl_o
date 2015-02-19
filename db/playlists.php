@@ -9,15 +9,18 @@ class Playlist
 	public $isPublic;
 	public $avatar;
 
-	public static function fromDBRecord($row)
+	public static function fromDBRecord($row, $tablename = "")
 	{
-		$res = new Playlist();
-		$res->id = $row["id"];
-		$res->name = $row["name"];
-		$res->owner_id = $row["user_id"];
-		$res->isPublic = $row["public"] ? TRUE : FALSE;
+		if($tablename && $tablename != "")
+			$tablename = $tablename . ".";
 
-		$res->avatar = $row["avatar"];
+		$res = new Playlist();
+		$res->id = $row[$tablename . "id"];
+		$res->name = $row[$tablename . "name"];
+		$res->owner_id = $row[$tablename . "user_id"];
+		$res->isPublic = $row[$tablename . "public"] ? TRUE : FALSE;
+
+		$res->avatar = $row[$tablename . "avatar"];
 		if($res->avatar == NULL)
 			$res->avatar = "upload/img/default_list.png";
 		else
@@ -50,6 +53,21 @@ class PlaylistHandle
 			return $this->obj = $this->manager->playlists->retrieveByID($this->id);
 		}
 	}
+
+	public function tracks()
+	{
+		$result = $this->manager->getTable("playlists_tracks, tracks", "playlists_tracks.playlist_id = '$this->id'");
+		if($result === FALSE)
+			return FALSE;
+
+		$res = array();
+
+		while($record = $result->fetch_array())
+		{
+			$res[] = new TrackHandle($this->manager, $record["id"],
+				Track::fromDBRecord($record, "tracks"));
+		}
+	}
 }
 
 class PlaylistManager
@@ -72,7 +90,7 @@ class PlaylistManager
 
 	public function byID($id)
 	{
-		return new PlaylistHandle($this, $id);
+		return new PlaylistHandle($this->manager, $id);
 	}
 
 	public function byUserID($user_id)
@@ -90,7 +108,7 @@ class PlaylistManager
 
 		while($record = $result->fetch_array())
 		{
-			$res[] = new PlaylistHandle($this, $record["id"],
+			$res[] = new PlaylistHandle($this->manager, $record["id"],
 				Playlist::fromDBRecord($record));
 		}
 

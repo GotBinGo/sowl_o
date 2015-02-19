@@ -12,17 +12,19 @@ class Track
 	public $upload_date;
 	public $mimetype;
 
-	public static function fromDBRecord($row)
+	public static function fromDBRecord($row, $tablename = "")
 	{
+		if($tablename && $tablename != "")
+			$tablename = $tablename . ".";
 		$res = new Track();
 		$res->id = $row["id"];
-		$res->file_name = $row["file_name"];
-		$res->author = $row["author_name"];
-		$res->title = $row["track_name"];
-		$res->length = $row["track_length"];
-		$res->uploader_id = $row["user_id"];
-		$res->upload_date = $row["upload_date"];
-		$res->mimetype = $row["file_type"];
+		$res->file_name = $row[$tablename . "file_name"];
+		$res->author = $row[$tablename . "author_name"];
+		$res->title = $row[$tablename . "track_name"];
+		$res->length = $row[$tablename . "track_length"];
+		$res->uploader_id = $row[$tablename . "user_id"];
+		$res->upload_date = $row[$tablename . "upload_date"];
+		$res->mimetype = $row[$tablename . "file_type"];
 
 		return $res;
 	}
@@ -62,7 +64,7 @@ class TrackManager
 
 	public function __construct($manager)
 	{
-		$this->manager == $manager;
+		$this->manager = $manager;
 	}
 
 	public function retrieveByID($id)
@@ -96,16 +98,23 @@ class TrackManager
 		return $res;
 	}
 
+	public function byUserID($userid, $limit = 0)
+	{
+		return $this->byCondition("user_id = '$userid'", $limit);
+	}
+
 	public function search($user, $query, $limit = 0)
 	{
 		$terms = explode($query, " ");
 		$conditions = array();
 		foreach($terms as $current)
-			$conditions[] = "track.author_name LIKE '%$current%' OR track.track_name LIKE '%$current%'";
+			$conditions[] = "tracks.author_name LIKE '%$current%' OR tracks.track_name LIKE '%$current%'";
 		$query = implode(" OR ", $conditions);
-		$query = "(" . $query . ") AND ( playlist.user_id = '$user->id' OR playlist.public )";
+		$usercheck = ($user && $user->id) ? "playlists.user_id = '$user->id' OR playlists.public" : "playlists.public";
+		$query = "(" . $query . ") AND ( tracks.id = playlists_tracks.track_id AND playlists.id = playlists_tracks.playlist_id "
+			. "AND ($usercheck) )";
 
-		$result = $this->manager->getTable("tracks, playlists", $condition, $limit);
+		$result = $this->manager->getTable("tracks, playlists, playlists_tracks", $condition, $limit);
 		if($result === FALSE)
 			return FALSE;
 
@@ -114,7 +123,7 @@ class TrackManager
 		while($record = $result->fetch_array())
 		{
 			$res[] = new TrackHandle($this, $record["id"],
-				Track::fromDBRecord($record));
+				Track::fromDBRecord($record, "tracks"));
 		}
 
 		return $res;
