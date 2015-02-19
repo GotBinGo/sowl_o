@@ -3,7 +3,7 @@ require_once("db.php");
 
 require_once('smarty.php');
 session_start();
-$name = isset($_GET['name']) ? $db->escapeString($_GET['name']) : "";
+$name = isset($_GET['name']) ? $_GET["name"] : "";
 
 if(isset($_SESSION["views"]))
 {

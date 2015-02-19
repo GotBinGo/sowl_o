@@ -78,6 +78,47 @@ class TrackManager
 	{
 		return new TrackHandle($this->manager, $id);
 	}
+
+	public function byCondition($condition, $limit = 0)
+	{
+		$result = $this->manager->getTable("tracks", $condition, $limit);
+		if($result === FALSE)
+			return FALSE;
+
+		$res = array();
+
+		while($record = $result->fetch_array())
+		{
+			$res[] = new TrackHandle($this, $record["id"],
+				Track::fromDBRecord($record));
+		}
+
+		return $res;
+	}
+
+	public function search($user, $query, $limit = 0)
+	{
+		$terms = explode($query, " ");
+		$conditions = array();
+		foreach($terms as $current)
+			$conditions[] = "track.author_name LIKE '%$current%' OR track.track_name LIKE '%$current%'";
+		$query = implode(" OR ", $conditions);
+		$query = "(" . $query . ") AND ( playlist.user_id = '$user->id' OR playlist.public )";
+
+		$result = $this->manager->getTable("tracks, playlists", $condition, $limit);
+		if($result === FALSE)
+			return FALSE;
+
+		$res = array();
+
+		while($record = $result->fetch_array())
+		{
+			$res[] = new TrackHandle($this, $record["id"],
+				Track::fromDBRecord($record));
+		}
+
+		return $res;
+	}
 }
 
 ?>

@@ -60,7 +60,10 @@ class UserHandle
 
 	public function getPlaylistsVisibleTo($user)
 	{
-		if($user && $user->id == $this->id)
+		if(!$user)
+			return $this->getPublicPlaylists();
+
+		if($user->id == $this->id)
 			return $this->getPlaylists();
 
 		return $user->getPublicPlaylists();
@@ -89,7 +92,6 @@ class UserManager
 	public function authenticate($username, $password)
 	{
 		$uname = $this->manager->escapeString($username);
-		$passw = $this->manager->escapeString($password);
 
 		$row = $this->manager->getRecord("users", "name = '$uname'");
 		if($row === FALSE)
@@ -110,8 +112,28 @@ class UserManager
 		return $this->manager->updateTable("users", "id = '$userhnd->id'", array( $field ));
 	}
 
+	public function byCondition($condition, $limit = 0)
+	{
+		$result = $this->manager->getTable("users", $condition, $limit);
+		if($result === FALSE)
+			return FALSE;
+
+		$res = array();
+
+		while($record = $result->fetch_array())
+		{
+			$res[] = new UserHandle($this, $record["id"],
+				User::fromDBRecord($record));
+		}
+
+		return $res;
+	}
+
 	public function retrieveByID($id)
 	{
+		if(!isset($id) || $id == NULL)
+			return FALSE;
+
 		$row = $this->manager->getRecord("users", "id = '$id'");
 		if($row === FALSE)
 			return FALSE;
@@ -121,14 +143,34 @@ class UserManager
 
 	public function byID($id)
 	{
+		if(!isset($id) || $id == NULL)
+			return FALSE;
+
 		return new UserHandle($this->manager, $id);
 	}
 
 	public function byName($name)
 	{
+		$name = $this->manager->escapeString($name);
 		$row = $this->manager->getRecord("users", "name = '$name'");
 		return new UserHandle($this->manager, $row['id'],
 			User::fromDBRecord($row));
+	}
+
+	public function search($query, $limit = 0)
+	{
+		if(!$query || $query == "")
+		{
+			return $this->byCondition("", $limit);
+		}
+
+		$terms = explode($query, " ");
+		$conditions = array();
+		foreach($terms as $current)
+			$conditions[] = "display_name LIKE '%$current%'";
+		$condition = implode(" OR ", $conditions);
+
+		return $this->byCondition($condition, $limit);
 	}
 }
 

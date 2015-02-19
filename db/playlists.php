@@ -19,9 +19,9 @@ class Playlist
 
 		$res->avatar = $row["avatar"];
 		if($res->avatar == NULL)
-			$res->avatar = "upload/img/default_user.png";
+			$res->avatar = "upload/img/default_list.png";
 		else
-			$res->avatar = "upload/img/user/" . $res->avatar;
+			$res->avatar = "upload/img/list/" . $res->avatar;
 
 
 		return $res;
@@ -80,9 +80,9 @@ class PlaylistManager
 		return $this->byCondition("user_id = '$user_id'");
 	}
 
-	public function byCondition($condition)
+	public function byCondition($condition = "", $limit = 0)
 	{
-		$result = $this->manager->getTable("playlists", $condition);
+		$result = $this->manager->getTable("playlists", $condition, $limit);
 		if($result === FALSE)
 			return FALSE;
 
@@ -100,6 +100,24 @@ class PlaylistManager
 	public function getPublic()
 	{
 		return $this->byCondition("public");
+	}
+
+	public function search($user, $query, $limit = 0)
+	{
+		$q1 = ($user && $user->id) ? "user_id = '$user->id OR public" : "public";
+		if(!$query || $query == "")
+		{
+			return $this->byCondition($q1, $limit);
+		}
+
+		$terms = explode($query, " ");
+		$conditions = array();
+		foreach($terms as $current)
+			$conditions[] = "name LIKE '%$current%'";
+		$query = implode(" OR ", $conditions);
+		$query = "(" . $query . ") AND ( $q1 )";
+
+		return $this->byCondition($query, $limit);
 	}
 }
 

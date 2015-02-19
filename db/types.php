@@ -39,13 +39,18 @@ class DatabaseConnection
 	// Utility functions for classes
 	//
 	// retrieve table data, optionally conditionally
-	public function getTable($name, $condition)
+	public function getTable($name, $condition, $limit = 0)
 	{
 		unset($this->error);
 		if(isset($condition) && $condition != "")
 			$condition = " WHERE " . $condition;
 
-		$sql = "SELECT * FROM $name" . $condition . ";";
+		if(isset($limit) && $limit != 0)
+			$limit = " LIMIT " . $limit;
+		else
+			$limit = "";
+
+		$sql = "SELECT * FROM $name" . $condition . $limit . ";";
 		$result = $this->conn->query($sql);
 		if($result === FALSE)
 			$this->error = "Query error: " . $this->conn->error;
