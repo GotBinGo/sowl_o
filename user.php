@@ -19,7 +19,7 @@ $vieweduser = $viewedhnd->get();
 
 echo("<div class=\"list_header\"><img src=\"$vieweduser->avatar\" height=\"42\" width=\"42\">$vieweduser->display_name</div>");
 
-$lists = $viewedhnd->getPlaylistsVisibleTo($viewerhnd);
+$lists = $viewedhnd->playlistVisibleTo($viewerhnd);
 
 foreach($lists as $record)
 {

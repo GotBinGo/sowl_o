@@ -91,10 +91,22 @@ class DatabaseConnection
 		return $result;
 	}
 
-
-	public function escapeString($string)
+	public function insertToTable($name, $fields)
 	{
-		return $this->conn->escape_string($string);
+		unset($this->error);
+
+		$sql = "INSERT INTO $name " . DBField::aggregate2($fields) . ";";
+		$result = $this->conn->query($sql);
+		if($result === FALSE)
+			$this->error = "Failed to insert to table $name: " . $this->conn->error;
+
+		return $result;
+	}
+
+
+	public function escape($var)
+	{
+		return gettype($var) == "string" ? $this->conn->escape_string($var) : $var;
 	}
 }
 
@@ -126,6 +138,25 @@ class DBField
 			$res = substr($res, 0, strlen($res) - 2);
 			return $res;
 		}
+	}
+
+	public static function aggregate2($array)
+	{
+		if(sizeof($array) == 0)
+			return "";
+
+		$names = "(";
+		$values = "(";
+
+		foreach($array as $field)
+		{
+			$names .= "$field->name,";
+			$values .= "'$field->value',";
+		}
+		$names[strlen($names) - 1] = ")";
+		$values[strlen($values) - 1] = ")";
+
+		return $names . " VALUES " . $values;
 	}
 }
 

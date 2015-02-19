@@ -4,31 +4,22 @@ session_start();
 if(isset($_SESSION['views']))
 {
 	$user = $db->users->byID($_SESSION['views']);
-	$list_id = mysqli_real_escape_string($conn, $_GET['id']);	
-	$public = mysqli_real_escape_string($conn, $_GET['public']);	
-	$result = mysqli_query($conn,"SELECT * FROM playlists WHERE id='$list_id' AND user_id='$user->id'");
-	if(mysqli_num_rows($result) == 1)
-	{	
-		$val = 0;
-		if($public == "true" || $public == "1")
-			$val = 1;
-
-		if (!mysqli_query($conn,"UPDATE playlists SET public = '$val' WHERE id='$list_id'"))
-		{
-			die('Error: ' . mysqli_error($conn));
-		}
-		else
-		{
-			echo "updated $val";
-		}		
+	$list_id = $_GET["id"];
+	$public = $_GET["public"];
+	$listhnd = $db->playlists->byID($list_id);
+	$list = $listhnd->get();
+	if($list->owner_id != $user->id)
+		die("You are not allowed to change playlist public state");
+	if($listhnd->setPublic($public))
+	{
+		echo("Playlist is now " . ($public == "true" || $public == 1 ? "public" : "private"));
 	}
 	else
-		echo "playlist not yours";
-
+		echo("Error: " . $db->error);
 }
 else
 {
-	echo "not logged in";
+	echo "You are not logged in";
 }
 
 

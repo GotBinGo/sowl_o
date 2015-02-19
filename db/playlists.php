@@ -39,7 +39,7 @@ class PlaylistHandle
 
 	public function __construct($manager, $id, $obj = NULL)
 	{
-		$this->id = $id;
+		$this->id = $manager->escape($id);
 		$this->manager = $manager;
 		$this->obj = $obj;
 	}
@@ -68,6 +68,21 @@ class PlaylistHandle
 				Track::fromDBRecord($record, "tracks"));
 		}
 	}
+
+	public function setPublic($public)
+	{
+		$public = ($public == "true" || $public == "1") ? TRUE : FALSE;
+		$field = new DBField("public", $public ? 1 : 0);
+		return $this->manager->updateTable("playlists", "id = '$this->id'", array($field));
+	}
+
+	public function insert($trackid)
+	{
+		$fields = array(
+			new DBField("playlist_id", $this->id),
+			new DBField("track_id", $trackid));
+		return $this->manager->insertToTable("playlists_tracks", $fields);
+	}
 }
 
 class PlaylistManager
@@ -95,6 +110,7 @@ class PlaylistManager
 
 	public function byUserID($user_id)
 	{
+		$user_id = $this->manager->escape($user_id);
 		return $this->byCondition("user_id = '$user_id'");
 	}
 
@@ -122,12 +138,13 @@ class PlaylistManager
 
 	public function search($user, $query, $limit = 0)
 	{
-		$q1 = ($user && $user->id) ? "user_id = '$user->id OR public" : "public";
+		$q1 = ($user && $user->id) ? "user_id = '$user->id' OR public" : "public";
 		if(!$query || $query == "")
 		{
 			return $this->byCondition($q1, $limit);
 		}
 
+		$query = $this->manager->escape($query);
 		$terms = explode($query, " ");
 		$conditions = array();
 		foreach($terms as $current)

@@ -12,7 +12,7 @@ else
 $playlisthnd = $id ? $db->playlists->byID($id) : NULL;
 $playlist = $playlisthnd ? $playlisthnd->get() : NULL;
 $title = $playlist ? $playlist->name : "Uploads";
-$tracks = $playlisthnd ? $playlisthnd->getTracks() : ($user ? $user->getTracks() : NULL);
+$tracks = $playlisthnd ? $playlisthnd->tracks() : ($user ? $user->tracks() : NULL);
 $avatar = $playlist ? $playlist->avatar : "upload/img/default_list.png";
 
 if($tracks === FALSE)

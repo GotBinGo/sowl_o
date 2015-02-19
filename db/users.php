@@ -41,8 +41,8 @@ class UserHandle
 	private $manager;
 	public function __construct($manager, $id, $obj = NULL)
 	{
-		$this->id = $id;
 		$this->manager = $manager;
+		$this->id = $this->manager->escape($id);
 		$this->obj = $obj;
 	}
 
@@ -56,33 +56,33 @@ class UserHandle
 		}
 	}
 
-	public function getViewablePlaylists()
+	public function viewablePlaylists()
 	{
 		return $this->manager->playlists->byCondition("public OR user_id = '$this->id'");
 	}
 
-	public function getPlaylistsVisibleTo($user)
+	public function playlistVisibleTo($user)
 	{
 		if(!$user)
-			return $this->getPublicPlaylists();
+			return $this->publicPlaylists();
 
 		if($user->id == $this->id)
-			return $this->getPlaylists();
+			return $this->playlists();
 
-		return $user->getPublicPlaylists();
+		return $user->publicPlaylists();
 	}
 
-	public function getPublicPlaylists()
+	public function publicPlaylists()
 	{
 		return $this->manager->playlists->byCondition("public AND user_id = '$this->id'");
 	}
 
-	public function getPlaylists()
+	public function playlists()
 	{
 		return $this->manager->playlists->byUserID($this->id);
 	}
 
-	public function getTracks()
+	public function tracks()
 	{
 		return $this->manager->tracks->byUserID($this->id);
 	}
@@ -130,7 +130,7 @@ class UserManager
 
 		while($record = $result->fetch_array())
 		{
-			$res[] = new UserHandle($this, $record["id"],
+			$res[] = new UserHandle($this->manager, $record["id"],
 				User::fromDBRecord($record));
 		}
 
@@ -142,6 +142,7 @@ class UserManager
 		if(!isset($id) || $id == NULL)
 			return FALSE;
 
+		$id = $this->manager->escape($id);
 		$row = $this->manager->getRecord("users", "id = '$id'");
 		if($row === FALSE)
 			return FALSE;
@@ -159,7 +160,7 @@ class UserManager
 
 	public function byName($name)
 	{
-		$name = $this->manager->escapeString($name);
+		$name = $this->manager->escape($name);
 		$row = $this->manager->getRecord("users", "name = '$name'");
 		return new UserHandle($this->manager, $row['id'],
 			User::fromDBRecord($row));
@@ -172,6 +173,7 @@ class UserManager
 			return $this->byCondition("", $limit);
 		}
 
+		$query = $this->manager->escape($query);
 		$terms = explode($query, " ");
 		$conditions = array();
 		foreach($terms as $current)

@@ -4,31 +4,20 @@ session_start();
 if(isset($_SESSION['views']))
 {
 	$user = $db->users->byID($_SESSION['views']);
-	$track_id = mysqli_real_escape_string($conn, $_GET['track_id']);
-	$list_id = mysqli_real_escape_string($conn, $_GET['list_id']);	
-	$result = mysqli_query($conn,"SELECT * FROM playlists WHERE id='$list_id' AND user_id='$user->id'");	
-	if(mysqli_num_rows($result) == 1)
-	{
-		$result = mysqli_query($conn,"SELECT * FROM tracks WHERE id='$track_id'");	
-		if(mysqli_num_rows($result) == 1)
-		{	
-			if (!mysqli_query($conn,"INSERT INTO playlist_track (playlist_id, track_id) VALUES ('$list_id', '$track_id')"))
-			{
-				die('Error: ' . mysqli_error($conn));
-			}
-			echo "added";
-
-
-		}	
-		else
-		{
-			echo "track does not exist";
-		}
-	}
+	$track_id = $_GET['track_id'];
+	$list_id = $_GET['list_id'];
+	$listhnd = $db->playlists->byID($list_id);
+	$list = $listhnd->get();
+	if($list === FALSE)
+		die("Playlist doesn't exist");
+	if($list->owner_id != $user->id)
+		die("You don't own the playlist");
+	if($db->tracks->byID($track_id)->get() === FALSE)
+		die("Track doesn't exist");
+	if($listhnd->insert($track_id))
+		echo "added";
 	else
-	{
-		echo "playlist not yours";
-	}
+		die("Failed to add track to playlist: " . $db->error);
 }
 else
 {

@@ -38,7 +38,7 @@ class TrackHandle
 
 	public function __construct($manager, $id, $obj = NULL)
 	{
-		$this->id = $id;
+		$this->id = $manager->escape($id);
 		$this->manager = $manager;
 		$this->obj = $obj;
 	}
@@ -91,7 +91,7 @@ class TrackManager
 
 		while($record = $result->fetch_array())
 		{
-			$res[] = new TrackHandle($this, $record["id"],
+			$res[] = new TrackHandle($this->manager, $record["id"],
 				Track::fromDBRecord($record));
 		}
 
@@ -105,14 +105,25 @@ class TrackManager
 
 	public function search($user, $query, $limit = 0)
 	{
-		$terms = explode($query, " ");
-		$conditions = array();
-		foreach($terms as $current)
-			$conditions[] = "tracks.author_name LIKE '%$current%' OR tracks.track_name LIKE '%$current%'";
-		$query = implode(" OR ", $conditions);
+		$query = $this->manager->escape($query);
 		$usercheck = ($user && $user->id) ? "playlists.user_id = '$user->id' OR playlists.public" : "playlists.public";
-		$query = "(" . $query . ") AND ( tracks.id = playlists_tracks.track_id AND playlists.id = playlists_tracks.playlist_id "
-			. "AND ($usercheck) )";
+		$joincondition = "tracks.id = playlists_tracks.track_id AND playlists.id = playlists_tracks.playlist_id";
+
+		if($query && $query != "")
+		{
+			$terms = explode($query, " ");
+			$query = $this->manager->escape($query);
+			$conditions = array();
+			foreach($terms as $current)
+				$conditions[] = "tracks.author_name LIKE '%$current%' OR tracks.track_name LIKE '%$current%'";
+			$query = implode(" OR ", $conditions);
+			$query = "(" . $query . ") AND ( $joincondition "
+				. "AND ($usercheck) )";
+		}
+		else
+		{
+			$query = $joincondition . " AND ($usercheck)";
+		}
 
 		$result = $this->manager->getTable("tracks, playlists, playlists_tracks", $condition, $limit);
 		if($result === FALSE)
@@ -122,7 +133,7 @@ class TrackManager
 
 		while($record = $result->fetch_array())
 		{
-			$res[] = new TrackHandle($this, $record["id"],
+			$res[] = new TrackHandle($this->manager, $record["id"],
 				Track::fromDBRecord($record, "tracks"));
 		}
 
