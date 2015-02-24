@@ -99,7 +99,7 @@ class UserManager
 
 	public function authenticate($username, $password)
 	{
-		$uname = $this->manager->escapeString($username);
+		$uname = $this->manager->escape($username);
 
 		$row = $this->manager->getRecord("users", "name = '$uname'");
 		if($row === FALSE)
@@ -128,7 +128,7 @@ class UserManager
 
 		$res = array();
 
-		while($record = $result->fetch_array())
+		while($record = $result->fetch_assoc())
 		{
 			$res[] = new UserHandle($this->manager, $record["id"],
 				User::fromDBRecord($record));

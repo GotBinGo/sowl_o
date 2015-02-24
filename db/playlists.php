@@ -62,7 +62,7 @@ class PlaylistHandle
 
 		$res = array();
 
-		while($record = $result->fetch_array())
+		while($record = $result->fetch_assoc())
 		{
 			$res[] = new TrackHandle($this->manager, $record["id"],
 				Track::fromDBRecord($record, "tracks"));
@@ -122,7 +122,7 @@ class PlaylistManager
 
 		$res = array();
 
-		while($record = $result->fetch_array())
+		while($record = $result->fetch_assoc())
 		{
 			$res[] = new PlaylistHandle($this->manager, $record["id"],
 				Playlist::fromDBRecord($record));

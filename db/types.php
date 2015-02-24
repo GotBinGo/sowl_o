@@ -6,8 +6,8 @@ require_once("db/playlists.php");
 
 class DatabaseConnection
 {
-	//private $conn;
-	public $conn;
+	private $conn;
+	//public $conn;
 	public $users;
 	public $playlists;
 	public $tracks;
@@ -39,7 +39,7 @@ class DatabaseConnection
 	// Utility functions for classes
 	//
 	// retrieve table data, optionally conditionally
-	public function getTable($name, $condition, $limit = 0)
+	public function getTable($name, $condition = "", $limit = 0)
 	{
 		unset($this->error);
 		if(isset($condition) && $condition != "")
@@ -74,7 +74,7 @@ class DatabaseConnection
 			$this->error = "Too many records";
 			return FALSE;
 		}
-		return $result->fetch_array();
+		return $result->fetch_assoc();
 	}
 
 	public function updateTable($name, $condition, $fields)
@@ -98,11 +98,29 @@ class DatabaseConnection
 		$sql = "INSERT INTO $name " . DBField::aggregate2($fields) . ";";
 		$result = $this->conn->query($sql);
 		if($result === FALSE)
+		{
 			$this->error = "Failed to insert to table $name: " . $this->conn->error;
+			return FALSE;
+		}
+
+		return $this->conn->insert_id;
+	}
+
+	public function deleteFromTable($name, $condition = "")
+	{
+		unset($this->error);
+
+		$sql = "DELETE FROM $name";
+		if(isset($condition) && $condition != "")
+			$condition = " WHERE " . $condition;
+
+		$sql .= $condition . ";";
+		$result = $this->conn->query($sql);
+		if($result === FALSE)
+			$this->error = "Failed to delete from $name: " . $this->conn->error;
 
 		return $result;
 	}
-
 
 	public function escape($var)
 	{

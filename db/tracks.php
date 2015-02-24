@@ -17,7 +17,7 @@ class Track
 		if($tablename && $tablename != "")
 			$tablename = $tablename . ".";
 		$res = new Track();
-		$res->id = $row["id"];
+		$res->id = $row[$tablename . "id"];
 		$res->file_name = $row[$tablename . "file_name"];
 		$res->author = $row[$tablename . "author_name"];
 		$res->title = $row[$tablename . "track_name"];
@@ -89,7 +89,7 @@ class TrackManager
 
 		$res = array();
 
-		while($record = $result->fetch_array())
+		while($record = $result->fetch_assoc())
 		{
 			$res[] = new TrackHandle($this->manager, $record["id"],
 				Track::fromDBRecord($record));
@@ -106,7 +106,7 @@ class TrackManager
 	public function search($user, $query, $limit = 0)
 	{
 		$query = $this->manager->escape($query);
-		$usercheck = ($user && $user->id) ? "playlists.user_id = '$user->id' OR playlists.public" : "playlists.public";
+		$usercheck = ($user && $user->id) ? "tracks.user_id = '$user->id' OR playlists.public" : "playlists.public";
 		$joincondition = "tracks.id = playlists_tracks.track_id AND playlists.id = playlists_tracks.playlist_id";
 
 		if($query && $query != "")
@@ -117,27 +117,85 @@ class TrackManager
 			foreach($terms as $current)
 				$conditions[] = "tracks.author_name LIKE '%$current%' OR tracks.track_name LIKE '%$current%'";
 			$query = implode(" OR ", $conditions);
-			$query = "(" . $query . ") AND ( $joincondition "
-				. "AND ($usercheck) )";
+			$query = "(" . $query . ") AND ( $usercheck }";
 		}
 		else
 		{
-			$query = $joincondition . " AND ($usercheck)";
+			$query = $usercheck;
 		}
 
-		$result = $this->manager->getTable("tracks, playlists, playlists_tracks", $condition, $limit);
+		$result = $this->manager->getTable("tracks LEFT JOIN (playlists_tracks, playlists) ON ($joincondition)", $query, $limit);
 		if($result === FALSE)
 			return FALSE;
 
 		$res = array();
 
-		while($record = $result->fetch_array())
+		$fields = $result->fetch_fields();
+		while($record = $result->fetch_row())
 		{
-			$res[] = new TrackHandle($this->manager, $record["id"],
-				Track::fromDBRecord($record, "tracks"));
+			$newrecord = array();
+			foreach($record as $key=>$value)
+			{
+				$newrecord[$fields[$key]->table . "." . $fields[$key]->name] = $value;
+			}
+			$res[] = new TrackHandle($this->manager, $newrecord["tracks.id"],
+				Track::fromDBRecord($newrecord, "tracks"));
 		}
 
 		return $res;
+	}
+
+	public function add($user, $tmpname, $author, $title, $length, $filetype, $tags)
+	{
+		$upload_date = date("Y-m-d H:i:s");
+		$newname = md5(microtime().rand()) . ".mp3";
+		$tags = array_filter(array_unique($tags));
+		$author = $this->manager->escape($author);
+		$title = $this->manager->escape($title);
+		$length = $this->manager->escape($length);
+
+		$track_fields = array(
+			new DBField("file_name", $newname),
+			new DBField("author_name", $author),
+			new DBField("track_name", $title),
+			new DBField("track_length", $length),
+			new DBField("user_id", $user->id),
+			new DBField("upload_date", $upload_date),
+			new DBField("file_type", $filetype)
+		);
+
+		$result = $this->manager->insertToTable("tracks", $track_fields);
+		if($result === FALSE)
+			return FALSE;
+
+		$track_id = $result;
+
+		$result = move_uploaded_file($tmpname, "../upload/uploads/$newname");
+		if(!$result)
+		{
+			$this->manager->deleteFromTable("tracks", "id = '$track_id'");
+			$this->manager->error = "Couldn't move uploaded file";
+			return FALSE;
+		}
+
+		$error = 0;
+		foreach($tags as $tag)
+		{
+			$tag_fields = array(
+				new DBField("track_id", $track_id),
+				new DBField("tag", $this->manager->escape($tag))
+			);
+			$result = $this->manager->insertToTable("tags", $tag_fields);
+			if($result === FALSE)
+				$error++;
+		}
+		if($error > 0)
+		{
+			$this->manager->error = "Couldn't add $error tags to the uploaded track";
+			return FALSE;
+		}
+
+		return $track_id;
 	}
 }
 

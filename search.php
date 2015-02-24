@@ -69,7 +69,7 @@ function searchTracks($term)
 	global $user;
 	global $limit;
 	global $smarty;
-	$result = $db->playlists->search($user, $term, $limit);
+	$result = $db->tracks->search($user, $term, $limit);
 	if(!$result)
 		return FALSE;
 
@@ -84,6 +84,7 @@ function searchTracks($term)
 		$smarty->assign('author_name', $record->author);
 		$smarty->assign('track_name', $record->title);
 		$smarty->assign('count', $count);
+		$smarty->assign('playlists', array());
 
 		$smarty->display('tpl/playlist_div.html');
 

@@ -212,6 +212,7 @@ create_table($conn, "tracks",
 		new Field( "text",           "file_name",  false,   false,         false),
 		new Field( "text",           "author_name",false,   false,         false),
 		new Field( "text",           "track_name", false,   false,         false),
+		new Field( "int(11)",        "track_length",false,  false,         false),
 		new Field( "int(11)",        "user_id",    false,   false,         false),
 		new Field( "date",           "upload_date",false,   false,         false),
 		new Field( "text",           "file_type",  false,   false,         false)
