@@ -16,13 +16,13 @@ foreach ($_FILES as $file)
 
 	if($file["error"] != 0)
 	{
-		echo("error: " . $file["error"] . "<br />\n");
+		echo("error: " . $file["error"]);
 		continue;
 	}
 
-	if($file["type"] != 'audio/mpeg' && $file["type"] != 'audio/mp3')
+	if($file["type"] != 'audio/mpeg' && $file["type"] != 'audio/mp3' && $file["type"] != "application/x-flac")
 	{
-		echo("bad type<br />\n");
+		echo("bad type: " . $file["type"]);
 		continue;
 	}
 
@@ -57,7 +57,7 @@ foreach ($_FILES as $file)
 	$tags = array_merge(
 		$info["comments"]["artist"],
 		$info["comments"]["title"],
-		$info["comments"]["genre"],
+		($info["comments"]["genre"]) ? $info["comments"]["genre"] : array(),
 		$info["comments"]["album"]
 		);
 

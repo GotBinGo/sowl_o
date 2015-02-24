@@ -155,10 +155,12 @@ function processFiles(tFiles)//Process transfered files
 	if(files.length==0)
 		restartreadFiles=true;
 	for (var i = 0; i < tFiles.length; i++) {
-		if(tFiles[i].type=="audio/mp3" || tFiles[i].type=="audio/mpeg"){
+		if(tFiles[i].type=="audio/mp3" || tFiles[i].type=="audio/mpeg" || tFiles[i].type == "application/x-flac"){
 			files.push(tFiles[i]);
 			previewFile(tFiles[i]);
 		}
+		else
+			console.log("JS: unsupported type: " + tFiles[i].type);
 	}
 	if(restartreadFiles && files.length>0)readFiles();
 }

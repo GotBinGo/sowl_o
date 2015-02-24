@@ -148,7 +148,8 @@ class TrackManager
 	public function add($user, $tmpname, $author, $title, $length, $filetype, $tags)
 	{
 		$upload_date = date("Y-m-d H:i:s");
-		$newname = md5(microtime().rand()) . ".mp3";
+		$extension = substr($tmpname, strrpos($tmpname, "."));
+		$newname = md5(microtime().rand()) . $extension;
 		$tags = array_filter(array_unique($tags));
 		$author = $this->manager->escape($author);
 		$title = $this->manager->escape($title);
