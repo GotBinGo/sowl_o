@@ -113,14 +113,6 @@ div {
 	bottom:0px;
 	left:0px;
 }
-#player_menu.inactive
-{
-	transform:translateY(100%);
-}
-#player_menu.active
-{
-	transform:translateY(0);
-}
 #player_menu_content{
 	position:absolute;
 	top:0;
@@ -362,6 +354,14 @@ body{
 
 @media all and (max-width: 700px)
 {
+	#player_menu.inactive
+	{
+		display:none;
+	}
+	#player_menu.active
+	{
+		display:block;
+	}
 	#search_box.active{
 		width:100%;
 	}
@@ -394,6 +394,14 @@ body{
 	}
 	#main_content{
 		width:90%;
+	}
+	#player_menu.inactive
+	{
+		transform:translateY(100%);
+	}
+	#player_menu.active
+	{
+		transform:translateY(0%);
 	}
 	#player_menu{
 		transition: .5s
