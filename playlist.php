@@ -29,18 +29,20 @@ if($playlist)
 echo "</div>";
 
 $count = 0;
-if($count == 0)
-	die("<br />empty<br />");
-foreach($tracks as $track)
+foreach($tracks as $hnd)
 {
+	$track = $hnd->get();
 	$smarty->assign("type", "track");
 	$smarty->assign('count', $count++);
 	$smarty->assign('track_id', $track->id);
 	$smarty->assign('file_name', $track->file_name);
 	$smarty->assign('author_name', $track->author);
 	$smarty->assign('track_name', $track->title);
+	$smarty->assign('playlists', array());
 
 	$smarty->display('tpl/playlist_div.html');
 }
+if($count == 0)
+	die("<br />empty<br />");
 
 ?>

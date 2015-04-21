@@ -194,7 +194,7 @@ create_table($conn, "playlists",
 		new Field( "varchar(255)",   "name",       false,   false,         false),
 		new Field( "int(11)",        "user_id",    false,   false,         false),
 		new Field( "tinyint(1)",     "public",     false,   false,         false),
-		new Field( "varchar(255)",   "avatar",     false,   false,         false)
+		new Field( "varchar(255)",   "avatar",     true,    false,         false)
 	));
 
 create_table($conn, "playlists_tracks", 

@@ -19,16 +19,18 @@ $vieweduser = $viewedhnd->get();
 
 echo("<div class=\"list_header\"><img src=\"$vieweduser->avatar\" height=\"42\" width=\"42\">$vieweduser->display_name</div>");
 
-$lists = $viewedhnd->playlistVisibleTo($viewerhnd);
+$lists = $viewedhnd->playlistsVisibleTo($viewerhnd);
 
 foreach($lists as $record)
 {
+	global $user;
+	$r = $record->get();
 	$smarty->assign('type', "list");
-	$smarty->assign('id', $record->id);
-	$smarty->assign('name2', $record->name);							
-	$smarty->assign('avatar', $record->avatar);
-	if($name == $user->name)
-		$smarty->assign('pub', $record->isPublic);
+	$smarty->assign('id', $r->id);
+	$smarty->assign('name2', $r->name);							
+	$smarty->assign('avatar', $r->avatar);
+	if($viewerhnd->id == $viewedhnd->id)
+		$smarty->assign('pub', $r->isPublic);
 	else
 		$smarty->assign('pub',"");
 	$smarty->display('tpl/list.html');
@@ -47,11 +49,7 @@ if(isset($_SESSION['views']))
 	$smarty->assign('name2', "Uploads");							
 	$smarty->assign('pub',"" );
 	$user = $db->users->byID($_SESSION["views"])->get();
-	$avatar = $user->avatar;
-	if($avatar == "")
-		$avatar = "upload/img/default_list.png";
-	else
-		$avatar = "upload/img/list/" . $avatar;			
+	$avatar = $user->avatar == "upload/img/default_user.png" ? "upload/img/default_list.png" : $user->avatar;
 
 	$smarty->assign('avatar', $avatar);
 	$smarty->display('tpl/list.html');

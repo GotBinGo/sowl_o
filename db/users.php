@@ -61,7 +61,7 @@ class UserHandle
 		return $this->manager->playlists->byCondition("public OR user_id = '$this->id'");
 	}
 
-	public function playlistVisibleTo($user)
+	public function playlistsVisibleTo($user)
 	{
 		if(!$user)
 			return $this->publicPlaylists();
@@ -69,12 +69,12 @@ class UserHandle
 		if($user->id == $this->id)
 			return $this->playlists();
 
-		return $user->publicPlaylists();
+		return $this->publicPlaylists();
 	}
 
 	public function publicPlaylists()
 	{
-		return $this->manager->playlists->byCondition("public AND user_id = '$this->id'");
+		return $this->manager->playlists->byCondition("public = '1' AND user_id = '$this->id'");
 	}
 
 	public function playlists()
@@ -181,6 +181,29 @@ class UserManager
 		$condition = implode(" OR ", $conditions);
 
 		return $this->byCondition($condition, $limit);
+	}
+
+	public function add($display_name, $username, $password)
+	{
+		unset($this->manager->error);
+		if(!$display_name || !$username || !$password)
+		{
+			$this->manager->error = "invalid parameters";
+			return FALSE;
+		}
+		$display_name = $this->manager->escape($display_name);
+		$username = $this->manager->escape($username);
+		$salt = md5(microtime().rand());
+		$pwhash = md5($salt . $password);
+		$fields = array(
+			new DBField("name", $username),
+			new DBField("password", $pwhash),
+			new DBField("salt", $salt),
+			new DBField("display_name", $display_name)
+		);
+
+		$result = $this->manager->insertToTable("users", $fields);
+		return $result;
 	}
 }
 

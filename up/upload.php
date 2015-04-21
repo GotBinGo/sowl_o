@@ -28,6 +28,7 @@ foreach ($_FILES as $file)
 
 	$pos = strrpos($file['name'], ".");
 	$basename = substr($file['name'], 0, $pos);
+	$extension = substr($file['name'], $pos);
 
 	$author = trim(explode('-', str_replace("_", " ", $basename), 2)[0]);
 	$title = trim(explode('-', str_replace("_", " ", $basename), 2)[1]);
@@ -62,7 +63,7 @@ foreach ($_FILES as $file)
 		);
 
 
-	$result = $db->tracks->add($user, $tmpname, $author, $title, $length, $file["type"], $tags);
+	$result = $db->tracks->add($user, $tmpname, $extension, $author, $title, $length, $file["type"], $tags);
 	if($result === FALSE)
 		die("bad: " . $db->error);
 

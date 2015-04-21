@@ -107,6 +107,7 @@ class TrackManager
 	{
 		$query = $this->manager->escape($query);
 		$usercheck = ($user && $user->id) ? "tracks.user_id = '$user->id' OR playlists.public" : "playlists.public";
+		$usercheck = "";
 		$joincondition = "tracks.id = playlists_tracks.track_id AND playlists.id = playlists_tracks.playlist_id";
 
 		if($query && $query != "")
@@ -128,27 +129,18 @@ class TrackManager
 		if($result === FALSE)
 			return FALSE;
 
-		$res = array();
+		$result = $this->manager->prependTableNames($result);
 
-		$fields = $result->fetch_fields();
-		while($record = $result->fetch_row())
-		{
-			$newrecord = array();
-			foreach($record as $key=>$value)
-			{
-				$newrecord[$fields[$key]->table . "." . $fields[$key]->name] = $value;
-			}
-			$res[] = new TrackHandle($this->manager, $newrecord["tracks.id"],
-				Track::fromDBRecord($newrecord, "tracks"));
-		}
+		$res = array_map(function($item) {
+			return new TrackHandle($this->manager, $item["tracks.id"], Track::fromDBRecord($item, "tracks"));
+		}, $result);
 
 		return $res;
 	}
 
-	public function add($user, $tmpname, $author, $title, $length, $filetype, $tags)
+	public function add($user, $tmpname, $extension, $author, $title, $length, $filetype, $tags)
 	{
 		$upload_date = date("Y-m-d H:i:s");
-		$extension = substr($tmpname, strrpos($tmpname, "."));
 		$newname = md5(microtime().rand()) . $extension;
 		$tags = array_filter(array_unique($tags));
 		$author = $this->manager->escape($author);

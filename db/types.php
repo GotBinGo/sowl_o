@@ -51,11 +51,29 @@ class DatabaseConnection
 			$limit = "";
 
 		$sql = "SELECT * FROM $name" . $condition . $limit . ";";
+		//var_dump($sql);
 		$result = $this->conn->query($sql);
 		if($result === FALSE)
 			$this->error = "Query error: " . $this->conn->error;
 
 		return $result;
+	}
+
+	public function prependTableNames($result)
+	{
+		$res = array();
+
+		$fields = $result->fetch_fields();
+		while($record = $result->fetch_row())
+		{
+			$newrecord = array();
+			foreach($record as $key=>$value)
+			{
+				$newrecord[$fields[$key]->table . "." . $fields[$key]->name] = $value;
+			}
+			$res[] = $newrecord;
+		}
+		return $res;
 	}
 
 	// Same as above but for a single record only

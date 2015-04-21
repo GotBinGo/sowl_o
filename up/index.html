@@ -71,6 +71,20 @@
 		.mp3icon{
 			background:url('mp3logo.svg') no-repeat;
 		}
+		.progressbar{
+			position:relative;
+			width: 100%;
+			height:15px;
+			border:1px solid rgba(0, 0, 0,0.2);
+		}
+		.progress{
+			position:absiolute;
+			top:0;
+			left:0;
+			height:100%;
+			width:0;
+			background-color:#00b5e3;
+		}
 	</style>
 </head>
 <body>
@@ -78,7 +92,12 @@
 		<article>
 			<input type="file" id="filebrowser" multiple/>
 			<div id="holder" class="bg"></div> 
-			<progress id="uploadprogress" min="0" max="100" value="0"></progress>
+			<!-- <progress id="uploadprogress" min="0" max="100" value="0"></progress> -->
+			<div class="progressbar">
+				<div id="uploadprogress" class="progress">
+					
+				</div>
+			</div>
 		</article>
 	</section>
 	<script>
@@ -133,13 +152,14 @@ function readFiles() {
 			}			
 			xhr.open('POST', './upload.php');
 			xhr.onload = function() {
-				progress.value = progress.innerHTML = 100;
+				//progress.value = progress.innerHTML = 100;
 			};
 			if (tests.progress) {//Progress bar
 				xhr.upload.onprogress = function (event) {
 					if (event.lengthComputable) {
 						var complete = (event.loaded / event.total * 100 | 0);
-						progress.value = progress.innerHTML = complete;
+						//progress.value = progress.innerHTML = complete;
+						document.querySelector("#uploadprogress").style.width = complete+"%";
 						document.querySelector("[file-id='"+files[0].size+"'] .progress").innerHTML=complete+"%";
 					}
 				}
@@ -158,6 +178,7 @@ function processFiles(tFiles)//Process transfered files
 		if(tFiles[i].type=="audio/mp3" || tFiles[i].type=="audio/mpeg" || tFiles[i].type == "application/x-flac"){
 			files.push(tFiles[i]);
 			previewFile(tFiles[i]);
+			console.log("JS: file sent " + tFiles[i]);
 		}
 		else
 			console.log("JS: unsupported type: " + tFiles[i].type);

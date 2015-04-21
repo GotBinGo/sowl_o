@@ -56,17 +56,19 @@ class PlaylistHandle
 
 	public function tracks()
 	{
-		$result = $this->manager->getTable("playlists_tracks, tracks", "playlists_tracks.playlist_id = '$this->id'");
+		$result = $this->manager->getTable("playlists_tracks, tracks", "playlists_tracks.playlist_id = '$this->id' AND tracks.id = playlists_tracks.track_id");
+		$result = $this->manager->prependTableNames($result);
 		if($result === FALSE)
 			return FALSE;
 
 		$res = array();
 
-		while($record = $result->fetch_assoc())
+		foreach($result as $record)
 		{
-			$res[] = new TrackHandle($this->manager, $record["id"],
+			$res[] = new TrackHandle($this->manager, $record["tracks.id"],
 				Track::fromDBRecord($record, "tracks"));
 		}
+		return $res;
 	}
 
 	public function setPublic($public)

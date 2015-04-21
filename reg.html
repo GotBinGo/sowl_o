@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">  
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; mininum-scale=0.5; maximum-scale=1.0; user-scalable=no;" />
+	<title>Form</title>
+	<style>
+		body{
+			border-top:120px solid #006680;
+			margin:0px;
+			width:100%;			
+			background-color:#333;
+		}
+		form{
+			width:550px;
+			box-sizing:border-box;
+			margin:60px auto;			
+			padding:50px;			
+			background-color:#222;
+		}
+		p{
+			background-color:#555;
+			color:#ffffff;
+			margin:5px 0;
+			height:25px;
+			font-family:Arial;
+			position:relative;
+		}
+		h1{
+			font-size:34px;
+			margin:0;
+			padding:0;
+			text-align:center;
+			color:#ffffff;
+			background-color:#555;
+			font-family:Arial;
+		}
+		a{
+			color:#ffffff;
+		}
+		label{
+			display:inline-block;
+			width:150px;
+			box-sizing:border-box;
+			line-height:25px;			
+			vertical-align: middle;			
+			padding-left:5px;
+		}
+		input[type=text],input[type=password],input[type=email],input[type=date],input[type=submit],select{
+			margin:0px;
+			padding:0 5px;
+			width:calc(100% - 155px);
+			height:100%;
+			position:absolute;
+			top:0;
+			right:0;
+			background-color:#ffffff;
+			color:#555;
+			border:0px;
+			border-radius:0;
+			box-sizing:border-box;
+			display:inline-block;
+		}
+		input:focus, select:focus{	
+			outline:none;
+		}
+		input[type=checkbox]{
+			background-color:#ffffff;
+			border:0px;
+		}		
+		#kuldes{
+			width:100%;
+			height:30px;
+			box-sizing:border-box;
+			font-weight:bold;
+			background-color:#08A;
+			color:#ffffff;
+		}
+		#kuldes:hover{
+			background-color:#006680;
+		}
+		@media all and (max-width: 700px)
+		{
+			form{
+				padding:0;
+				width:100%;
+				min-width:340px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<form action="register.php" method="post" >
+		<h1>Regisztráció</h1>		
+		<p>
+			<label for="name">Név: <span class="redstar">*</span> </label> 
+			<input type="text" name="display_name" id="name" placeholder="Példa János" required autofocus>
+		</p>
+		<p>
+			<label for="username">Felhasználónév: <span class="redstar">*</span> </label> 
+			<input type="text" name="username" id="username" placeholder="peldajani" required autofocus>
+		</p>
+		<p>
+			<label for="passw">Jelszó: <span class="redstar">*</span> </label> 
+			<input type="password" name="password" id="passw" onchange="form.passw2.pattern=this.value" oninput="setCustomValidity('')" oninvalid="setCustomValidity('A jelszónak tertalmaznia kell kisbetűt, nagybetűt, számot, és legalább 8 karaktert')" required>
+		</p>
+		<p>
+			<label for="passw2">Jelszó újra: <span class="redstar">*</span> </label> 
+			<input type="password" name="passw2" id="passw2" oninput="setCustomValidity('')"  oninvalid="setCustomValidity('A jelszónak meg kell egyeznie!')"  required>
+		</p>		
+		<p>
+			<label for="sex" id="gender" >Nem: </label> 
+			<input type="radio" name="sex" value="Male" id="g-male" ><span>Férfi</span>
+			<input type="radio" name="sex" value="Female" id="g-female" ><span>Nő</span>
+		</p>		
+		<p>
+			<label for="birthday" >Születési idő:</label> 
+			<input type="date" name="birthday" id="birthday" >
+		</p>
+		<p>
+			<label for="email">E-mail:</label>  
+			<input type="email" name="email"  id="email" placeholder="valami@example.com">
+		</p>
+		<p>
+			<label for="phonenumber">Telefonszám:</label> 
+			<input type="text" pattern="(([+]{1}[0-9]{2})|[0-9]{2})[0-9]{2}[-]{1}[0-9]{3}[-]{1}[0-9]{4}" name="phonenumber" id="phonenumber"  placeholder="+3620-123-4567">
+		</p>
+		<p>
+			<label for="tos">Szerződési feltétel:</label> 
+			<input type="checkbox"  name="tos" id="tos"  required><span><a href="#" onclick="alert('Szerződési feltétel:\n- Az oldal üzemeltetője semminemű felelőséget nem vállal!')">Elolvastam</a>, elfogadom</span>
+		</p>
+		<p>
+		<input type="submit" name="submit" value="Regisztráció" id="kuldes" >
+		</p>
+	</form>
+</body>
+</html>

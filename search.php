@@ -74,6 +74,13 @@ function searchTracks($term)
 		return FALSE;
 
 	$count = 0;
+	if($user)
+		$user_lists = array_map(function($item) {
+			return array($item->id, $item->get()->name);
+		}, $user->playlists());
+	else
+		$user_lists = array();
+
 	foreach($result as $current)
 	{
 		$record = $current->get();
@@ -84,7 +91,7 @@ function searchTracks($term)
 		$smarty->assign('author_name', $record->author);
 		$smarty->assign('track_name', $record->title);
 		$smarty->assign('count', $count);
-		$smarty->assign('playlists', array());
+		$smarty->assign('playlists', $user_lists);
 
 		$smarty->display('tpl/playlist_div.html');
 
