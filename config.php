@@ -3,7 +3,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'bcophm_music');
 define('DB_PASS', '123456');
-define('DB_NAME', 'db_refactor');
+define('DB_NAME', 'bcophm_music');
 
 // Smarty directories
 define('SMARTY_COMPILE_DIR', '/tmp/smarty/templates_c');
