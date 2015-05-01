@@ -1,7 +1,7 @@
 <?php
 set_include_path("..:" . get_include_path());
 require_once('db.php');
-require_once("getid3.php");
+//require_once("getid3.php");
 session_start();
 if(!isset($_SESSION["views"]))
 	die("not logged in");
@@ -39,14 +39,14 @@ foreach ($_FILES as $file)
 		$title = "Névtelen";
 
 	$tmpname = $file["tmp_name"];
-	$getid3 = new getID3();
+/*	$getid3 = new getID3();
 	$getid3->option_save_attachments = false;
 	$getid3->option_md5_data = false;
 	$getid3->option_md5_data_source = false;
 	$getid3->option_sha1_data = false;
 
 	$info = $getid3->analyze($tmpname);
-	getid3_lib::CopyTagsToComments($info);
+	getid3_lib::CopyTagsToComments($info);*/
 
 	if(isset($info["comments"]["artist"][0]) && $info["comments"]["artist"][0] != "")
 		$author = $info["comments"]["artist"][0];
