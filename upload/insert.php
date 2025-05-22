@@ -12,7 +12,7 @@ if(isset($_SESSION['views']))
 	if(strlen($author) > 0 && strlen($title) > 0)
 	{
 		$n =  $session[0];
-		$sql="INSERT INTO tracks (file_name, author_name, track_name, user_id) VALUES ('$filename', '$author', '$title', '$n')";
+		$sql="INSERT INTO tracks (file_name, author_name, track_name, user_id, track_length, upload_date, file_type) VALUES ('$filename', '$author', '$title', '$n', '0', CURRENT_TIMESTAMP(), 'none')";
 		if (!mysqli_query($conn,$sql)) {
 			die('Error: ' . mysqli_error($conn));
 		}
