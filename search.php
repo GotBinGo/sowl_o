@@ -63,7 +63,20 @@ else
 
 		//$jk = "kay";
 		//		echo "\\$jku\\";
-		$result = mysqli_query($conn,"SELECT *, levenshtein_ratio(track_name, '$term') AS lr FROM tracks ORDER BY lr ASC");
+//		$term = str_pad($term,8,'z');
+
+
+
+//		$result = mysqli_query($conn,"SELECT *, (case when (contains(concat(author_name,' ',track_name),'$term'))then levenshtein_ratio(CONCAT(author_name,' ', track_name), '$term') else 2*levenshtein_ratio(CONCAT(author_name,' ', track_name), '$term') end) AS lr FROM tracks ORDER BY lr ASC");
+		$result = mysqli_query($conn,"SELECT *, (case when (instr(concat(author_name,' ',track_name),'$term')>0)then levenshtein_ratio(CONCAT(author_name,' ', track_name), '$term') else 2*levenshtein_ratio(CONCAT(author_name,' ', track_name), '$term') end) AS lr FROM tracks ORDER BY lr ASC");
+		
+
+
+
+
+
+		
+		
 		if($result === false)
 			echo("query failed: " . $conn->error . "\n");
 		//		$result = mysqli_query($conn,"SELECT * , levenshtein_ratio(track_name,'$term') AS lr FROM tracks AND (file_type='audio/mpeg' OR file_type='audio/mp3') ORDER BY lr");
